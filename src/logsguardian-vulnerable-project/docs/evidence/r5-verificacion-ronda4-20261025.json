@@ -1,0 +1,249 @@
+{
+ "A1": {
+  "commit_ronda4": "af61eba",
+  "archivos": {
+   "config1": {
+    "sha256": "7ac789408e8f900dda4c1f0e223a228a02db965c7d9293fc9fa8b857f43779d7",
+    "n": 590
+   },
+   "config2": {
+    "sha256": "efad90abe8610421f2df88a8684414da54e32a5d3f6d945557ca4d36170cfe09",
+    "n": 590
+   },
+   "config3a": {
+    "sha256": "b7ec71bbbc5b8027f64a44951f8953b3dd20997237824112748447d9b0a1bcef",
+    "n": 590
+   },
+   "config3b": {
+    "sha256": "77279aa1eebbd6429567950ad959d9e0473384a5a9f5ae586b877f0555bd7085",
+    "n": 590
+   }
+  },
+  "campos_del_resultado": [
+   "blocked",
+   "category",
+   "id",
+   "layer_guess",
+   "status"
+  ],
+  "totales": {
+   "config1": 0,
+   "config2": 583,
+   "config3a": 550,
+   "config3b": 587
+  },
+  "ejecutor_en_af61eba_sha256": "0c84de551f1138bbeb1ef7a9ed1801d83e4c52a7312c04b873a75de57a286623",
+  "ejecutor_anterior_extraido_sha256": "0c84de551f1138bbeb1ef7a9ed1801d83e4c52a7312c04b873a75de57a286623",
+  "corpus_ronda4_sha256": "fd51e5974871b56f77a546cce40f7cd34ebbf2a4ce79669307da0cb8189a51eb"
+ },
+ "A2": {
+  "los_40_que_3a_no_bloquea": {
+   "n": 40,
+   "por_categoria": {
+    "path_traversal": 26,
+    "sqli": 11,
+    "xss": 3
+   }
+  },
+  "de_los_40_la_3b_bloquea": {
+   "n": 37,
+   "por_categoria": {
+    "path_traversal": 23,
+    "sqli": 11,
+    "xss": 3
+   }
+  },
+  "de_los_40_la_3b_bloquea_con_firma_de_capa_app": {
+   "n": 37,
+   "por_categoria": {
+    "path_traversal": 23,
+    "sqli": 11,
+    "xss": 3
+   }
+  },
+  "de_los_40_la_config2_bloquea": {
+   "n": 39,
+   "por_categoria": {
+    "path_traversal": 25,
+    "sqli": 11,
+    "xss": 3
+   }
+  },
+  "pasan_ambas_capas_3a_y_3b": [
+   "path_traversal_186",
+   "path_traversal_30",
+   "path_traversal_36"
+  ],
+  "cmdi_en_los_40": 0,
+  "cmdi_en_los_37": 0
+ },
+ "A3": {
+  "corpus_por_categoria": {
+   "sqli": {
+    "n": 77,
+    "subcadena_exacta": 0,
+    "subcadena_normalizada": 26,
+    "igualdad_normalizada_campo_completo": 0
+   },
+   "xss": {
+    "n": 113,
+    "subcadena_exacta": 12,
+    "subcadena_normalizada": 13,
+    "igualdad_normalizada_campo_completo": 7
+   },
+   "path_traversal": {
+    "n": 200,
+    "subcadena_exacta": 0,
+    "subcadena_normalizada": 0,
+    "igualdad_normalizada_campo_completo": 0
+   },
+   "cmdi": {
+    "n": 200,
+    "subcadena_exacta": 63,
+    "subcadena_normalizada": 200,
+    "igualdad_normalizada_campo_completo": 200
+   }
+  },
+  "metodo": "training/leakage_check.py (repositorio logSguarDian, solo lectura) contra train, val y test; igualdad normalizada del campo completo y subcadena normalizada/literal; script attack-sim/leakage_check_round4_20261025.py",
+  "en_los_40": {
+   "sqli": {
+    "n": 11,
+    "igualdad_normalizada": [],
+    "subcadena_normalizada": [
+     "sqli_15",
+     "sqli_17",
+     "sqli_3",
+     "sqli_50",
+     "sqli_54",
+     "sqli_71",
+     "sqli_76"
+    ],
+    "subcadena_exacta": []
+   },
+   "xss": {
+    "n": 3,
+    "igualdad_normalizada": [],
+    "subcadena_normalizada": [
+     "xss_25"
+    ],
+    "subcadena_exacta": [
+     "xss_25"
+    ]
+   },
+   "path_traversal": {
+    "n": 26,
+    "igualdad_normalizada": [],
+    "subcadena_normalizada": [],
+    "subcadena_exacta": []
+   },
+   "cmdi": {
+    "n": 0,
+    "igualdad_normalizada": [],
+    "subcadena_normalizada": [],
+    "subcadena_exacta": []
+   }
+  },
+  "en_los_37": {
+   "sqli": {
+    "n": 11,
+    "igualdad_normalizada": [],
+    "subcadena_normalizada": [
+     "sqli_15",
+     "sqli_17",
+     "sqli_3",
+     "sqli_50",
+     "sqli_54",
+     "sqli_71",
+     "sqli_76"
+    ],
+    "subcadena_exacta": []
+   },
+   "xss": {
+    "n": 3,
+    "igualdad_normalizada": [],
+    "subcadena_normalizada": [
+     "xss_25"
+    ],
+    "subcadena_exacta": [
+     "xss_25"
+    ]
+   },
+   "path_traversal": {
+    "n": 23,
+    "igualdad_normalizada": [],
+    "subcadena_normalizada": [],
+    "subcadena_exacta": []
+   },
+   "cmdi": {
+    "n": 0,
+    "igualdad_normalizada": [],
+    "subcadena_normalizada": [],
+    "subcadena_exacta": []
+   }
+  }
+ },
+ "A4": {
+  "diferencia_entre_ejecutores": "solo cambia la construccion de la peticion cuando la categoria es path_traversal o cmdi y el payload contiene al menos un %XX; en cualquier otro caso las peticiones son identicas byte a byte",
+  "payloads_afectados_en_el_corpus": {
+   "sqli": 0,
+   "xss": 0,
+   "path_traversal": 0,
+   "cmdi": 200
+  },
+  "payloads_afectados_entre_los_40": [],
+  "payloads_afectados_entre_los_37": [],
+  "payloads_afectados_entre_los_3_que_pasan_ambas_capas": []
+ },
+ "A5": {
+  "ronda5_los_que_el_waf_no_bloquea": 51,
+  "ronda5_de_esos_la_3b_bloquea": 48,
+  "ronda5_3b_menos_3a": 48,
+  "wilson_37_de_40": [
+   37,
+   40,
+   [
+    80.1,
+    97.4
+   ]
+  ],
+  "wilson_48_de_51": [
+   48,
+   51,
+   [
+    84.1,
+    98.0
+   ]
+  ],
+  "wilson_3_de_800": [
+   3,
+   800,
+   [
+    0.1,
+    1.1
+   ]
+  ],
+  "wilson_48_de_800": [
+   48,
+   800,
+   [
+    4.6,
+    7.9
+   ]
+  ],
+  "wilson_51_de_800": [
+   51,
+   800,
+   [
+    4.9,
+    8.3
+   ]
+  ],
+  "ronda4_los_40_porcentaje": 92.5,
+  "ids_ronda5_de_los_51_que_la_3b_no_bloquea": [
+   "cmdi_184",
+   "cmdi_185",
+   "cmdi_6"
+  ],
+  "config2_con_cabeceras_bloquea_de_los_51": 48
+ }
+}

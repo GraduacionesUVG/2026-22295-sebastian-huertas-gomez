@@ -1,0 +1,270 @@
+{
+ "corpus": "combined_corpus_round5_20261025.jsonl",
+ "por_categoria": {
+  "sqli": {
+   "n": 200,
+   "regla_normalizacion": "generic_template",
+   "por_particion": {
+    "train": {
+     "filas_clase": 159154,
+     "sin_texto_en_unified": 16,
+     "subcadena_exacta": 0,
+     "subcadena_exacta_ids": [],
+     "subcadena_normalizada": 4,
+     "subcadena_normalizada_ids": [
+      "sqli_103",
+      "sqli_138",
+      "sqli_145",
+      "sqli_175"
+     ],
+     "igualdad_normalizada_campo_completo": 4,
+     "igualdad_normalizada_ids": [
+      "sqli_103",
+      "sqli_138",
+      "sqli_145",
+      "sqli_175"
+     ]
+    },
+    "val": {
+     "filas_clase": 34107,
+     "sin_texto_en_unified": 4,
+     "subcadena_exacta": 0,
+     "subcadena_exacta_ids": [],
+     "subcadena_normalizada": 1,
+     "subcadena_normalizada_ids": [
+      "sqli_138"
+     ],
+     "igualdad_normalizada_campo_completo": 1,
+     "igualdad_normalizada_ids": [
+      "sqli_138"
+     ]
+    },
+    "test": {
+     "filas_clase": 34107,
+     "sin_texto_en_unified": 4,
+     "subcadena_exacta": 0,
+     "subcadena_exacta_ids": [],
+     "subcadena_normalizada": 2,
+     "subcadena_normalizada_ids": [
+      "sqli_103",
+      "sqli_145"
+     ],
+     "igualdad_normalizada_campo_completo": 2,
+     "igualdad_normalizada_ids": [
+      "sqli_103",
+      "sqli_145"
+     ]
+    }
+   },
+   "union_particiones": {
+    "subcadena_exacta": 0,
+    "subcadena_normalizada": 4,
+    "subcadena_normalizada_ids": [
+     "sqli_103",
+     "sqli_138",
+     "sqli_145",
+     "sqli_175"
+    ],
+    "igualdad_normalizada_campo_completo": 4,
+    "igualdad_normalizada_ids": [
+     "sqli_103",
+     "sqli_138",
+     "sqli_145",
+     "sqli_175"
+    ]
+   }
+  },
+  "path_traversal": {
+   "n": 200,
+   "regla_normalizacion": "generic_template",
+   "por_particion": {
+    "train": {
+     "filas_clase": 11799,
+     "sin_texto_en_unified": 12,
+     "subcadena_exacta": 5,
+     "subcadena_exacta_ids": [
+      "path_traversal_26",
+      "path_traversal_40",
+      "path_traversal_57",
+      "path_traversal_119",
+      "path_traversal_198"
+     ],
+     "subcadena_normalizada": 6,
+     "subcadena_normalizada_ids": [
+      "path_traversal_26",
+      "path_traversal_29",
+      "path_traversal_40",
+      "path_traversal_57",
+      "path_traversal_119",
+      "path_traversal_198"
+     ],
+     "igualdad_normalizada_campo_completo": 0,
+     "igualdad_normalizada_ids": []
+    },
+    "val": {
+     "filas_clase": 2528,
+     "sin_texto_en_unified": 2,
+     "subcadena_exacta": 2,
+     "subcadena_exacta_ids": [
+      "path_traversal_57",
+      "path_traversal_198"
+     ],
+     "subcadena_normalizada": 5,
+     "subcadena_normalizada_ids": [
+      "path_traversal_29",
+      "path_traversal_57",
+      "path_traversal_119",
+      "path_traversal_163",
+      "path_traversal_198"
+     ],
+     "igualdad_normalizada_campo_completo": 0,
+     "igualdad_normalizada_ids": []
+    },
+    "test": {
+     "filas_clase": 2529,
+     "sin_texto_en_unified": 3,
+     "subcadena_exacta": 5,
+     "subcadena_exacta_ids": [
+      "path_traversal_26",
+      "path_traversal_40",
+      "path_traversal_57",
+      "path_traversal_119",
+      "path_traversal_198"
+     ],
+     "subcadena_normalizada": 5,
+     "subcadena_normalizada_ids": [
+      "path_traversal_26",
+      "path_traversal_40",
+      "path_traversal_57",
+      "path_traversal_119",
+      "path_traversal_198"
+     ],
+     "igualdad_normalizada_campo_completo": 0,
+     "igualdad_normalizada_ids": []
+    }
+   },
+   "union_particiones": {
+    "subcadena_exacta": 5,
+    "subcadena_normalizada": 7,
+    "subcadena_normalizada_ids": [
+     "path_traversal_119",
+     "path_traversal_163",
+     "path_traversal_198",
+     "path_traversal_26",
+     "path_traversal_29",
+     "path_traversal_40",
+     "path_traversal_57"
+    ],
+    "igualdad_normalizada_campo_completo": 0,
+    "igualdad_normalizada_ids": []
+   }
+  },
+  "cmdi": {
+   "n": 200,
+   "regla_normalizacion": "template_shape",
+   "por_particion": {
+    "train": {
+     "filas_clase": 6853,
+     "sin_texto_en_unified": 21,
+     "subcadena_exacta": 0,
+     "subcadena_exacta_ids": [],
+     "subcadena_normalizada": 1,
+     "subcadena_normalizada_ids": [
+      "cmdi_14"
+     ],
+     "igualdad_normalizada_campo_completo": 0,
+     "igualdad_normalizada_ids": []
+    },
+    "val": {
+     "filas_clase": 1468,
+     "sin_texto_en_unified": 5,
+     "subcadena_exacta": 0,
+     "subcadena_exacta_ids": [],
+     "subcadena_normalizada": 1,
+     "subcadena_normalizada_ids": [
+      "cmdi_14"
+     ],
+     "igualdad_normalizada_campo_completo": 0,
+     "igualdad_normalizada_ids": []
+    },
+    "test": {
+     "filas_clase": 1468,
+     "sin_texto_en_unified": 5,
+     "subcadena_exacta": 0,
+     "subcadena_exacta_ids": [],
+     "subcadena_normalizada": 1,
+     "subcadena_normalizada_ids": [
+      "cmdi_78"
+     ],
+     "igualdad_normalizada_campo_completo": 0,
+     "igualdad_normalizada_ids": []
+    }
+   },
+   "union_particiones": {
+    "subcadena_exacta": 0,
+    "subcadena_normalizada": 2,
+    "subcadena_normalizada_ids": [
+     "cmdi_14",
+     "cmdi_78"
+    ],
+    "igualdad_normalizada_campo_completo": 0,
+    "igualdad_normalizada_ids": []
+   }
+  },
+  "xss": {
+   "n": 200,
+   "regla_normalizacion": "generic_template",
+   "por_particion": {
+    "train": {
+     "filas_clase": 20962,
+     "sin_texto_en_unified": 33,
+     "subcadena_exacta": 0,
+     "subcadena_exacta_ids": [],
+     "subcadena_normalizada": 3,
+     "subcadena_normalizada_ids": [
+      "xss_118",
+      "xss_254",
+      "xss_342"
+     ],
+     "igualdad_normalizada_campo_completo": 0,
+     "igualdad_normalizada_ids": []
+    },
+    "val": {
+     "filas_clase": 4491,
+     "sin_texto_en_unified": 7,
+     "subcadena_exacta": 0,
+     "subcadena_exacta_ids": [],
+     "subcadena_normalizada": 0,
+     "subcadena_normalizada_ids": [],
+     "igualdad_normalizada_campo_completo": 0,
+     "igualdad_normalizada_ids": []
+    },
+    "test": {
+     "filas_clase": 4491,
+     "sin_texto_en_unified": 7,
+     "subcadena_exacta": 0,
+     "subcadena_exacta_ids": [],
+     "subcadena_normalizada": 3,
+     "subcadena_normalizada_ids": [
+      "xss_118",
+      "xss_254",
+      "xss_342"
+     ],
+     "igualdad_normalizada_campo_completo": 0,
+     "igualdad_normalizada_ids": []
+    }
+   },
+   "union_particiones": {
+    "subcadena_exacta": 0,
+    "subcadena_normalizada": 3,
+    "subcadena_normalizada_ids": [
+     "xss_118",
+     "xss_254",
+     "xss_342"
+    ],
+    "igualdad_normalizada_campo_completo": 0,
+    "igualdad_normalizada_ids": []
+   }
+  }
+ }
+}

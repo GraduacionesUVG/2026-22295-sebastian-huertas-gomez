@@ -1,0 +1,188 @@
+{
+ "prefix_run1": {
+  "por_categoria": {
+   "sqli": 199,
+   "path_traversal": 197,
+   "cmdi": 136
+  },
+  "cmdi_codificados": [
+   52,
+   105,
+   [
+    40.1,
+    58.9
+   ]
+  ],
+  "cmdi_sin_codificar": [
+   84,
+   95,
+   [
+    80.4,
+    93.4
+   ]
+  ],
+  "ids_distintos_vs_medicion_vieja_20261010": [],
+  "ids_distintos_vs_unificada_corregida_run1": [
+   "cmdi_0",
+   "cmdi_3",
+   "cmdi_5",
+   "cmdi_9",
+   "cmdi_11",
+   "cmdi_13",
+   "cmdi_19",
+   "cmdi_22",
+   "cmdi_28",
+   "cmdi_34",
+   "cmdi_37",
+   "cmdi_38",
+   "cmdi_40",
+   "cmdi_51",
+   "cmdi_52",
+   "cmdi_69",
+   "cmdi_72",
+   "cmdi_73",
+   "cmdi_78",
+   "cmdi_79",
+   "cmdi_86",
+   "cmdi_97",
+   "cmdi_120",
+   "cmdi_132",
+   "cmdi_133",
+   "cmdi_136",
+   "cmdi_137",
+   "cmdi_159",
+   "cmdi_161",
+   "cmdi_168",
+   "cmdi_172",
+   "cmdi_179",
+   "cmdi_183",
+   "cmdi_188",
+   "cmdi_196",
+   "cmdi_198"
+  ]
+ },
+ "prefix_run2": {
+  "por_categoria": {
+   "sqli": 199,
+   "path_traversal": 197,
+   "cmdi": 136
+  },
+  "cmdi_codificados": [
+   52,
+   105,
+   [
+    40.1,
+    58.9
+   ]
+  ],
+  "cmdi_sin_codificar": [
+   84,
+   95,
+   [
+    80.4,
+    93.4
+   ]
+  ],
+  "ids_distintos_vs_medicion_vieja_20261010": [],
+  "ids_distintos_vs_unificada_corregida_run1": [
+   "cmdi_0",
+   "cmdi_3",
+   "cmdi_5",
+   "cmdi_9",
+   "cmdi_11",
+   "cmdi_13",
+   "cmdi_19",
+   "cmdi_22",
+   "cmdi_28",
+   "cmdi_34",
+   "cmdi_37",
+   "cmdi_38",
+   "cmdi_40",
+   "cmdi_51",
+   "cmdi_52",
+   "cmdi_69",
+   "cmdi_72",
+   "cmdi_73",
+   "cmdi_78",
+   "cmdi_79",
+   "cmdi_86",
+   "cmdi_97",
+   "cmdi_120",
+   "cmdi_132",
+   "cmdi_133",
+   "cmdi_136",
+   "cmdi_137",
+   "cmdi_159",
+   "cmdi_161",
+   "cmdi_168",
+   "cmdi_172",
+   "cmdi_179",
+   "cmdi_183",
+   "cmdi_188",
+   "cmdi_196",
+   "cmdi_198"
+  ]
+ },
+ "control_fixed_run1": {
+  "por_categoria": {
+   "sqli": 199,
+   "path_traversal": 197,
+   "cmdi": 164
+  },
+  "cmdi_codificados": [
+   80,
+   105,
+   [
+    67.2,
+    83.3
+   ]
+  ],
+  "cmdi_sin_codificar": [
+   84,
+   95,
+   [
+    80.4,
+    93.4
+   ]
+  ],
+  "ids_distintos_vs_medicion_vieja_20261010": [
+   "cmdi_0",
+   "cmdi_3",
+   "cmdi_5",
+   "cmdi_9",
+   "cmdi_11",
+   "cmdi_13",
+   "cmdi_19",
+   "cmdi_22",
+   "cmdi_28",
+   "cmdi_34",
+   "cmdi_37",
+   "cmdi_38",
+   "cmdi_40",
+   "cmdi_51",
+   "cmdi_52",
+   "cmdi_69",
+   "cmdi_72",
+   "cmdi_73",
+   "cmdi_78",
+   "cmdi_79",
+   "cmdi_86",
+   "cmdi_97",
+   "cmdi_120",
+   "cmdi_132",
+   "cmdi_133",
+   "cmdi_136",
+   "cmdi_137",
+   "cmdi_159",
+   "cmdi_161",
+   "cmdi_168",
+   "cmdi_172",
+   "cmdi_179",
+   "cmdi_183",
+   "cmdi_188",
+   "cmdi_196",
+   "cmdi_198"
+  ],
+  "ids_distintos_vs_unificada_corregida_run1": []
+ }
+}

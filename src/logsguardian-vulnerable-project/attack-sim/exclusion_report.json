@@ -1,0 +1,124 @@
+{
+  "seed": 20260923,
+  "candidates_generated": {
+    "sqli": 1995,
+    "path_traversal": 400,
+    "cmdi": 400,
+    "xss": 15
+  },
+  "candidates_discarded": {
+    "sqli": 0,
+    "path_traversal": 3,
+    "cmdi": 0,
+    "xss": 7
+  },
+  "discard_reasons": {
+    "sqli": {},
+    "path_traversal": {
+      "exact_hash": 3
+    },
+    "cmdi": {},
+    "xss": {
+      "exact_hash": 7
+    }
+  },
+  "discard_sources": {
+    "sqli": {},
+    "path_traversal": {
+      "owasp_logs.jsonl": 3
+    },
+    "cmdi": {},
+    "xss": {
+      "payload_full.jsonl": 2,
+      "unified.jsonl": 3,
+      "payloads_csv.jsonl": 2
+    }
+  },
+  "discard_examples": {
+    "sqli": [],
+    "path_traversal": [
+      {
+        "payload": "/etc/passwd",
+        "reason": "exact_hash",
+        "source": "owasp_logs.jsonl"
+      },
+      {
+        "payload": "../../../../etc/passwd",
+        "reason": "exact_hash",
+        "source": "owasp_logs.jsonl"
+      },
+      {
+        "payload": "%2e%2e%2f%2e%2e%2f%2e%2e%2f%2e%2e%2fetc%2Fpasswd",
+        "reason": "exact_hash",
+        "source": "owasp_logs.jsonl"
+      }
+    ],
+    "cmdi": [],
+    "xss": [
+      {
+        "payload": "<script>alert(document.cookie)</script>",
+        "reason": "exact_hash",
+        "source": "payload_full.jsonl"
+      },
+      {
+        "payload": "<svg onload=alert(1)>",
+        "reason": "exact_hash",
+        "source": "unified.jsonl"
+      },
+      {
+        "payload": "<body onload=alert('xss')>",
+        "reason": "exact_hash",
+        "source": "payload_full.jsonl"
+      },
+      {
+        "payload": "'-alert(1)-'",
+        "reason": "exact_hash",
+        "source": "payloads_csv.jsonl"
+      },
+      {
+        "payload": "<input autofocus onfocus=alert(1)>",
+        "reason": "exact_hash",
+        "source": "unified.jsonl"
+      },
+      {
+        "payload": "<img src=1 href=1 onerror=\"javascript:alert(1)\"></img>",
+        "reason": "exact_hash",
+        "source": "payloads_csv.jsonl"
+      },
+      {
+        "payload": "<svg><animate onbegin=alert(1) attributeName=x dur=1s>",
+        "reason": "exact_hash",
+        "source": "unified.jsonl"
+      }
+    ]
+  },
+  "training_files_read": [
+    "/Users/xtsebas/Universidad/logSguarDian/training/data_clean/capec.jsonl",
+    "/Users/xtsebas/Universidad/logSguarDian/training/data_clean/command_injection.jsonl",
+    "/Users/xtsebas/Universidad/logSguarDian/training/data_clean/modsec_learn.jsonl",
+    "/Users/xtsebas/Universidad/logSguarDian/training/data_clean/owasp_logs.jsonl",
+    "/Users/xtsebas/Universidad/logSguarDian/training/data_clean/patt_cmdi_curated.jsonl",
+    "/Users/xtsebas/Universidad/logSguarDian/training/data_clean/payload_full.jsonl",
+    "/Users/xtsebas/Universidad/logSguarDian/training/data_clean/payloads_csv.jsonl",
+    "/Users/xtsebas/Universidad/logSguarDian/training/data_clean/seclists_cmdi.jsonl",
+    "/Users/xtsebas/Universidad/logSguarDian/training/data_clean/synthetic_cmdi_compound.jsonl",
+    "/Users/xtsebas/Universidad/logSguarDian/training/data_clean/synthetic_cmdi_minimal_context.jsonl",
+    "/Users/xtsebas/Universidad/logSguarDian/training/data_clean/synthetic_cmdi_windows.jsonl",
+    "/Users/xtsebas/Universidad/logSguarDian/training/data_clean/synthetic_evasion.jsonl",
+    "/Users/xtsebas/Universidad/logSguarDian/training/data_clean/synthetic_multifield.jsonl",
+    "/Users/xtsebas/Universidad/logSguarDian/training/data_clean/synthetic_nav.jsonl",
+    "/Users/xtsebas/Universidad/logSguarDian/training/data_clean/synthetic_nav_ecommerce.jsonl",
+    "/Users/xtsebas/Universidad/logSguarDian/training/data_clean/telemetry_curated_2026-08-29.jsonl",
+    "/Users/xtsebas/Universidad/logSguarDian/training/data_clean/unified.jsonl",
+    "/Users/xtsebas/Universidad/logSguarDian/training/data_clean/xss_dataset.jsonl",
+    "/Users/xtsebas/Universidad/logSguarDian/data/seclists_command-injection-commix.txt"
+  ],
+  "training_records_read": 1355483,
+  "final_corpus_counts": {
+    "sqli": 200,
+    "path_traversal": 200,
+    "cmdi": 200,
+    "xss_placeholder": 8
+  },
+  "xss_status": "PLACEHOLDER - pending manual OWASP ZAP export (see task report / docs)"
+}

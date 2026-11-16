@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title><%= profile.username %>'s Profile — NotesApp</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<%- include('_nav', { user: user }) %>
+<main>
+  <h1><%= profile.username %></h1>
+  <p class="meta">
+    Role: <%= profile.role %>
+    — Member since <%= new Date(profile.created_at).toLocaleDateString() %>
+  </p>
+
+  <%# VULNERABLE: raw-output tag renders profile.bio without HTML escaping — Stored XSS %>
+  <div class="bio"><%- profile.bio || '<em>No bio set.</em>' %></div>
+
+  <% if (user && user.id === profile.id) { %>
+    <% if (success) { %><p class="success"><%= success %></p><% } %>
+    <% if (error) { %><p class="error"><%= error %></p><% } %>
+    <h2>Edit Bio</h2>
+    <form action="/profile" method="POST">
+      <label>Bio
+        <textarea name="bio" rows="5"><%= profile.bio || '' %></textarea>
+      </label>
+      <button type="submit">Update Profile</button>
+    </form>
+  <% } %>
+
+  <p><a href="/posts">&larr; Back to notes</a></p>
+</main>
+</body>
+</html>

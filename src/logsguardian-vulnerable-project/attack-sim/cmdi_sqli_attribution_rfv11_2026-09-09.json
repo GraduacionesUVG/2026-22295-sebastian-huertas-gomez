@@ -1,0 +1,14 @@
+[
+  {
+    "verdict": "block",
+    "predicted_class": "sqli",
+    "confidence": 0.4000000059604645,
+    "count": 198
+  },
+  {
+    "verdict": "pass_anomaly",
+    "predicted_class": "sqli",
+    "confidence": 0.3333333432674408,
+    "count": 2
+  }
+]

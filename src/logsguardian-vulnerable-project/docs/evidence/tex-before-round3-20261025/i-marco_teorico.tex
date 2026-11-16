@@ -1,0 +1,806 @@
+% ==============================================================================
+% MARCO TEÓRICO
+% ==============================================================================
+% Contenido provisto directamente por el estudiante (dos veces: la primera
+% entrega se cortó a los 50,000 caracteres de por medio de la bibliografía;
+% el reenvío completo llegó con la codificación corrupta -- "Ã³" en vez de
+% "ó", etc. -- así que este archivo se reconstruyó a partir del texto de la
+% primera entrega, que sí tenía acentos correctos, y se completó con las
+% entradas bibliográficas del reenvío).
+%
+% Corrección aplicada: "la restricción de disponibilidad descrita en la
+% sección 4.1" (en Inferencia mediante ONNX) era una referencia numérica
+% hardcodeada a la subsección "Alcance técnico" de h-alcance.tex. Con
+% Alcance como capítulo propio, esa subsección no será "4.1" (mismo tipo de
+% problema que "la sección 1.3" en Alcance). Se agregó
+% \label{subsec:alcance-tecnico} en h-alcance.tex y aquí se usa \ref.
+%
+% Verificación de fuentes (2026-08-15): CVE-2021-27185 confirmado por Snyk
+% (command injection, paquete npm samba-client) -- coincide con el texto;
+% no se pudo verificar independientemente el puntaje CVSS 9.8 exacto.
+% republicamastercard2025 (200% de incremento; tecnológico 7.9%, tercer
+% sector más atacado) confirmado literal. gem2024 (segunda tasa de
+% actividad emprendedora temprana del mundo, 32.4%) NO se pudo verificar
+% (la URL del PDF responde 403); revisar manualmente antes de la entrega.
+%
+% NOTA: la entrada ecosistemastartup2025 llegó en el .bib del estudiante
+% pero no se cita en ningún punto de este capítulo; se agregó al .bib de
+% todas formas (no genera error, biblatex solo imprime lo citado) pero
+% queda sin usar hasta que se referencie en algún capítulo.
+%
+% Actualización 2026-09-04: el estudiante volvió a pegar el envío original
+% completo (misma codificación corrupta "Ã³" documentada arriba). Se revisó
+% contra el archivo ya reconstruido y NO se reincorporó la mayoría del
+% contenido: la cifra "Node.js >40% de uso entre desarrolladores" no tiene
+% cita ni en la versión original; las fuentes de blog personal (w3schools,
+% Medium: cocca2025/ejaz2025/rusin2026/kalita2024, browserstack2025,
+% codeb2024, socket2024, mdnwebdocs) se descartaron por calidad frente a las
+% fuentes ya usadas (OpenJS Foundation, expressjs); checkpoint2023 no tiene
+% URL verificable; la sección "Entorno de Prueba y Reproducibilidad"
+% (Docker/Artillery/DotDotPwn/Commix) es diseño experimental y se dejó
+% pendiente para el capítulo de Metodología en vez de duplicarla aquí.
+%
+% Se intentó agregar una sección "Trabajos previos y posicionamiento" con
+% cuadro comparativo de trabajos ML previos, pero se detectó que
+% e-antecedentes.tex YA tiene una sección equivalente ("Trabajos académicos
+% en detección de ataques web mediante aprendizaje automático",
+% \label{cuadro:trabajosprevios}) con los mismos cinco trabajos. Por
+% instrucción explícita del estudiante, ese contenido se queda únicamente
+% en Antecedentes y no se repite aquí.
+%
+% Por la misma lógica, se eliminó la subsección "RASP comerciales
+% existentes" (Cuadro cuadro:rasp-comercial) de este archivo: duplicaba
+% casi por completo la sección "Soluciones RASP existentes: antecedentes
+% tecnológicos" (Cuadro cuadro:rasp, ahora \label{sec:rasp-antecedentes})
+% de Antecedentes. Se reemplazó por una oración que remite a esa
+% comparación en vez de repetirla, y se agregó el label faltante en
+% e-antecedentes.tex para poder referenciarla. También se dejó fuera de
+% este archivo la sección "Contexto Tecnológico y de Ciberseguridad en
+% Guatemala" completa del envío del estudiante (GEM, Mastercard, MINECO,
+% BID-OEA): esas mismas cifras y fuentes ya se citaron en el capítulo de
+% Justificación; este archivo mantiene solo la versión condensada que ya
+% tenía, que remite a Antecedentes/Justificación para el detalle.
+%
+% Contenido nuevo sí incorporado del envío del estudiante (2026-09-04),
+% verificado antes de escribirse: cita faltante de microsoft2009stride en
+% STRIDE; mención de Helmet/CORS/RateLimit/JWT/bcrypt en la subsección de
+% middleware; subsección nueva "Defensa en profundidad" con figura TikZ
+% (fuente cloudflaredefenseindepth NO verificable por WebFetch, 403,
+% marcado en el .bib); cuarta limitación de RASP (complejidad de
+% actualización del modelo embebido); indicadores de log adicionales para
+% SQLi/XSS/Path Traversal/Command Injection (mismas fuentes ya verificadas,
+% sin citas nuevas); referencia cruzada OWASP API3:2023 -> Path
+% Traversal/LFI.
+%
+% Explícitamente NO incorporado por falta de fuente o por baja calidad de
+% fuente: la cifra "Node.js >40% de uso entre desarrolladores" (sin cita ni
+% en el envío original); las estadísticas de escala de npm de socket2024
+% (2.5M paquetes, 184 mil millones de descargas/mes, 165,486 mantenedores:
+% no se pudo confirmar el contenido específico por WebFetch); las cifras de
+% Akamai (311/150 mil millones de ataques, +33%) vía encryptionconsulting2025
+% (URL devuelve 404) y del Enterprise Strategy Group (62%) vía equixly2024
+% (la portada del blog no confirma la cifra); checkpoint2023 (sin URL) y
+% checkpointresearch2024 (la portada no muestra el contenido citado); y las
+% fuentes de blog personal (w3schools, Medium: cocca2025/ejaz2025/
+% rusin2026/kalita2024, browserstack2025, codeb2024, mdnwebdocs).
+%
+% Corrección 2026-10-02 (clasificación OWASP/MITRE, verificada por WebFetch
+% contra las páginas oficiales antes de escribirse):
+%  (1) Path Traversal (CWE-22/CWE-23) está mapeado en A01:2021 Broken Access
+%      Control, NO en A03:2021 Injection -- confirmado contra
+%      top10.owasp.org/2021/A01_2021-Broken_Access_Control. SQLi (CWE-89),
+%      XSS (CWE-79) y OS Command Injection (CWE-78) sí están en A03:2021 --
+%      confirmado contra top10.owasp.org/2021/A03_2021-Injection, que
+%      además confirma que CWE-22 NO aparece en esa página. Se corrigieron
+%      las subsecciones de cada vector, la sección "Marcos de referencia", y
+%      se agregó el Cuadro cuadro:owasp-mitre-cwe.
+%  (2) Se eliminó la afirmación (agregada por error en la sesión anterior,
+%      2026-09-04) de que API3:2023 (Broken Object Property Level
+%      Authorization) se corresponde con Path Traversal/LFI: verificado
+%      contra api-security.owasp.org que API3:2023 cubre exposición
+%      excesiva de propiedades y Mass Assignment, sin relación con
+%      manipulación de rutas de archivo.
+%  (3) MITRE: verificado contra attack.mitre.org que T1189 (Drive-by
+%      Compromise) se centra explícitamente en comprometer el endpoint
+%      cliente, con XSS como mecanismo de entrega -- se mantiene solo para
+%      XSS. T1190 (Exploit Public-Facing Application) menciona
+%      explícitamente SQL injection, path traversal y el OWASP Top 10/CWE
+%      Top 25 -- se usa para SQLi, Path Traversal y Command Injection.
+%  (4) Las consecuencias de SQLi se ajustaron a lo que A03:2021 documenta
+%      (modificación/borrado de datos, invocación de procedimientos
+%      almacenados) en vez de la lista genérica anterior.
+%  Entradas .bib nuevas, cada una verificada por WebFetch antes de
+%  escribirse: owaspa01_2021, owaspa03_2021, owaspapi3_2023, owasptraversal,
+%  mitret1189, mitret1190.
+%
+% Propagación: el mismo error (los cuatro vectores bajo "A03:2021") estaba
+% también en g-objetivos.tex (Objetivo específico 1); se corrigió ahí
+% también por ser la misma afirmación factual incorrecta, no una decisión
+% de alcance distinta.
+% Actualización 2026-10-04: las figuras fig:defensa-profundidad y
+% fig:rasp-vs-perimetral (antes TikZ) se reemplazaron por las imágenes
+% provistas por el estudiante (figuras/figura2.png y figuras/figura3.png).
+% El párrafo de defensa en profundidad se ajustó a las cinco capas de la
+% figura nueva, y la leyenda de la figura 3 pasó de "arriba/abajo" a
+% "izquierda/derecha".
+\ifdefined\modoensamble
+\else
+	\input{0-preambulo_standalone}
+\fi
+
+\chapter{Marco teórico}
+
+\section{Node.js y arquitectura orientada a eventos}
+
+\subsection{Modelo de ejecución \textit{event-driven}}
+Node.js es un entorno de ejecución de JavaScript, asíncrono y orientado a eventos, que ejecuta el
+motor V8 de Google Chrome fuera del navegador \cite{openjsfoundation2024,nodejs2026intro}. A diferencia de
+los servidores tradicionales que asignan un hilo por conexión entrante, Node.js opera con un único hilo de ejecución de JavaScript organizado en torno a un \textit{Event
+Loop}, que permite realizar operaciones de entrada y salida sin bloqueo al delegarlas al kernel del
+sistema siempre que es posible \cite{nodejs2026eventloop}. Según el modelo de ejecución de
+JavaScript, cuando la pila de llamadas (\textit{Call Stack}) queda vacía se toma el siguiente
+trabajo pendiente de la cola para ejecutarlo \cite{mdn2026execution}.
+
+Este modelo es la razón técnica por la que Node.js es la plataforma elegida para
+\textit{logSguarDian}: su capacidad de atender miles de conexiones concurrentes sin bloquear el
+hilo principal permite instrumentar peticiones HTTP en tiempo real sin degradar la capacidad de
+respuesta del servidor, siempre que el propio mecanismo de detección respete la naturaleza no
+bloqueante del entorno. Esta restricción de diseño es la que obliga a que la inferencia del modelo
+de detección se ejecute fuera del hilo principal, mediante un \texttt{worker\_thread} independiente,
+tal como se detalla en la sección \ref{sec:onnx-inferencia}.
+
+\subsection{Middleware y el pipeline de peticiones en Express}
+El middleware es el mecanismo mediante el cual \textit{logSguarDian} se integra en aplicaciones
+Node.js existentes. Una función middleware en Express tiene acceso al objeto de petición
+(\texttt{req}), al objeto de respuesta (\texttt{res}) y a la siguiente función en la cadena; puede
+modificar ambos objetos, terminar el ciclo petición-respuesta, o ceder el control a la siguiente
+función mediante \texttt{next()} \cite{expressjsguide}. Cada función middleware se ejecuta en el
+orden en que fue registrada, formando un pipeline en el que la petición y la respuesta atraviesan
+cada capa antes de llegar al manejador de ruta final, que cierra el ciclo enviando la respuesta al
+cliente.
+
+Este mecanismo es lo que hace posible que \textit{logSguarDian} se instale como una dependencia
+adicional del proyecto sin requerir modificaciones a la infraestructura existente: al registrarse
+como middleware, el sistema obtiene acceso al contenido completo de cada petición antes de que
+esta llegue a la lógica de negocio de la aplicación, la posición óptima para interceptar payloads
+maliciosos. La Figura \ref{fig:pipeline-middleware} ilustra este pipeline y la posición que ocupa
+\textit{logSguarDian} dentro de él.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+  node distance=0.5cm,
+  box/.style={draw, rectangle, rounded corners, minimum height=1cm, minimum width=2.6cm, align=center, font=\small},
+  detect/.style={draw, rectangle, rounded corners, minimum height=1cm, minimum width=2.6cm, align=center, font=\small, fill=gray!15, thick},
+  arr/.style={-{Stealth[length=2mm]}, thick}
+]
+\node[box] (req) {Petición HTTP\\entrante};
+\node[box, right=of req] (helmet) {Middleware\\Helmet / CORS};
+\node[detect, right=of helmet] (lsd) {\textit{logSguarDian}\\(captura + inferencia)};
+\node[box, right=of lsd] (auth) {Middleware\\de autenticación};
+\node[box, right=of auth] (route) {Route\\Handler};
+\node[box, below=1.3cm of lsd, xshift=1.5cm] (res) {Respuesta al cliente};
+
+\draw[arr] (req) -- (helmet);
+\draw[arr] (helmet) -- (lsd);
+\draw[arr] (lsd) -- (auth);
+\draw[arr] (auth) -- (route);
+\draw[arr] (route.south) -- ++(0,-0.4) -| (res.north);
+\draw[arr, dashed] (lsd.south) -- ++(0,-0.6) -| node[below, font=\scriptsize, pos=0.25] {Bloqueo HTTP 403\\si se detecta amenaza} (res.north);
+\end{tikzpicture}
+\caption[Pipeline de middleware en Express.js]{Pipeline de middleware en Express.js y posición de \textit{logSguarDian} dentro del ciclo de vida de una petición}
+\label{fig:pipeline-middleware}
+\end{figure}
+\vspace{-0.3cm}
+{\footnotesize Nota. Elaboración propia, con base en la especificación de middleware de Express \cite{expressjsguide}.}
+
+El ecosistema npm ofrece middleware especializado que se integra en este mismo pipeline para
+reforzar la seguridad a nivel de aplicación: Helmet.js configura cabeceras HTTP de seguridad,
+\texttt{cors} gestiona las políticas de origen cruzado, y \texttt{express-rate-limit} \cite{expressratelimit2026} controla la frecuencia de peticiones para
+mitigar el abuso de la API, mientras que \texttt{jsonwebtoken} \cite{auth02026jsonwebtoken} y
+\texttt{bcrypt} \cite{kelektiv2026bcrypt} cubren la gestión de tokens de autenticación y el hashing
+de contraseñas, respectivamente. \textit{logSguarDian} se posiciona como una capa adicional
+dentro de este mismo pipeline, complementaria a estos controles y no sustituta de ellos: mientras
+Helmet y CORS operan sobre cabeceras y políticas de origen, y RateLimit sobre el volumen de
+peticiones, \textit{logSguarDian} analiza el contenido semántico del cuerpo, los parámetros y el
+comportamiento de cada petición para detectar los cuatro vectores de ataque intra-request
+resumidos en el Cuadro~\ref{cuadro:vectores}.
+
+\section{Ecosistema npm}
+npm (Node Package Manager) es el gestor de paquetes oficial de Node.js: una herramienta de línea
+de comandos que resuelve dependencias contra un registro centralizado de paquetes de código
+abierto \cite{npmregistry2024}. La escala de este ecosistema es directamente relevante para el
+proyecto en dos sentidos. Primero, define el canal de distribución de \textit{logSguarDian}: al
+publicarse como paquete npm, la herramienta hereda un mecanismo de instalación estándar
+(\texttt{npm install}) ya familiar para cualquier equipo que desarrolle sobre Node.js, eliminando la
+fricción de adopción que sí presentan las soluciones RASP comerciales descritas en la
+Sección~\ref{sec:rasp-existentes} de Antecedentes. Segundo, la resolución de dependencias mediante \texttt{package.json}
+garantiza que las versiones de las herramientas empleadas en el proyecto (Express, Jest,
+onnxruntime-node) queden fijadas y sean reproducibles entre entornos, condición necesaria para la
+factibilidad técnica documentada en la metodología de este trabajo.
+
+\section{Contexto de ciberseguridad en Guatemala}
+\label{sec:contexto-guatemala}
+El capítulo de Antecedentes de este informe documenta en detalle el panorama de amenazas
+cibernéticas en Guatemala y el estado del marco regulatorio pendiente (Iniciativa de Ley 6347).
+Esta sección retoma únicamente los elementos de ese contexto que son insumo directo para
+decisiones de diseño de \textit{logSguarDian}.
+
+La estructura del tejido empresarial guatemalteco es el dato que delimita el perfil de usuario
+objetivo de la herramienta. Según datos del Ministerio de Economía, las micro, pequeñas y
+medianas empresas representan entre el 96~\% y el 99~\% de las empresas del país, según la fuente y el año consultados
+\cite{mineco2015mipyme,agn2025mipymes}, un segmento caracterizado por equipos de desarrollo pequeños y
+presupuestos que rara vez contemplan una partida específica para ciberseguridad. El Reporte
+Nacional GEM Guatemala 2023-2024 documenta además que el país posee la segunda tasa de
+actividad emprendedora temprana más alta del mundo (32.4~\%) \cite{gem2024}, y que iniciativas
+como EmprendamosGuate, coordinada por el Ministerio de Economía y PRONACOM, buscan identificar y acompañar a emprendedores con potencial de inversión \cite{pronacom}, un
+ecosistema de emprendimiento por oportunidad caracterizado por el BID \cite{iadb2024}; este trabajo
+asume, como supuesto de diseño y no como dato verificado, que una parte sustancial de las
+aplicaciones de ese ecosistema se construye como APIs REST sobre Node.js.
+
+Frente a este crecimiento, la exposición a amenazas ha aumentado de forma paralela. El Cyber
+Insights Report Guatemala de Mastercard documenta un incremento del 200~\% en ciberataques
+durante 2024 respecto al año anterior, con el sector tecnológico en tercer lugar (7.9~\%) entre los sectores más afectados, después del
+financiero (19.3~\%) y el industrial (16.8~\%) \cite{mastercard2025,republicamastercard2025}. Esta combinación, alta tasa de creación de startups sobre Node.js
+y crecimiento sostenido de la exposición a ataques, sin que exista aún un marco legal vigente que
+incentive la inversión en controles mínimos \cite{lahora2026estancada}, es la que ancla la
+justificación técnica de este proyecto en una realidad operativa concreta y no en una abstracción.
+
+En cuanto a la madurez institucional en ciberseguridad, el informe conjunto del Banco
+Interamericano de Desarrollo y la Organización de los Estados Americanos, elaborado con el
+Global Cyber Security Capacity Centre de la Universidad de Oxford, sitúa a la región en un proceso
+de mejora sostenida entre 2020 y 2025 en las cinco dimensiones del Modelo de Madurez de
+Capacidad en Ciberseguridad (CMM), aunque persisten brechas estructurales en recursos, talento y
+coordinación intersectorial \cite{bidoea2025}. Estas brechas de talento especializado son
+precisamente la condición estructural que impide a las startups guatemaltecas contratar personal
+dedicado a la seguridad informática, y son la que fundamenta el requisito de diseño de
+\textit{logSguarDian} de operar de forma autónoma, sin necesidad de un analista que interprete
+alertas ni ajuste reglas de forma continua.
+
+\section{Fundamentos de seguridad en aplicaciones web}
+
+\subsection{La tríada CIA}
+La seguridad de la información se articula convencionalmente en torno a tres propiedades:
+confidencialidad, integridad y disponibilidad, preservar las restricciones autorizadas sobre el acceso y la divulgación de la información, mantener
+su exactitud y prevenir su modificación no autorizada, y
+garantizar el acceso oportuno a los recursos por parte de usuarios legítimos, respectivamente \cite{nistinfosec2026}. En el contexto de una API REST construida sobre Node.js, cada uno de los cuatro
+vectores de ataque cubiertos por \textit{logSguarDian} compromete predominantemente una de
+estas propiedades: la inyección SQL y el Path Traversal/LFI comprometen la confidencialidad al
+exponer datos no autorizados; el Cross-Site Scripting compromete la integridad al permitir la
+manipulación de la sesión del usuario; y la inyección de comandos puede comprometer las tres
+simultáneamente al otorgar ejecución arbitraria con los privilegios del proceso del servidor. La
+disponibilidad, en particular, es una propiedad estructuralmente frágil en Node.js: al operar sobre
+un único hilo de ejecución, una sobrecarga deliberada del Event Loop puede degradar o
+interrumpir el servicio para la totalidad de los clientes concurrentes, razón por la cual el propio
+diseño de \textit{logSguarDian} debe evitar convertirse él mismo en un vector de degradación de
+disponibilidad, de ahí los criterios de latencia máxima definidos en el Alcance de este trabajo.
+
+\subsection{Superficie de ataque en APIs REST}
+La superficie de ataque de una aplicación web es el conjunto de puntos de entrada por los que un
+agente malicioso puede introducir datos o extraer información del sistema. En una API REST, esta
+superficie corresponde a cada endpoint HTTP expuesto junto con los métodos, parámetros,
+cabeceras y cuerpos de solicitud que acepta. Las APIs presentan una superficie de ataque
+estructuralmente mayor que las aplicaciones web tradicionales orientadas a la renderización de
+páginas, porque cada endpoint es un punto de entrada independiente con su propio contrato de
+datos, y porque la comunicación sin estado de REST implica que cada petición debe transportar
+toda la información necesaria para su procesamiento, incluyendo credenciales y parámetros que un
+atacante puede manipular directamente sin necesidad de interactuar con una interfaz gráfica
+intermedia. Esta característica es la que justifica que el punto de instrumentación de
+\textit{logSguarDian} sea el objeto \texttt{req} de cada petición entrante, y no el tráfico de red
+agregado, dado que es en ese objeto donde se materializa la totalidad de la superficie de ataque
+relevante para los cuatro vectores cubiertos.
+
+\subsection{Defensa en profundidad}
+La defensa en profundidad es una estrategia de ciberseguridad que implementa múltiples capas de
+controles a lo largo de la infraestructura de un sistema, bajo la premisa de que ningún control
+individual es infalible: ante la eventual evasión de una capa, las capas subsiguientes deben ser
+capaces de detectar, contener o mitigar el avance del ataque \cite{cloudflaredefenseindepth}.
+Aplicada al contexto de una API REST en Node.js, la estrategia organiza los controles en cinco
+capas funcionales: en la capa de red operan los firewalls de capas 3 y 4 y los IDS de red; en la
+capa perimetral, los WAF basados en firmas; en la capa de aplicación, los middlewares de
+validación de entrada (Helmet, CORS) y los mecanismos de autenticación; en la capa de detección en
+tiempo de ejecución, las herramientas RASP que inspeccionan la petición dentro del propio proceso;
+y en la capa de datos, el cifrado en tránsito y en reposo y el control de acceso a la base de
+datos. La Figura \ref{fig:defensa-profundidad} ubica a \textit{logSguarDian} dentro de este
+modelo, en la capa de detección en tiempo de ejecución.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{figura2.png}
+\caption[Capas del modelo de defensa en profundidad]{Capas del modelo de defensa en profundidad aplicadas a una API REST en Node.js, con \textit{logSguarDian} en la capa de detección en tiempo de ejecución (RASP)}
+\label{fig:defensa-profundidad}
+\end{figure}
+\vspace{-0.3cm}
+{\footnotesize Nota. Elaboración propia, con base en Cloudflare \cite{cloudflaredefenseindepth}.}
+
+Este modelo posiciona con precisión el aporte de \textit{logSguarDian}: no reemplaza los controles
+de red ni los de aplicación ya existentes, sino que complementa la capa de detección y respuesta,
+que en el perfil de startup guatemalteca sin equipo de seguridad dedicado descrito en el
+capítulo de Antecedentes suele estar ausente por completo.
+
+\subsection{Modelo de amenazas STRIDE aplicado al proyecto}
+STRIDE es un modelo de clasificación de amenazas que organiza los riesgos de seguridad en seis
+categorías: \textit{Spoofing} (suplantación de identidad), \textit{Tampering} (manipulación de
+datos), \textit{Repudiation} (negación de una acción realizada), \textit{Information Disclosure}
+(divulgación de información), \textit{Denial of Service} (denegación de servicio) y
+\textit{Elevation of Privilege} (escalada de privilegios) \cite{microsoft2025stride}. El Cuadro \ref{cuadro:stride} mapea los
+cuatro vectores de ataque cubiertos por \textit{logSguarDian} contra las categorías STRIDE que
+comprometen directamente.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|L{3.4cm}|L{5.0cm}|L{4.6cm}|}
+\hline
+\textbf{Vector de ataque} & \textbf{Categoría STRIDE comprometida} & \textbf{Propiedad de la tríada CIA} \\ \hline
+SQL Injection & Information Disclosure, Tampering & Confidencialidad, Integridad \\ \hline
+Cross-Site Scripting & Spoofing, Information Disclosure & Confidencialidad, Integridad \\ \hline
+Path Traversal / LFI & Information Disclosure & Confidencialidad \\ \hline
+Command Injection & Tampering, Elevation of Privilege & Confidencialidad, Integridad, Disponibilidad \\ \hline
+\end{tabular}
+\caption[Mapeo de vectores de ataque a categorías STRIDE]{Mapeo de los cuatro vectores de ataque cubiertos por \textit{logSguarDian} a las categorías del modelo STRIDE}
+\label{cuadro:stride}
+\end{table}
+{\footnotesize Nota. Elaboración propia con base en las categorías de STRIDE \cite{microsoft2025stride} y en la tríada de confidencialidad, integridad y disponibilidad \cite{nistinfosec2026}; la asignación de cada vector es criterio del autor.}
+
+Dos categorías de STRIDE quedan explícitamente fuera de la cobertura de la primera versión de
+\textit{logSguarDian}: \textit{Repudiation}, que requeriría un sistema de auditoría e integridad de
+logs independiente del mecanismo de detección, y la cobertura completa de \textit{Elevation of
+Privilege} más allá de la vía de Command Injection, que abarcaría vulnerabilidades de control de
+acceso como BOLA (\textit{Broken Object Level Authorization}). Esta delimitación es consistente
+con el Alcance definido en este informe y se documenta aquí como una decisión metodológica
+explícita, no como una omisión no reconocida.
+
+\section{Runtime Application Self-Protection (RASP)}
+\label{sec:rasp}
+RASP designa una tecnología de seguridad que se integra directamente dentro de la aplicación o su
+entorno de ejecución, en lugar de operar como un control perimetral externo, habilitando la
+detección y prevención de ataques en tiempo real desde el interior del propio proceso \cite{contrastsecurity,bermejohiguera2022}. Esta distinción arquitectónica es la que define la categoría tecnológica en la
+que se posiciona \textit{logSguarDian}: a diferencia de un WAF o un IDS de red, que inspeccionan
+el tráfico desde fuera del proceso y pierden visibilidad sobre el contenido cifrado o el contexto de
+ejecución de la aplicación, un sistema RASP intercepta la petición dentro del propio proceso
+Node.js, con acceso directo al objeto \texttt{req} antes de que cualquier capa de cifrado externa
+sea relevante. La Figura \ref{fig:rasp-vs-perimetral} ilustra esta diferencia.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{figura3.png}
+\caption[Comparación arquitectónica: control perimetral vs. RASP]{Comparación arquitectónica entre un control perimetral (WAF/IDS, izquierda) y un sistema RASP operando dentro del proceso (\textit{logSguarDian}, derecha)}
+\label{fig:rasp-vs-perimetral}
+\end{figure}
+\vspace{-0.3cm}
+{\footnotesize Nota. Elaboración propia, con base en la definición de RASP de Contrast Security \cite{contrastsecurity} y el análisis
+comparativo de herramientas de protección en tiempo de ejecución de Sureda Riera et al.
+\cite{bermejohiguera2022}.}
+
+La arquitectura RASP no está exenta de limitaciones que deben reconocerse en el diseño de
+\textit{logSguarDian}. La primera es el \textit{overhead} de rendimiento introducido por la
+instrumentación: al interceptar cada petición para analizarla antes de que llegue al route handler,
+el middleware añade latencia medible. Este riesgo se mitiga mediante el procesamiento asíncrono
+no bloqueante descrito en la sección \ref{sec:onnx-inferencia}, y su magnitud es precisamente uno
+de los criterios de aceptación cuantitativos del proyecto. La segunda es el riesgo de falsos
+positivos: un modelo que clasifica tráfico legítimo como malicioso degrada el servicio desde la
+perspectiva del negocio. En \textit{logSguarDian} este riesgo depende del umbral de bloqueo del
+Random Forest (\texttt{RF\_THRESHOLD}), único componente con autoridad de bloqueo; el Isolation
+Forest solo marca anomalías en el registro y no bloquea peticiones
+(Sección~\ref{subsec:met-f2}). La tercera es la
+dependencia de cobertura: un sistema RASP únicamente detecta ataques que atraviesan el
+middleware instrumentado, por lo que ataques dirigidos a la infraestructura subyacente (la
+instancia de base de datos, el proveedor de nube, otras dependencias npm) quedan fuera de su
+visibilidad, lo que posiciona a \textit{logSguarDian} como una capa complementaria dentro de un
+modelo de defensa en profundidad (Figura~\ref{fig:defensa-profundidad}) y no como sustituto de
+los controles perimetrales descritos en la Sección~\ref{sec:soluciones-existentes}. La cuarta es la
+complejidad de actualización del
+modelo embebido: una vez instalada la librería en un proyecto Node.js, el modelo de ML que opera
+dentro de ella corresponde a la versión con la que fue entrenado y publicado, de modo que, si
+emergen nuevos vectores de ataque para los que el modelo no fue entrenado, el desarrollador debe
+actualizar la librería para incorporar un modelo reentrenado. A diferencia de los WAF administrados
+en la nube, que actualizan sus reglas de forma centralizada y transparente, \textit{logSguarDian}
+depende del ciclo estándar de actualización de paquetes npm, lo que introduce una ventana de
+exposición ante amenazas emergentes entre versiones publicadas.
+
+\section{Vectores de ataque cubiertos por logSguarDian}
+El Cuadro \ref{cuadro:vectores} resume los cuatro vectores de ataque intra-request que
+\textit{logSguarDian} está diseñado para detectar, su punto de materialización específico en el
+ecosistema Node.js/Express y el tipo de detección que aplica el sistema.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|L{2.1cm}|L{3.4cm}|L{3.8cm}|L{2.1cm}|}
+\hline
+\textbf{Vector} & \textbf{Punto de materialización en Node.js} & \textbf{Indicador principal en logs} & \textbf{Tipo de detección} \\ \hline
+SQL Injection & Parámetros de URL, cuerpo POST, query strings concatenados en consultas & Tokens SQL en parámetros; respuestas HTTP 500; longitud anómala de campo & Supervisado (clasificación) \\ \hline
+Cross-Site Scripting & Campos de texto, cabeceras y parámetros renderizados sin sanitizar & Etiquetas HTML/\texttt{<script>}; codificaciones URL/Base64 en campos de texto & Supervisado (clasificación) \\ \hline
+Path Traversal / LFI & Parámetros de ruta o nombre de archivo usados en el módulo \texttt{fs} & Secuencias \texttt{../}; rutas absolutas a archivos sensibles del sistema & Supervisado (clasificación) \\ \hline
+Command Injection & Módulo \texttt{child\_process} (\texttt{exec}, \texttt{execSync}) con entrada no sanitizada & Metacaracteres de shell (\texttt{;}, \texttt{\textbar}, \texttt{\&\&}); nombres de comandos del SO & Supervisado (clasificación) \\ \hline
+\end{tabular}
+\caption[Vectores de ataque cubiertos por logSguarDian]{Vectores de ataque cubiertos por \textit{logSguarDian}: punto de materialización, indicadores en logs y tipo de detección}
+\label{cuadro:vectores}
+\end{table}
+{\footnotesize Nota. Elaboración propia con base en OWASP \cite{owaspa01_2021,owaspa03_2021}. El Random Forest es el único componente que bloquea; el Isolation Forest marca anomalías en el registro sobre cualquier petición, sin bloquearla.}
+
+Los indicadores del Cuadro~\ref{cuadro:vectores} que dependen de la respuesta del servidor, como
+los códigos HTTP 500 o 200 o la concentración de errores en un \textit{endpoint}, son útiles para
+el análisis posterior de los registros, pero no forman parte del vector de características.
+\textit{logSguarDian} decide antes de que exista una respuesta, por lo que el código de estado se
+excluye de la entrada de ambos modelos (Sección~\ref{subsec:met-f2}); la detección se basa
+únicamente en el contenido y la estructura de la petición.
+
+\subsection{SQL Injection}
+La inyección SQL ocurre cuando datos de entrada no sanitizados se concatenan directamente en
+una consulta a base de datos, permitiendo a un atacante alterar la lógica de la consulta original.
+OWASP clasifica este vector (\textit{Common Weakness Enumeration}, CWE-89) dentro de la categoría A03:2021 -- Injection, y documenta
+que una consulta alterada puede devolver la totalidad de los registros de una tabla y, en
+escenarios más graves, modificar o eliminar datos e incluso invocar procedimientos almacenados
+\cite{owaspa03_2021}. En el contexto de Node.js, el vector se materializa en cualquier endpoint
+que construya consultas mediante concatenación de cadenas en lugar de consultas parametrizadas;
+un atacante que envía \texttt{' OR 1=1 --} en un campo de autenticación puede lograr que la
+consulta resultante devuelva la totalidad de una tabla, evadiendo el control de acceso.
+
+Los intentos de inyección SQL dejan una huella característica en los logs de Node.js que permite
+su detección mediante análisis de comportamiento: la presencia de tokens SQL en los parámetros
+(comillas simples, doble guion, punto y coma, y palabras reservadas como UNION, SELECT, DROP
+u OR); un patrón de respuestas HTTP 500 concentradas en un mismo endpoint en un período corto,
+generado cuando el payload malformado llega a la capa de consulta sin ser filtrado; y una longitud
+de campo anómalamente mayor a la esperada, por ejemplo un campo de usuario que normalmente
+recibe entre 5 y 30 caracteres y recibe un payload de 200 o más durante un ataque. La combinación
+de estos tres indicadores es la firma comportamental que \textit{logSguarDian} extrae para
+clasificar este vector mediante el modelo supervisado.
+
+\subsection{Cross-Site Scripting (XSS)}
+El XSS consiste en la inserción de código JavaScript malicioso en contenido que posteriormente es
+renderizado por otros usuarios, en sus variantes reflejada, almacenada y basada en DOM. OWASP
+lo clasifica (CWE-79) dentro de A03:2021 -- Injection \cite{owaspa03_2021}. Dentro de la
+taxonomía MITRE ATT\&CK, este vector se corresponde con la técnica T1189
+(\textit{Drive-by Compromise}), cuya documentación oficial identifica explícitamente la inserción
+de scripts maliciosos mediante interfaces de aplicaciones web que permiten contenido controlado
+por el usuario como uno de los mecanismos de entrega de esta técnica \cite{mitret1189}. Esta
+técnica se centra en comprometer el equipo cliente del usuario que visita el sitio, no el servidor,
+lo que es coherente con el hecho de que el XSS afecta primariamente a los usuarios de la
+aplicación y no a la infraestructura que la aloja. En una API REST, el riesgo se materializa
+cuando la API sirve contenido dinámico renderizado directamente en el navegador del cliente; un atacante que inyecta un script
+almacenado puede robar tokens de sesión o \textit{JSON Web Tokens} (JWT) y ejecutar acciones autenticadas en nombre del
+usuario comprometido.
+
+En los logs de Node.js, los intentos de XSS presentan tres indicadores observables. El primero es
+la presencia de etiquetas o atributos HTML en campos que por diseño de la API solo deberían
+recibir texto plano, como \texttt{<script>}, \texttt{onerror=}, \texttt{onload=} o \texttt{javascript:}.
+El segundo es el uso de codificaciones para evadir filtros superficiales, como codificación URL
+(\texttt{\%3Cscript\%3E}) o de entidades HTML (\texttt{\&lt;script\&gt;}). El tercero es un patrón
+temporal doble característico del XSS almacenado: una petición POST o PUT con el payload hacia
+un endpoint de escritura, seguida de peticiones GET al recurso donde ese contenido queda
+almacenado.
+
+\subsection{Path Traversal / Local File Inclusion (LFI)}
+El Path Traversal consiste en la manipulación de rutas de archivo mediante secuencias como
+\texttt{../} para acceder a archivos fuera del directorio raíz autorizado por la aplicación \cite{owasptraversal}. LFI es un vector relacionado que ocurre cuando la aplicación
+no solo lee, sino que incluye y evalúa el archivo referenciado en su propio contexto de
+ejecución, lo que puede escalar a ejecución remota de código. Ambos vectores comparten la misma
+causa raíz: la ausencia de validación y canonicalización de la entrada de usuario antes de
+construir rutas del sistema de archivos.
+
+A diferencia de los otros tres vectores, el OWASP Top 10:2021 no clasifica el Path Traversal
+como una categoría de inyección: los identificadores CWE-22 (\textit{Path Traversal}) y CWE-23
+(\textit{Relative Path Traversal}) están mapeados en A01:2021 -- Broken Access Control
+\cite{owaspa01_2021}, mientras que SQL Injection (CWE-89), XSS (CWE-79) y la inyección de comandos
+del sistema operativo (CWE-78) están mapeados en A03:2021 -- Injection \cite{owaspa03_2021}. La
+inclusión del Path Traversal/LFI entre los vectores cubiertos por \textit{logSguarDian} no se
+justifica, por lo tanto, por pertenecer a la misma categoría OWASP que los demás, sino por
+compartir con ellos una causa raíz operativa (entrada controlada por el cliente que llega sin
+validación a un recurso sensible del servidor) y una huella observable en el objeto \texttt{req}
+que un mismo extractor de características puede capturar. En Node.js, el módulo \texttt{fs} y los
+servidores de archivos estáticos son los puntos de integración más comunes donde este vector se
+materializa cuando la entrada no es sanitizada.
+
+Las técnicas de evasión documentadas añaden complejidad a la detección mediante reglas
+estáticas: codificación URL simple (\texttt{\%2e\%2e\%2f} como equivalente de \texttt{../}),
+codificación URL doble (\texttt{\%252e\%252e\%252f}), codificación Unicode (\texttt{..\%c0\%af}) e
+inserción de bytes nulos para truncar extensiones verificadas por el servidor \cite{owasptraversal}. Esta variabilidad sintáctica es la que hace insuficiente una lista de denegación
+basada en firmas fijas, y la que justifica un clasificador supervisado entrenado sobre la
+distribución estadística de estos patrones. Los indicadores observables en los logs de Node.js son
+tres: la secuencia \texttt{../} y sus variantes codificadas en parámetros que por diseño solo deberían
+recibir nombres de archivo; la aparición de rutas absolutas o nombres de archivos sensibles del
+sistema operativo (\texttt{/etc/passwd}, \texttt{.env}, \texttt{config.json}); y una respuesta HTTP 200
+con contenido no esperado, o 500 cuando la ruta construida no existe.
+
+\subsection{Command Injection}
+La inyección de comandos del sistema operativo ocurre cuando una aplicación transmite entrada de
+usuario no sanitizada a un intérprete de comandos del sistema; OWASP la clasifica (CWE-78) dentro
+de A03:2021 -- Injection \cite{owaspa03_2021}. En Node.js, la
+superficie de ataque se concentra en el módulo \texttt{child\_process}, cuyas funciones
+\texttt{exec} y \texttt{execSync} invocan un shell del sistema operativo que interpreta
+metacaracteres como \texttt{;}, \texttt{\textbar}, \texttt{\&\&} y \texttt{\$()}. Esta clase de
+vulnerabilidad está documentada en incidentes reales del ecosistema npm: CVE-2021-27185 afectó
+al paquete \texttt{samba-client}, donde el uso de \texttt{process.exec} sin sanitización de entrada
+permitía inyección de comandos con un puntaje CVSS crítico de 9.8 \cite{gitlabadvisory2021}.
+
+La variabilidad sintáctica de los payloads entre plataformas aumenta la complejidad de su
+detección mediante reglas estáticas: en Linux, los metacaracteres más frecuentes son \texttt{;},
+\texttt{\textbar}, \texttt{\&\&}, \texttt{\textbar\textbar} y la sustitución de comandos mediante
+\texttt{`cmd`} o \texttt{\$(cmd)}; en Windows, los equivalentes son \texttt{\&}, \texttt{\textbar},
+\texttt{\&\&} y \texttt{\textbar\textbar} aplicados sobre \texttt{cmd.exe}. Los indicadores observables
+en los logs de Node.js son la presencia de estos metacaracteres en campos que por diseño deberían
+recibir valores alfanuméricos, y la aparición de nombres de comandos del sistema operativo
+(\texttt{cat}, \texttt{whoami}, \texttt{wget}, \texttt{curl}) dentro de parámetros de la API.
+
+\section{Marcos de referencia para la selección de vectores}
+La selección de los cuatro vectores cubiertos por \textit{logSguarDian} no responde a un criterio
+arbitrario, sino a su correspondencia con marcos de referencia reconocidos internacionalmente y
+basados en evidencia empírica de incidentes reales. Esa correspondencia no es uniforme: los
+cuatro vectores no pertenecen a una única categoría de OWASP, y el Cuadro~\ref{cuadro:owasp-mitre-cwe}
+documenta con precisión dónde se ubica cada uno.
+
+El OWASP Top 10 es una lista de las diez categorías de riesgo más críticas en aplicaciones web,
+construida a partir del análisis de vulnerabilidades reportadas en la industria \cite{owasp2021}.
+Este trabajo emplea la edición 2021, sobre la que se definieron el protocolo y la taxonomía del
+dataset; la edición 2025 ya está disponible \cite{owasp2025top10}. En ella Injection pasa de A03 a A05 y
+conserva los CWE de inyección de comandos, XSS y SQL (CWE-78, CWE-79 y CWE-89), y Path Traversal
+(CWE-22) sigue dentro de A01, por lo que la asignación de los cuatro vectores no cambia de fondo; la
+edición 2025 no se adoptó para mantener la trazabilidad con las decisiones ya tomadas. En la edición 2021, tres de los cuatro vectores se agrupan bajo A03:2021 --
+Injection: la inyección SQL (CWE-89), el XSS (CWE-79) y la inyección de comandos del sistema
+operativo (CWE-78) \cite{owaspa03_2021}. El Path Traversal (CWE-22) no pertenece a esa categoría:
+está mapeado en A01:2021 -- Broken Access Control \cite{owaspa01_2021}. La primera versión de
+\textit{logSguarDian} cubre, por lo tanto, vectores de dos categorías OWASP distintas, y la
+justificación de agruparlos en una misma herramienta es operativa (todos materializan su payload
+en el objeto \texttt{req} y son detectables a partir de las mismas características extraídas), no
+taxonómica.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|L{3.4cm}|L{2.2cm}|L{4.4cm}|L{2.4cm}|}
+\hline
+\textbf{Vector} & \textbf{CWE principal} & \textbf{OWASP Top 10:2021} & \textbf{MITRE ATT\&CK} \\ \hline
+SQL Injection & CWE-89 & A03 -- Injection & T1190 \\ \hline
+Cross-Site Scripting & CWE-79 & A03 -- Injection & T1189 \\ \hline
+Path Traversal / LFI & CWE-22 & A01 -- Broken Access Control & T1190 \\ \hline
+Command Injection & CWE-78 & A03 -- Injection & T1190 \\ \hline
+\end{tabular}
+\caption[Mapeo de vectores a CWE, OWASP Top 10 y MITRE ATT\&CK]{Mapeo de los cuatro vectores cubiertos por \textit{logSguarDian} a CWE, OWASP Top 10:2021 y MITRE ATT\&CK}
+\label{cuadro:owasp-mitre-cwe}
+\end{table}
+\vspace{-0.3cm}
+{\footnotesize Nota. Elaboración propia, con base en OWASP \cite{owaspa01_2021, owaspa03_2021} y MITRE \cite{mitret1189, mitret1190}. Dentro de las categorías del Top 10:2021 usadas aquí no existe un CWE específico de inclusión local
+de archivos. A01 mapea CWE-22 \cite{owaspa01_2021} y A03 mapea CWE-98 \cite{owaspa03_2021}, que
+MITRE define para la inclusión de archivos en PHP y que documenta ``local file inclusion'' solo como
+término alterno \cite{mitre2026cwe98}. LFI se asocia aquí a CWE-22 \cite{mitre2026cwe22} como
+variante de la manipulación de rutas.}
+
+El OWASP API Security Top 10, en su edición 2023, reconoce que la superficie de ataque de las
+APIs modernas difiere estructuralmente de las aplicaciones web tradicionales, y posiciona como
+riesgo principal la Autorización Rota a Nivel de Objeto (BOLA, API1:2023) \cite{owaspapi2023};
+esta categoría no está cubierta por \textit{logSguarDian} en su primera versión, consistente con
+la delimitación de alcance ya señalada para el modelo STRIDE. La categoría API3:2023 (Broken
+Object Property Level Authorization), por su parte, abarca la exposición de propiedades sensibles
+de un objeto y la asignación masiva de propiedades que el cliente no debería poder modificar
+\cite{owaspapi3_2023}; es un riesgo de autorización a nivel de propiedad y no guarda relación con
+la manipulación de rutas de archivo, por lo que ninguno de los cuatro vectores cubiertos tiene un
+equivalente directo en el API Security Top 10 2023.
+
+El framework MITRE ATT\&CK es una base de conocimiento pública que documenta tácticas,
+técnicas y procedimientos utilizados por adversarios reales en incidentes observados
+\cite{mitreattack}. Para el dominio Enterprise, relevante para este proyecto, la táctica de Acceso
+Inicial es la que agrupa los vectores cubiertos. La técnica T1190 (\textit{Exploit Public-Facing
+Application}) describe la explotación de debilidades en sistemas expuestos a Internet, incluyendo
+sitios web y bases de datos, y remite al OWASP Top 10 como referencia de las vulnerabilidades web
+más comunes \cite{mitret1190}; es la técnica que corresponde a SQL Injection, Path Traversal y
+Command Injection. La técnica T1189 (\textit{Drive-by Compromise}) se reserva para el XSS, dado
+que su documentación oficial lo menciona como mecanismo de entrega y se centra en el compromiso
+del cliente y no del servidor \cite{mitret1189}. La alineación de los vectores seleccionados con
+ambos marcos garantiza que la cobertura de amenazas de \textit{logSguarDian} responde a evidencia
+empírica de incidentes reales, y no a un criterio de selección arbitrario.
+
+\section{Fundamentos de detección basada en aprendizaje automático}
+\label{sec:ml-conceptos}
+La detección de los cuatro vectores cubiertos por \textit{logSguarDian} combina dos paradigmas de
+aprendizaje automático que responden a dos naturalezas distintas de amenaza. Esta sección
+introduce ambos paradigmas al nivel conceptual necesario para comprender las decisiones de
+arquitectura del sistema; el detalle del entrenamiento, la selección de hiperparámetros y la
+evaluación comparativa de modelos candidatos se documenta en el trabajo de graduación de Diego
+Valenzuela, correspondiente al componente de Inteligencia Artificial del proyecto.
+
+\subsection{Clasificación supervisada}
+El aprendizaje supervisado construye un modelo a partir de un conjunto de datos etiquetado, en el
+que cada muestra de tráfico HTTP está marcada como legítima o como perteneciente a una de las
+cuatro categorías de ataque cubiertas. Random Forest (RF), el algoritmo de clasificación supervisada considerado para \textit{logSguarDian}, es un método de ensamble que combina las predicciones de
+múltiples árboles de decisión entrenados sobre subconjuntos aleatorios de características y
+muestras, reduciendo el sobreajuste que afecta a un árbol de decisión individual
+\cite{breiman2001random}. Este paradigma es apropiado para los cuatro vectores cubiertos porque cada uno
+presenta patrones sintácticos y estructurales relativamente consistentes, discernibles como
+características extraíbles del objeto \texttt{req} (presencia de tokens SQL, metacaracteres de
+shell, secuencias de \textit{traversal}), sobre los cuales un clasificador supervisado puede
+aprender fronteras de decisión efectivas.
+
+\subsection{Detección de anomalías no supervisada}
+El aprendizaje no supervisado, a diferencia del anterior, no requiere que las muestras de
+entrenamiento estén etiquetadas: aprende la distribución estadística del comportamiento
+considerado normal y señala como anómala cualquier observación que se desvíe significativamente de
+ella. Isolation Forest (IF), el algoritmo de detección de anomalías empleado en \textit{logSguarDian},
+aísla observaciones mediante particiones aleatorias recursivas del espacio de características: las
+anomalías, al ser estadísticamente distintas de la mayoría de los datos, requieren en promedio
+menos particiones para quedar aisladas, lo que permite asignar una puntuación de anomalía sin
+etiquetas \cite{liu2008isolation}. Este paradigma complementa al clasificador supervisado, que
+asigna cualquier entrada a la clase conocida más cercana aunque no se parezca a ninguna de las
+vistas durante el entrenamiento. Su papel en el sistema es, sin embargo, acotado: el Isolation
+Forest no bloquea peticiones, solo las marca como anómalas en el registro (\texttt{pass\_anomaly}),
+y su contribución a la detección de variantes no vistas solo se midió, de forma indirecta, sobre el
+conjunto de validación del componente de Inteligencia Artificial \cite{valenzuela2026ia}
+(Sección~\ref{sec:met-validez}). La correspondencia entre cada paradigma y el tipo de indicador
+de seguridad que produce se documenta en la Sección~\ref{sec:ioc-ioa}.
+
+\subsection{Inferencia en tiempo de ejecución mediante ONNX}
+\label{sec:onnx-inferencia}
+Independientemente del algoritmo de origen, el componente de inferencia de \textit{logSguarDian}
+consume un modelo serializado en formato ONNX (\textit{Open Neural Network Exchange}), un
+formato estándar abierto para representar modelos de aprendizaje automático de forma
+interoperable entre distintos frameworks de entrenamiento \cite{onnx2026}. La librería carga este
+archivo mediante \texttt{onnxruntime-node} \cite{onnxruntimedocs} y ejecuta la inferencia dentro de
+un \texttt{worker\_thread} de Node.js independiente del hilo principal; los worker threads están
+pensados para operaciones de JavaScript intensivas en CPU \cite{nodejs2026worker}, y con esta
+decisión de diseño se busca que la carga computacional del modelo no ocupe el Event Loop durante el
+ciclo de vida de la petición. Esta decisión de arquitectura es la aplicación directa, a nivel de
+implementación, de la restricción de disponibilidad descrita en la Sección~\ref{subsec:alcance-tecnico}:
+sin este aislamiento, la propia herramienta de detección se convertiría en la causa de la
+degradación de servicio que está diseñada para prevenir.
+
+\section{Logs de servidor y análisis de comportamiento}
+Los logs de servidor son la fuente primaria de información sobre el comportamiento de una
+aplicación en producción. En Node.js y Express, los logs de acceso registran método, URL, código
+de estado, tamaño de la solicitud y respuesta, dirección IP y tiempo de respuesta; los logs de error
+capturan excepciones y fallos de validación que pueden revelar intentos de explotación, un volumen
+inusualmente alto de respuestas 400 o 500 en un endpoint específico es indicador temprano de
+sondeo con payloads malformados.
+
+El análisis de comportamiento parte de establecer una línea base de tráfico normal, contra la cual
+se evalúan desviaciones. Estos patrones pueden ser volumétricos (alta frecuencia de solicitudes
+desde una misma IP, picos de errores 401/403) o semánticos (caracteres asociados a inyección en
+parámetros, longitud anómala de campos, codificaciones inusuales). \textit{logSguarDian} trabaja
+solo con los patrones semánticos de cada petición individual: el clasificador supervisado y el
+detector de anomalías reciben ambos el vector de características de una sola petición, y las
+características temporales del extractor (ventanas de 1, 5 y 60~s) no forman parte de su entrada.
+Los patrones volumétricos y de secuencia, que requieren correlacionar varias peticiones, quedan
+fuera del alcance de esta versión, junto con la denegación de servicio
+(Sección~\ref{subsec:fuera-alcance}).
+
+Morgan es el middleware de registro de peticiones HTTP de referencia en el ecosistema Express,
+distribuido bajo la organización oficial \texttt{expressjs} en npm \cite{expressjsmorgan}. Se apoya
+en el sistema de \textit{streams} de Node.js para escribir el registro sin bloquear la respuesta, y
+permite definir tokens personalizados mediante \texttt{morgan.token()} para capturar campos que sus
+formatos predefinidos no incluyen \cite{expressjsmorgan}. Es, por lo tanto, el punto de referencia
+de cómo se registra el tráfico en una aplicación Express típica. \textit{logSguarDian} no depende
+de Morgan ni extiende su registro: intercepta el objeto \texttt{req} dentro de su propia función
+middleware, extrae el vector de características antes de que el manejador de ruta procese la
+petición y almacena cada detección en su propio registro de eventos en SQLite. La diferencia es de
+propósito: Morgan registra el tráfico para su consulta posterior, mientras que
+\textit{logSguarDian} analiza cada petición para decidir, en el momento, si la bloquea.
+
+\section{Indicadores de Compromiso (IoC) e Indicadores de Ataque (IoA)}
+\label{sec:ioc-ioa}
+Un Indicador de Compromiso (IoC) es un artefacto técnico u observable que sugiere que un ataque es
+inminente o está en curso, o que ya pudo haberse producido un compromiso
+\cite{nistioc2025,crowdstrikeioc}. Un Indicador de Ataque (IoA), en cambio, se centra en identificar
+la intención y el comportamiento de un adversario mientras el ataque está en curso, enfoque que CrowdStrike presentó en 2016 como alternativa a la detección basada en IoC, a los que
+critica por equivaler a firmas \cite{crowdstrike2016ioa,crowdstrikeioa}. Esta distinción es operativamente central para
+\textit{logSguarDian}, que opera dentro del proceso Node.js e intercepta cada petición antes de que
+llegue al manejador de ruta: las alertas que produce son, por construcción, indicadores de ataque,
+porque se generan mientras el ataque está en curso y no a partir de evidencia forense posterior.
+Ambos componentes producen este tipo de indicador: el Random Forest al clasificar y bloquear la
+petición, y el Isolation Forest al marcarla como anómala en el registro. El
+Cuadro~\ref{cuadro:ioc-ioa} sintetiza la diferencia entre ambos tipos de indicador.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|L{3.8cm}|L{4.4cm}|L{4.6cm}|}
+\hline
+\textbf{Dimensión} & \textbf{Indicador de Compromiso (IoC)} & \textbf{Indicador de Ataque (IoA)} \\ \hline
+Naturaleza & Reactivo & Proactivo \\ \hline
+Momento de detección & Típicamente después del incidente & Durante el ataque \\ \hline
+Base de conocimiento & Firmas y artefactos conocidos & Comportamiento y patrones de la petición \\ \hline
+Efectividad ante variantes desconocidas & Baja & Alta \\ \hline
+\end{tabular}
+\caption[Comparativa entre IoC e IoA en logSguarDian]{Comparativa entre Indicadores de Compromiso (IoC) e Indicadores de Ataque (IoA)}
+\label{cuadro:ioc-ioa}
+\end{table}
+\vspace{-0.3cm}
+{\footnotesize Nota. Elaboración propia, con base en CrowdStrike \cite{crowdstrikeioc, crowdstrikeioa}.}
+
+\section{Soluciones de seguridad existentes}
+\label{sec:soluciones-existentes}
+El Cuadro \ref{cuadro:soluciones} compara las categorías de solución de seguridad disponibles
+frente a \textit{logSguarDian} en las dimensiones más relevantes para el contexto de una startup
+guatemalteca sin equipo de seguridad dedicado.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|L{2.6cm}|L{2.6cm}|L{1.6cm}|L{1.4cm}|L{1.9cm}|L{1.8cm}|}
+\hline
+\textbf{Solución} & \textbf{Tipo de análisis} & \textbf{Visibilidad capa 7} & \textbf{Equipo dedicado} & \textbf{Costo} & \textbf{Integración nativa en Node.js} \\ \hline
+WAF (Cloudflare, AWS WAF) & Firmas estáticas & Parcial & Sí & Alto & No (perimetral) \\ \hline
+IDS (Suricata, Snort) & Tráfico de red & No (ciego a HTTPS) & Sí & Medio & No (nivel de red) \\ \hline
+SIEM (Splunk, Wazuh) & Correlación de eventos & Parcial & Sí (centro de operaciones de seguridad, SOC) & Muy alto & No (infraestructura externa) \\ \hline
+\textit{logSguarDian} & Clasificación ML por petición & Sí (dentro del proceso) & No & Gratuito & Sí (middleware nativo) \\ \hline
+\end{tabular}
+\caption[Comparativa de soluciones de seguridad para APIs REST en Node.js]{Comparativa de soluciones de seguridad existentes frente a \textit{logSguarDian}}
+\label{cuadro:soluciones}
+\end{table}
+\vspace{-0.3cm}
+{\footnotesize Nota. Elaboración propia. Las calificaciones (Alto, Medio, Muy alto, equipo dedicado, visibilidad de
+capa 7) son criterio del autor; el costo relativo del SIEM se apoya en ENISA \cite{enisa2021smes}.}
+
+\subsection{Web Application Firewall (WAF)}
+Un WAF opera como intermediario entre clientes y servidor, inspeccionando el tráfico HTTP/HTTPS
+contra un conjunto de reglas y firmas predefinidas, principalmente en la capa 7 del modelo OSI.
+Los WAF basados en firmas y en el OWASP Core Rule Set (CRS) requieren ajuste continuo y mantenimiento especializado para ser efectivos sin generar un volumen
+excesivo de falsos positivos: el propio proyecto CRS advierte que los niveles de paranoia más altos
+aumentan la posibilidad de bloquear tráfico legítimo por falsas alarmas y que puede ser necesario
+agregar reglas de exclusión para aplicaciones con entradas complejas \cite{crs2026paranoia}. Por
+construcción, una regla solo detecta lo que su patrón describe, por lo que estos WAF son poco
+eficaces contra vulnerabilidades de lógica de negocio o variantes de ataque que no coinciden con
+ninguna regla existente. Estas
+dos limitaciones, mantenimiento especializado y ceguera ante variantes desconocidas, son
+precisamente las que un modelo de aprendizaje automático entrenado sobre la distribución
+estadística de los patrones de ataque, en lugar de un conjunto fijo de reglas, está diseñado para
+mitigar.
+
+\subsection{Sistemas de Detección de Intrusiones (IDS)}
+Un IDS monitorea tráfico de red o actividad de sistema en busca de comportamientos sospechosos
+\cite{nist80094}. Los IDS de red pierden visibilidad completa frente al tráfico cifrado mediante
+HTTPS, dado que sin descifrar la conexión TLS (\textit{Transport Layer Security}) solo observan metadatos y patrones del flujo
+\cite{papadogiannaki2021survey}, una ceguera crítica para detectar ataques de capa de aplicación como SQLi o XSS, donde el vector
+malicioso está en el contenido del cuerpo de la solicitud. Adicionalmente, en la revisión realizada para este trabajo no se identificó ningún IDS convencional,
+de red o de host, diseñado para integrarse en el modelo de concurrencia orientado a eventos de
+Node.js, lo que deja una brecha arquitectónica que es la que justifica el enfoque de
+\textit{logSguarDian} como middleware nativo: en lugar de observar el tráfico desde fuera del
+proceso, opera desde dentro, con acceso pleno al contenido descifrado y al contexto de ejecución.
+
+\subsection{Sistemas de Gestión de Eventos e Información de Seguridad (SIEM)}
+Un SIEM agrega, correlaciona y analiza eventos de seguridad provenientes de múltiples fuentes de
+infraestructura. Su principal limitación para el contexto de startups guatemaltecas es el costo: para las
+pequeñas y medianas empresas, los SIEM representan inversiones considerables y, como muchas
+soluciones de ciberseguridad, requieren conocimiento especializado para implementarse y
+administrarse \cite{enisa2021smes}. Las soluciones SIEM ofrecidas como servicio implican además el
+envío de los registros a una infraestructura externa, lo que introduce costo operativo y
+consideraciones de privacidad de datos.
+
+El capítulo de Antecedentes documenta en detalle la comparación entre las soluciones RASP
+comerciales existentes (Contrast Protect, Datadog, OpenRASP) y \textit{logSguarDian}
+(Sección~\ref{sec:rasp-existentes} y su cuadro comparativo); esta sección no la repite y remite a
+esa comparación para el detalle de soporte de Node.js, costo y dependencia de infraestructura
+externa de cada alternativa.
+
+\section{Herramientas de simulación, pruebas y serialización}
+La construcción del entorno de validación de \textit{logSguarDian} se apoya en un conjunto de
+herramientas de código abierto seleccionadas por su reproducibilidad y su adopción estándar en el
+ecosistema Node.js. El entorno de simulación se implementa mediante Docker Compose, lo que
+garantiza que el entorno de generación de tráfico y ataques sea reproducible en cualquier momento
+del proyecto y por cualquier integrante del equipo \cite{dockerdocs}; esta práctica de
+contenerización como mecanismo de reproducibilidad computacional está documentada en la
+literatura de ciencia de datos como una condición necesaria para la validez de resultados
+experimentales dependientes de un entorno específico \cite{moreau2023}. La generación de tráfico
+legítimo se realiza mediante Artillery, una herramienta de pruebas de carga que define escenarios
+de tráfico mediante configuración declarativa \cite{artillerydocs}. Para el tráfico malicioso, el
+protocolo contemplaba sqlmap, OWASP ZAP y Commix \cite{sqlmap, owaspzap, stasinopoulos2019}. En la
+ejecución, los payloads de SQL Injection del corpus de evaluación limpio se obtuvieron con sqlmap
+y los de Path Traversal y Command Injection con generadores propios, deliberadamente no derivados
+de listas públicas; OWASP ZAP se dirigió mediante su API REST (Sección~\ref{sec:met-instrumentos}). Commix
+interviene de forma indirecta: la lista \texttt{command-injection-commix.txt} de SecLists, derivada
+de esa herramienta, es una de las fuentes de la clase \texttt{cmdi} del corpus de entrenamiento y
+del corpus de la Ronda~4.
+
+La validación de la librería distribuida como paquete npm emplea Jest como framework de pruebas
+unitarias e de integración, combinado con Supertest para ejecutar peticiones HTTP contra la
+aplicación sin necesidad de levantar un servidor real \cite{jestdocs, supertestdocs}. Esta
+combinación permite verificar de forma determinista que el middleware intercepta peticiones con
+payloads maliciosos conocidos y responde con los códigos de estado correctos ante cada categoría de
+ataque. La latencia no se verifica con estas pruebas, sino con el benchmark de carga descrito en la
+Sección~\ref{subsec:met-f4}.
+
+\ifdefined\modoensamble
+\else
+	\section*{Referencias}
+	\printbibliography[heading=none]
+	\end{document}
+\fi

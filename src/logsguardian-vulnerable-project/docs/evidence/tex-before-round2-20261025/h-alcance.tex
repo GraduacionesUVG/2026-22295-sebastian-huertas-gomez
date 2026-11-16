@@ -1,0 +1,174 @@
+% ==============================================================================
+% ALCANCE
+% ==============================================================================
+% Contenido provisto directamente por el estudiante. Dos correcciones
+% aplicadas antes de incorporarlo:
+%   1. "la sección 1.3" (referencia manual, en Alcance operativo) se
+%      reemplazó por \label/\ref sobre la subsección "Alcance operativo":
+%      con Alcance como capítulo propio, esa subsección será algo como
+%      "5.1.3" según dónde quede el capítulo, no "1.3" (número que parece
+%      arrastrado de una numeración distinta, probablemente la del
+%      protocolo original).
+%   2. "la sección de factibilidad de la metodología de este protocolo" se
+%      corrigió a "de este documento": este texto ya es parte de la tesis,
+%      no del protocolo.
+%
+% NOTA ESTRUCTURAL (sin resolver): "Alcance" no aparece en la lista de 10
+% capítulos de .claude/CLAUDE.md (Introducción...Recomendaciones). Sí existe
+% como capítulo opcional de la plantilla UVG (\CAPalcance). Se incluye por
+% instrucción explícita del estudiante; el índice final tendrá 11 capítulos
+% en vez de 10 si esto se mantiene así.
+%
+% Corrección 2026-10-02 (criterio de latencia del middleware completo, en
+% "Alcance técnico"): el criterio original fijaba un incremento relativo de
+% p95 del 5% bajo carga normal y 10% bajo carga de ataque simulado. Diego
+% Valenzuela (componente de IA del mismo proyecto integrador) señaló por
+% chat (2026-10-02) que un criterio relativo es débil cuando la línea base
+% de latencia del servidor es de pocos milisegundos: un 5% de esa base es
+% una fracción de milisegundo, difícil de medir de forma confiable y poco
+% significativa como criterio de aceptación. Reportó que a él le funcionó
+% un límite absoluto de 15~ms en su propio componente, y recomendó usar un
+% número fijo en ms en vez de un porcentaje salvo que la línea base ya sea
+% grande (> 100~ms). El estudiante confirmó adoptar un único umbral
+% absoluto de 15~ms (sin distinguir carga normal de carga de ataque
+% simulado) para el middleware completo, reemplazando el 5%/10% relativo.
+% El criterio de 5~ms del pipeline de extracción de características
+% (aislado, dentro del worker thread) no cambia: ya era un valor absoluto.
+\ifdefined\modoensamble
+\else
+	\input{0-preambulo_standalone}
+\fi
+
+\chapter{Alcance}
+
+\section{Alcance del proyecto}
+
+\subsection{Alcance funcional}
+El proyecto comprende el diseño, implementación y evaluación de un middleware distribuible
+como paquete npm para aplicaciones Node.js basadas en Express, capaz de detectar y responder,
+en tiempo de ejecución, a peticiones HTTP correspondientes a cuatro vectores de ataque
+intra-request: SQL Injection, Cross-Site Scripting (XSS), Path Traversal/LFI e inyección de
+comandos. La respuesta del sistema ante una petición clasificada como maliciosa se limita a dos
+mecanismos verificables: el bloqueo de la petición mediante código de respuesta HTTP 403 y el
+registro de una alerta. El proyecto entrega, como producto funcional, el paquete npm publicado, los
+scripts de construcción del corpus etiquetado y los vectores de características derivados, y la
+documentación técnica correspondiente. No se entregan los datos crudos de las fuentes públicas
+empleadas: cada fuente se obtiene de su origen conforme a su licencia.
+
+\subsection{Alcance técnico}
+\label{subsec:alcance-tecnico}
+El sistema se integra exclusivamente como middleware dentro del pipeline de peticiones de
+Express.js, sin requerir modificaciones al runtime de Node.js ni infraestructura de red externa
+(proxy inverso o plataforma SaaS de terceros). El componente de inferencia consume un modelo
+serializado en formato ONNX mediante \texttt{onnxruntime-node}, ejecutado dentro de un
+\texttt{worker\_thread} independiente para evitar el bloqueo del Event Loop principal. El alcance
+técnico está delimitado por dos restricciones cuantitativas, definidas como criterios de aceptación
+verificables: el pipeline de extracción de características debe ejecutarse en un tiempo igual o
+menor a 5~ms por petición, medido de forma aislada dentro de su worker thread; y el middleware
+completo no debe incrementar la latencia p95 del servidor anfitrión en más de 15~ms absolutos
+respecto de la línea base sin middleware activo, tanto bajo carga normal como bajo carga de
+ataque simulado. Se adopta un umbral absoluto en lugar de uno relativo porque, en un servidor
+cuya línea base de latencia es de pocos milisegundos, un porcentaje fijo representaría una
+fracción de milisegundo: un criterio estadísticamente frágil y difícil de verificar de forma
+confiable bajo las condiciones de medición de este proyecto.
+
+\subsection{Alcance operativo}
+\label{subsec:alcance-operativo}
+La validación principal del sistema se realiza en un entorno de simulación controlado y
+reproducible, construido mediante Docker Compose, con generación de tráfico legítimo mediante
+Artillery y de tráfico malicioso mediante herramientas especializadas por vector de ataque
+(sqlmap, OWASP ZAP y scripts propios para Path Traversal/LFI y Command Injection). La
+validación extendida con entornos productivos de startups guatemaltecas, contemplada como
+escenario complementario en la Fase 4 del cronograma, queda condicionada a la disponibilidad de
+un acuerdo de colaboración con dichas organizaciones y no constituye el criterio de aceptación
+principal del proyecto.
+
+\section{Delimitación}
+
+\subsection{Lo que comprende este documento}
+Este documento delimita específicamente el componente de ciberseguridad del sistema
+\textit{logSguarDian}: el análisis y selección de vectores de ataque, la construcción del entorno de
+simulación y el dataset etiquetado, la implementación inicial del extractor de características y el paso a \texttt{worker\_threads}, la capa de captura de peticiones HTTP y el sistema de
+respuesta en tiempo de ejecución, y la evaluación de cobertura de detección mediante pruebas de
+penetración controlada. La integración de estos componentes con el modelo de aprendizaje
+automático, así como las pruebas de integración extremo a extremo y la documentación final
+conjunta, son responsabilidad compartida de ambos integrantes del proyecto y se documentan en
+la sección de metodología correspondiente.
+
+\subsection{Lo que queda fuera del alcance}
+\label{subsec:fuera-alcance}
+Explícitamente quedan fuera del alcance de este trabajo:
+
+\begin{itemize}
+    \item El diseño, entrenamiento, selección de arquitectura y serialización del modelo de
+    aprendizaje automático, documentado de forma independiente en el trabajo de graduación de
+    Diego Valenzuela, correspondiente al componente de Inteligencia Artificial.
+    \item La detección de vectores de ataque distintos a los cuatro delimitados en el Objetivo
+    Específico 1 (SQL Injection, XSS, Path Traversal/LFI e inyección de comandos). Categorías
+    como Server-Side Request Forgery (SSRF), Cross-Site Request Forgery (CSRF) o ataques de
+    denegación de servicio a nivel de aplicación no forman parte del sistema de detección
+    propuesto.
+    \item El soporte para runtimes distintos a Node.js o frameworks distintos a Express.js. El
+    sistema no está diseñado para operar sobre aplicaciones construidas en Django, Spring,
+    Laravel u otros stacks tecnológicos.
+    \item El reemplazo de mecanismos perimetrales de seguridad existentes. El middleware se
+    plantea como una capa complementaria a nivel de aplicación, no como sustituto de un
+    Web Application Firewall, un IDS de red o un SIEM empresarial.
+    \item El cumplimiento normativo o certificación bajo cualquier marco legal de ciberseguridad
+    vigente o en trámite en Guatemala. El proyecto no garantiza ni evalúa conformidad legal;
+    su relevancia frente al panorama regulatorio se documenta como antecedente contextual,
+    no como criterio de aceptación.
+    \item El soporte, mantenimiento o actualización del paquete npm posterior a la fecha de entrega del informe final en noviembre de 2026.
+    \item El despliegue en infraestructura de producción de terceros fuera del entorno de
+    validación controlado y del escenario complementario descrito en la Sección~\ref{subsec:alcance-operativo},
+    cuya realización depende de un acuerdo de colaboración externo al proyecto.
+\end{itemize}
+
+\section{Restricciones y supuestos}
+El desarrollo del proyecto está sujeto a las siguientes restricciones y supuestos, verificables al
+momento de redacción de este documento:
+
+\begin{itemize}
+    \item \textbf{Restricción temporal.} El proyecto se ejecuta entre mayo y octubre de 2026,
+    organizado en seis fases con dependencias secuenciales explícitas; la Fase 3, correspondiente
+    al desarrollo del middleware, depende de la finalización de la Fase 1 (dataset) y la Fase 2
+    (entrenamiento del modelo, a cargo del componente de IA).
+    \item \textbf{Restricción presupuestaria.} El proyecto opera con un presupuesto de USD 0 en
+    condiciones normales, con un techo de USD 50 en el escenario de despliegue cloud temporal
+    para validación externa. Esta restricción excluye explícitamente el uso de plataformas de
+    seguridad comerciales con licenciamiento de pago como parte del sistema desarrollado.
+    \item \textbf{Restricción de recursos humanos.} El componente de ciberseguridad es
+    responsabilidad de un único integrante, con dedicación de 20 horas semanales durante las
+    Fases 1 a 3 y 15 horas semanales durante las Fases 4 a 6, sin personal externo adicional
+    disponible.
+    \item \textbf{Supuesto de disponibilidad de dependencias.} Se asume la disponibilidad
+    continua de las herramientas de código abierto empleadas (Node.js, Express, Docker,
+    sqlmap, OWASP ZAP, Jest) y del dataset público de referencia (OWASP ModSecurity Dataset,
+    Zenodo) durante toda la duración del proyecto; el riesgo de interrupción del acceso al
+    dataset se mitiga mediante copia local descargada al inicio de la Fase 1.
+    \item \textbf{Supuesto de estabilidad del entorno de simulación.} Se asume que el entorno
+    Docker Compose reproduce condiciones de tráfico suficientemente representativas del
+    comportamiento de una API REST en producción para que los resultados obtenidos en el
+    entorno controlado sean generalizables, supuesto que la validación complementaria con
+    startups guatemaltecas busca contrastar sin condicionar a ella el cumplimiento del proyecto.
+\end{itemize}
+
+\section{Viabilidad del alcance propuesto}
+La viabilidad del alcance definido descansa en tres condiciones verificables. Primero, la totalidad
+del stack tecnológico requerido (Node.js, Express, onnxruntime-node, Docker) está disponible,
+mantenido activamente y documentado para los casos de uso específicos del proyecto, sin
+dependencia de tecnología en desarrollo o no probada. Segundo, el dataset base de referencia está
+publicado bajo licencia abierta y ha sido empleado previamente en investigaciones de detección de
+intrusiones en aplicaciones web, lo que reduce el riesgo de que la construcción del entorno de
+simulación se convierta en un cuello de botella del cronograma. Tercero, el alcance funcional se
+limita deliberadamente a cuatro vectores de ataque y a dos mecanismos de respuesta, en lugar de
+plantear una cobertura exhaustiva de OWASP Top 10, precisamente para mantener el proyecto
+ejecutable dentro de las 20 semanas efectivas de desarrollo disponibles y de los recursos humanos
+descritos en la sección anterior. Los riesgos identificados que podrían afectar el cumplimiento del
+alcance definido, junto con sus planes de mitigación, se documentan de forma exhaustiva en la
+sección de factibilidad del Capítulo de Metodología de este documento.
+
+\ifdefined\modoensamble
+\else
+	\end{document}
+\fi

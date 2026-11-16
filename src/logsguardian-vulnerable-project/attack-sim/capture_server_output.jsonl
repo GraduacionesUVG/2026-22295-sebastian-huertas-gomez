@@ -1,0 +1,4 @@
+{"method": "GET", "raw_target": "/posts/1/attachment?file=%252e%252e%252f%252e%252e%252fboot.ini", "raw_body": ""}
+{"method": "POST", "raw_target": "/admin/ping", "raw_body": "host=127.0.0.1%26%26echo LSG_CMDI_MARKER %23"}
+{"method": "GET", "raw_target": "/posts/search?q=test%22%29+AND+8198%3D2485%23", "raw_body": ""}
+{"method": "POST", "raw_target": "/profile", "raw_body": "bio=%3C%2Fdiv%3E%3CscrIpt%3Ealert%281%29%3B%3C%2FscRipt%3E%3Cdiv%3E"}

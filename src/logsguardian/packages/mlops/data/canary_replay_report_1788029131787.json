@@ -1,0 +1,174 @@
+{
+  "status": "REJECTED",
+  "candidate_model": "../../training/models/rf_sabotage_candidate.onnx",
+  "total_fixtures": 500,
+  "compared": 498,
+  "uncovered": 2,
+  "verdict_agreement_rate": 0.8755020080321285,
+  "soft_gate_threshold": 0.995,
+  "soft_gate_passed": false,
+  "hard_gate_regressions": 26,
+  "hard_gate_passed": false,
+  "regression_details": [
+    {
+      "index": 6,
+      "expected_class": "sqli",
+      "production_verdict": "block",
+      "production_predicted_class": "sqli",
+      "canary_verdict": "pass",
+      "canary_predicted_class": "benign"
+    },
+    {
+      "index": 32,
+      "expected_class": "sqli",
+      "production_verdict": "block",
+      "production_predicted_class": "sqli",
+      "canary_verdict": "pass",
+      "canary_predicted_class": "benign"
+    },
+    {
+      "index": 57,
+      "expected_class": "sqli",
+      "production_verdict": "block",
+      "production_predicted_class": "sqli",
+      "canary_verdict": "pass",
+      "canary_predicted_class": "benign"
+    },
+    {
+      "index": 108,
+      "expected_class": "xss",
+      "production_verdict": "block",
+      "production_predicted_class": "xss",
+      "canary_verdict": "pass",
+      "canary_predicted_class": "benign"
+    },
+    {
+      "index": 120,
+      "expected_class": "xss",
+      "production_verdict": "block",
+      "production_predicted_class": "xss",
+      "canary_verdict": "pass",
+      "canary_predicted_class": "benign"
+    },
+    {
+      "index": 122,
+      "expected_class": "xss",
+      "production_verdict": "block",
+      "production_predicted_class": "xss",
+      "canary_verdict": "pass",
+      "canary_predicted_class": "benign"
+    },
+    {
+      "index": 123,
+      "expected_class": "xss",
+      "production_verdict": "block",
+      "production_predicted_class": "xss",
+      "canary_verdict": "pass",
+      "canary_predicted_class": "benign"
+    },
+    {
+      "index": 127,
+      "expected_class": "xss",
+      "production_verdict": "block",
+      "production_predicted_class": "xss",
+      "canary_verdict": "pass",
+      "canary_predicted_class": "benign"
+    },
+    {
+      "index": 132,
+      "expected_class": "xss",
+      "production_verdict": "block",
+      "production_predicted_class": "xss",
+      "canary_verdict": "pass",
+      "canary_predicted_class": "benign"
+    },
+    {
+      "index": 144,
+      "expected_class": "xss",
+      "production_verdict": "block",
+      "production_predicted_class": "xss",
+      "canary_verdict": "pass",
+      "canary_predicted_class": "benign"
+    },
+    {
+      "index": 164,
+      "expected_class": "xss",
+      "production_verdict": "block",
+      "production_predicted_class": "xss",
+      "canary_verdict": "pass",
+      "canary_predicted_class": "benign"
+    },
+    {
+      "index": 165,
+      "expected_class": "xss",
+      "production_verdict": "block",
+      "production_predicted_class": "xss",
+      "canary_verdict": "pass",
+      "canary_predicted_class": "benign"
+    },
+    {
+      "index": 170,
+      "expected_class": "xss",
+      "production_verdict": "block",
+      "production_predicted_class": "xss",
+      "canary_verdict": "pass",
+      "canary_predicted_class": "benign"
+    },
+    {
+      "index": 173,
+      "expected_class": "xss",
+      "production_verdict": "block",
+      "production_predicted_class": "xss",
+      "canary_verdict": "pass",
+      "canary_predicted_class": "benign"
+    },
+    {
+      "index": 176,
+      "expected_class": "xss",
+      "production_verdict": "block",
+      "production_predicted_class": "xss",
+      "canary_verdict": "pass",
+      "canary_predicted_class": "benign"
+    },
+    {
+      "index": 181,
+      "expected_class": "xss",
+      "production_verdict": "block",
+      "production_predicted_class": "xss",
+      "canary_verdict": "pass",
+      "canary_predicted_class": "benign"
+    },
+    {
+      "index": 184,
+      "expected_class": "xss",
+      "production_verdict": "block",
+      "production_predicted_class": "xss",
+      "canary_verdict": "pass",
+      "canary_predicted_class": "benign"
+    },
+    {
+      "index": 188,
+      "expected_class": "xss",
+      "production_verdict": "block",
+      "production_predicted_class": "xss",
+      "canary_verdict": "pass",
+      "canary_predicted_class": "benign"
+    },
+    {
+      "index": 194,
+      "expected_class": "xss",
+      "production_verdict": "block",
+      "production_predicted_class": "xss",
+      "canary_verdict": "pass",
+      "canary_predicted_class": "benign"
+    },
+    {
+      "index": 196,
+      "expected_class": "xss",
+      "production_verdict": "block",
+      "production_predicted_class": "xss",
+      "canary_verdict": "pass",
+      "canary_predicted_class": "benign"
+    }
+  ]
+}

@@ -1,0 +1,181 @@
+% ==============================================================================
+% CONCLUSIONES
+% ==============================================================================
+% Solo componente de ciberseguridad (decisión del estudiante, 2026-10-09):
+% no se incluyen conclusiones sobre entrenamiento o selección de modelos,
+% que corresponden al componente de IA.
+% Cada conclusión se deriva de una cifra de k-resultados.tex y de su
+% interpretación en l-discusion.tex.
+\ifdefined\modoensamble
+\else
+	\input{0-preambulo_standalone}
+\fi
+
+\chapter{Conclusiones}
+\label{cap:conclusiones}
+
+Las conclusiones siguen el orden de los objetivos: primero el objetivo general, después los
+objetivos específicos y, al final, la hipótesis y la contribución al problema. Cada una indica el
+objetivo al que responde, el grado de cumplimiento y el alcance de la evidencia que la sostiene.
+
+\begin{enumerate}
+    \item \textbf{Objetivo general: cumplido de forma parcial.}\label{conc:og} Se diseñó, implementó y publicó en
+    el registro público de npm la librería \texttt{logsguardian} (versión 0.1.0, 30 de agosto de
+    2026, y versión 0.1.1, 11 de octubre de 2026), un middleware RASP para Express que integra un
+    extractor de 76 características y un modelo híbrido (Random Forest e Isolation Forest)
+    serializado en ONNX y ejecutado en hilos de trabajo, con una diferencia máxima de
+    $2.42\times10^{-7}$ entre las predicciones de Python y de ONNX. La librería intercepta las
+    peticiones, clasifica las cuatro categorías de ataque y bloquea con el Random Forest. No se
+    cumplen los criterios de memoria, CPU ni carga de volumen (conclusión~\ref{conc:rendimiento}), y
+    el aporte del Isolation Forest a la detección de variantes desconocidas solo tiene evidencia
+    indirecta (conclusión~\ref{conc:variantes}). La versión 0.1.0 contiene la generación de modelo
+    \texttt{rf\_v10}/\texttt{if\_v9}; la versión 0.1.1, vigente, contiene \texttt{rf\_v11}/\texttt{if\_v10},
+    que es la evaluada sobre el conjunto de prueba, y la corrección de un defecto del middleware.
+
+    \item \textbf{Objetivo específico 1: cumplido.} Los cuatro vectores de ataque intra-request se
+    mapearon a OWASP Top 10 2021 (SQL Injection, XSS y Command Injection en A03:2021; Path
+    Traversal/LFI en A01:2021) y a MITRE ATT\&CK (T1190 y T1189), y ese mapeo estructuró las cinco
+    clases canónicas del dataset y las categorías sobre las que se calculan las métricas del
+    objetivo específico~3.
+
+    \item \textbf{Objetivo específico 2: cumplido.} Se construyó un corpus de 383{,}202 peticiones
+    HTTP etiquetadas, 3.8 veces el mínimo de 100{,}000, a partir de siete fuentes públicas
+    auditadas, dos listas públicas de payloads y conjuntos propios, con etiquetado determinista y
+    una partición verificada y bloqueada por hash. El desbalance de clases (59.3~\% SQLi frente a
+    2.6~\% Command Injection) no impidió que la clase minoritaria alcanzara un F1 de 0.9239.
+
+    \item \textbf{Objetivo específico 3, clasificación: cumplido.}\label{conc:clasificacion} Sobre el conjunto de prueba
+    bloqueado, el sistema obtuvo un F1 de entre 0.9239 (Command Injection) y 0.9956 (SQL Injection)
+    en las cuatro categorías, frente al criterio de 0.80 en al menos tres, y el Isolation Forest
+    detectó el 91.25~\% de los ataques con 5.46~\% de falsos positivos, frente a los criterios de
+    al menos 50~\% y como máximo 10~\%. Estas cifras miden la separación entre clases dentro del
+    corpus y no la generalización a tráfico externo: el conjunto de prueba se leyó tres veces en la
+    generación vigente y el corpus tiene saturación de casi-duplicados, en particular en SQL
+    Injection (unos 395 pares casi duplicados por fila), un efecto que este trabajo no cuantificó.
+
+    \item \textbf{Objetivo específico 3, cobertura sobre payloads no vistos: cumplido, con reservas.}\label{conc:cobertura}
+    Sobre 600 payloads filtrados contra el entrenamiento, la cobertura fue, con el paquete 0.1.0
+    (tarball de la Ronda~5), de 100~\% en SQL Injection, 85.0~\% en Path Traversal y 91.5~\% en
+    Command Injection; con el tarball del modelo vigente, de 99.5~\%, 95.0~\% y 96.0~\%; y con el
+    paquete 0.1.1 y el ejecutor de pruebas corregido, de 99.5~\%, 100.0~\% (200 de 200; intervalo de
+    Wilson al 95~\% de 98.1 a 100.0~\%) y 92.5~\%. Los fallos de Path Traversal de la primera
+    medición tenían dos causas independientes, un defecto del middleware y otro del ejecutor, ambos
+    corregidos; la cobertura de Command Injection bajó de 96.0~\% a 92.5~\% porque la cifra anterior
+    incluía 10 payloads que solo se bloqueaban en su forma corrompida. Sobre un corpus propio de 200
+    payloads de XSS, el paquete 0.1.1 bloqueó 200 de 200 (intervalo de Wilson al 95~\% de 98.1 a
+    100.0~\%; 64 de 64 en el campo vulnerable), de modo que el criterio del 80~\% se cumple para
+    XSS en cobertura. Las reservas son dos: la medición con el paquete 0.1.1 de Path Traversal y de
+    Command Injection se hizo sobre el corpus que reveló los defectos, por lo que no es
+    independiente; y el corpus de XSS se construyó después de conocer los resultados de la Ronda~5,
+    136 de sus 200 payloads apuntan a campos sin vulnerabilidad confirmada, y la explotabilidad
+    confirmada sigue descansando en un único caso de OWASP ZAP (n=1).
+
+    \item \textbf{Objetivo general, rendimiento del servidor anfitrión: no cumplido en su
+    totalidad.}\label{conc:rendimiento} El extractor cumple el criterio en aislamiento: el p95 con
+    \texttt{worker\_threads} es de 0.0273~ms, frente al límite de 5~ms. El sobrecosto del middleware
+    completo es de 12.08~ms en carga normal y de 12.85~ms en carga de ataque (límite de 15~ms), y la
+    extracción no lo explica. El extractor inicial de 72 características y el paso a
+    \texttt{worker\_threads} los implementó el autor de este trabajo; el análisis y la justificación
+    de cada característica, el contrato de entrada, las cuatro características adicionales y las
+    correcciones del extractor corresponden al componente de Inteligencia Artificial. El criterio
+    de latencia no se cumple en el escenario de volumen, donde el $\Delta p95$ fue de 6{,}495.46~ms
+    y el 7.00~\% de las peticiones agotó el tiempo de espera con el middleware activo. Los
+    indicadores de recursos del protocolo tampoco se cumplen: el middleware agregó entre 331.9 y
+    375.9~MiB de memoria según el escenario, más del doble del límite de 150~MB (143.1~MiB), y
+    +529.6~\% a +614.4~\% de CPU, frente a un límite de 15~\%. El incremento de memoria es casi
+    constante entre escenarios, pero su reparto por componente no se midió.
+
+    \item \textbf{Objetivo general, variantes desconocidas e Isolation Forest.}\label{conc:variantes}
+    La evidencia directa de que la librería bloquea variantes desconocidas de los vectores cubiertos
+    es la cobertura del Random Forest descrita en la conclusión~\ref{conc:cobertura} (4 de los 200 payloads de SQL
+    Injection coinciden por igualdad normalizada con alguna partición; ninguno de Path Traversal ni
+    de Command Injection). La contribución del Isolation Forest solo tiene evidencia indirecta: en
+    el conjunto de validación del componente de Inteligencia Artificial \cite{valenzuela2026ia} marca 19 de los 39 ataques
+    que el Random Forest deja pasar, pero bloquear sus marcas agregaría 866 benignos bloqueados de
+    más, y por eso solo registra. Esas cifras son optimistas, porque el umbral del Isolation Forest
+    se eligió sobre el mismo conjunto de validación, y no se evaluaron sobre el conjunto de prueba.
+
+    \item \textbf{Objetivo general, defensa en profundidad.}\label{conc:waf} Dos afirmaciones, con soportes
+    distintos. (A) La librería agrega cobertura a un WAF. En la Ronda~5, sobre un corpus filtrado
+    contra el entrenamiento y ampliado con 200 payloads de XSS, medido el 25 de octubre de 2026 con
+    las cuatro configuraciones sobre el mismo árbol de la aplicación y el ejecutor corregido, la
+    librería sola bloqueó 784 de 800 payloads, el WAF solo 749 y ambas capas 797: la librería suma
+    48 de 800 payloads al WAF solo (6.0~\%; intervalo de Wilson al 95~\%: 4.6--7.9~\%) y bloquea 48
+    de los 51 ataques que este no bloquea (94.1~\%; 84.1--98.0~\%). El WAF bloqueó el 82.0~\% de
+    Command Injection (76.1--86.7~\%) frente al 92.5~\% de la librería, y el 68.0~\% reportado antes
+    se debió al ejecutor anterior y no a la aplicación. Como corroboración con una muestra pequeña,
+    en la Ronda~4 (15 de agosto de 2026, tarball local de la 0.1.0 con el par~A y ejecutor anterior a
+    la corrección, y la 3a en una rama distinta de la aplicación, de modo que no es un resultado de
+    la 0.1.1) la librería bloqueó 37 de los 40
+    ataques que el WAF dejó pasar (92.5~\%; 80.1--97.4~\%), ninguno de ellos de Command Injection,
+    la categoría con fuga de datos confirmada en ese corpus; en esos 40 no se detectó coincidencia
+    por igualdad normalizada con el entrenamiento, aunque por subcadena coinciden 7 de los 11 de SQL
+    Injection y 1 de los 3 de XSS. (B) La librería no sustituye al WAF. La cobertura de la Ronda~5
+    casi no respalda esta afirmación: en condiciones equiparadas, la 3b frente a la Configuración~2
+    con las cabeceras del proxy (794 de 800), el WAF suma solo 3 de 800 payloads (0.4~\%; 0.1--1.1~\%),
+    todos de Command Injection. La combinación bloqueó 13 payloads más que la Configuración~2 sin
+    esas cabeceras, una comparación que mezcla condiciones: 13 = 10 (efecto de las cabeceras que
+    agrega el proxy) + 3 (aporte del WAF) (Sección~\ref{anx:sensibilidad}). La afirmación se sostiene
+    en otras razones: la librería se evaluó solo en cuatro clases de ataque, de modo que no hay
+    evidencia de cobertura fuera de ellas; su veredicto depende de un voto de árbol y de las
+    cabeceras del despliegue, pues cuatro cabeceras de proxy cambiaron el veredicto de 14 de los 800
+    payloads y dos de los tres payloads de Command Injection que ninguna configuración bloquea quedan
+    a 0.0167 del umbral; y los bloqueos indebidos medidos en aplicaciones de terceros
+    (conclusión~\ref{conc:fp}), con un umbral calibrado sobre la partición de validación y la
+    aplicación de referencia, sin que se haya medido la tasa de falsos positivos del WAF. Es
+    plausible que el corpus favorezca a la librería, por lo que sus cifras pueden ser optimistas y
+    los 3 de 800 del WAF una cota inferior de su aporte; es una inferencia, no una medición
+    (Sección~\ref{sec:met-validez}).
+
+    \item \textbf{Objetivo general, falsos positivos y generalización.}\label{conc:fp} Las métricas del corpus no
+    predijeron el comportamiento con tráfico legítimo real, y el corpus benigno es la debilidad
+    principal. Con un \texttt{User-Agent} de navegador, la librería en modo \texttt{block} bloqueó el
+    92.5~\% del tráfico legítimo en dvws-node (37 de 40; el modelo exacto de esa medición no consta),
+    con muestras preliminares en DVNA (5 de 5) y de una sola ruta en node-api-goat (50 de 50). En
+    OWASP Juice Shop, en modo \texttt{monitor}, el modelo asignó veredicto de bloqueo al 97.1~\% de
+    las peticiones legítimas (303 de 312). En la aplicación de referencia, con otro modelo, ninguna
+    petición legítima de Artillery recibió un 403, y con cadenas de \texttt{User-Agent} de
+    navegadores reales se bloquearon 13 de 15 combinaciones, frente al 0.15~\% del conjunto de
+    prueba. La exclusión por fuente del componente de Inteligencia Artificial \cite{valenzuela2026ia} apunta en el mismo
+    sentido: al excluir \texttt{modsec\_learn}, \texttt{payloads\_csv} o \texttt{xss\_dataset} del
+    entrenamiento, el bloqueo de filas legítimas de esas fuentes sube de 0.1~\%, 0.4~\% y 0.2~\% a
+    76.0~\%, 27.0~\% y 94.5~\%. El sesgo de representación de la cabecera \texttt{User-Agent} es la
+    explicación principal, pero no la única (dvws-node bloqueó el 75~\% con el \texttt{User-Agent}
+    por defecto de Node.js y Juice Shop dio 39.4~\% con cURL) y no se verificó con un corpus legítimo
+    alternativo. En su estado actual, la librería no es apta para instalarse en modo de bloqueo sin
+    calibración previa con el tráfico de la aplicación.
+
+    \item \textbf{Trazabilidad y validez de las métricas.}\label{conc:trazabilidad} La auditoría de fuga entre los corpus de
+    evaluación y de entrenamiento redujo la cobertura atribuible de Command Injection de 100~\% a
+    91.5~\%. El filtro de exclusión, el bloqueo del conjunto de prueba con verificación de hash y el
+    manifiesto de sumas de verificación fueron condiciones necesarias para que las cifras reflejaran
+    capacidad de detección y no memorización. Esos controles no evitaron que el conjunto de prueba
+    se leyera tres veces en la generación vigente, que el origen de los datos restaurados quedara
+    sin registrar, ni que, hasta la publicación de la versión 0.1.1, el paquete publicado y las
+    métricas de prueba correspondieran a generaciones de modelo distintas, lo que limita la
+    trazabilidad de las métricas.
+
+    \item \textbf{Hipótesis.} El trabajo no formuló una hipótesis contrastable; el objetivo general
+    cumple ese papel como afirmación de factibilidad: que un middleware de aprendizaje automático
+    distribuido como paquete npm puede detectar y clasificar ataques web sin comprometer el
+    rendimiento del servidor. La evidencia la respalda en la detección y clasificación y en la
+    latencia bajo carga normal y de ataque, y es insuficiente o contraria en memoria, CPU, carga de
+    volumen y comportamiento con tráfico legítimo real sin calibración, por lo que queda respaldada
+    de forma parcial.
+
+    \item \textbf{Contribución al problema.} El problema de partida es la falta de protección
+    accesible a nivel de aplicación en organizaciones sin equipo de seguridad dedicado. El trabajo
+    aporta una librería de instalación directa desde npm, sin infraestructura externa ni licencias
+    de pago, con un extractor de 76 características y un modelo híbrido de procedencia documentada,
+    y establece con evidencia dónde la solución funciona (clasificación de las cuatro categorías,
+    cobertura de variantes y latencia bajo carga normal y de ataque) y dónde no (recursos, volumen y
+    falsos positivos en aplicaciones de terceros). No demuestra que la herramienta sea adecuada para
+    producción, y la validación con una startup quedó fuera de la evidencia del proyecto.
+\end{enumerate}
+
+\ifdefined\modoensamble
+\else
+	\section*{Referencias}
+	\printbibliography[heading=none]
+	\end{document}
+\fi

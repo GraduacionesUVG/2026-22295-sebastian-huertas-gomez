@@ -1,0 +1,493 @@
+% ==============================================================================
+% ANÁLISIS DE RESULTADOS (antes "Discusión de resultados")
+% ==============================================================================
+% Interpreta la evidencia de k-resultados.tex. Solo componente de
+% ciberseguridad.
+%
+% Enfoque (decisión del estudiante, 2026-10-09): la discusión argumenta el
+% cumplimiento de los objetivos frente a los criterios de aceptación
+% definidos en g-objetivos.tex y h-alcance.tex (Alcance técnico: extracción
+% <= 5 ms y Delta p95 <= 15 ms en carga normal y de ataque; validación
+% principal en entorno controlado, validación con startups complementaria).
+% El escenario de volumen se evalúa contra el mismo criterio de 15 ms y no se cumple. Los hallazgos fuera de esos criterios (falsos
+% positivos en aplicaciones de terceros) se presentan como condiciones de
+% despliegue y trabajo futuro. Ninguna cifra cambia respecto a Resultados.
+%
+% "Variantes desconocidas de los vectores cubiertos" (objetivo general): la
+% evidencia es la Ronda 5, corpus de payloads de las cuatro categorías
+% generados con sqlmap y generadores propios y filtrados por exclusión
+% contra el entrenamiento; la detección del sistema se cuenta como bloqueo
+% o marca de anomalía (Procedimiento 4.4).
+%
+% kapoor2023: taxonomía verificada en el PDF del artículo (2026-10-09):
+% [L2] "Model uses features that are not legitimate"; [L3] "Test set is not
+% drawn from the distribution of scientific interest".
+%
+% Ronda 4: los 40 ataques que el WAF no bloqueó fueron 11 SQLi, 3 XSS y 26
+% Path Traversal, ninguno de Command Injection.
+\ifdefined\modoensamble
+\else
+	\input{0-preambulo_standalone}
+\fi
+
+\chapter{Análisis de resultados}
+\label{cap:discusion}
+
+Este capítulo interpreta la evidencia presentada en el Capítulo~\ref{cap:resultados} frente a los
+criterios de aceptación definidos en los Objetivos y en el Alcance. Se analiza, objetivo por
+objetivo, qué significan los resultados y en qué medida sustentan su cumplimiento; se contrastan
+con los trabajos previos y los fundamentos del Marco Teórico; se analizan las condiciones de
+despliegue y las limitaciones que acotan los hallazgos; se valida la solución frente a sus
+criterios de aceptación; y se cierra con sugerencias que se desprenden de los resultados y que
+dan paso a las conclusiones y a las recomendaciones. En cada apartado se distingue lo comprobado
+de lo que es solo una explicación posible.
+
+% ------------------------------------------------------------------------------
+\section{Objetivo general: una librería RASP funcional para Node.js}
+
+El objetivo general establece cuatro componentes verificables: una librería npm, un pipeline de
+ingeniería de características, un modelo híbrido capaz de detectar y clasificar amenazas conocidas
+y variantes desconocidas de los vectores cubiertos, y la operación en tiempo de ejecución sin
+comprometer el rendimiento del servidor. Los resultados sustentan los tres primeros en lo esencial
+y solo en parte el cuarto, como se detalla al final de esta sección.
+
+\textbf{Librería y pipeline.} \texttt{logsguardian} está publicada en el registro público de
+npm (0.1.0 y 0.1.1), se instala con un solo comando y no requiere infraestructura externa. Integra un extractor de
+76 características implementado una sola vez en TypeScript, de modo que el entrenamiento y la
+producción calculan el mismo vector, y un modelo híbrido ejecutado en hilos de trabajo que no
+bloquean el Event Loop. La paridad de $\leq2.42\times10^{-7}$ entre los modelos de Python y sus
+versiones ONNX garantiza que la serialización no altera las predicciones. Las evaluaciones
+emplearon tres pares de modelos con la misma arquitectura de ejecución
+(Cuadro~\ref{tab:pares-modelos}): el paquete 0.1.0 contiene \texttt{rf\_v10}/\texttt{if\_v9}, que
+consume 67 y 61 características, y las métricas del conjunto de prueba corresponden a
+\texttt{rf\_v11}/\texttt{if\_v10}, que consume 69 y 63 y es el contenido del paquete 0.1.1,
+publicado el 11 de octubre de 2026 con la corrección del middleware. Como se discute en la
+Sección~\ref{sec:dis-oe3}, las generaciones evaluadas cumplen el criterio de cobertura sobre
+payloads no vistos, aunque con el paquete 0.1.0 el margen en Path Traversal es estrecho. Con la 0.1.1 se midió la cobertura de las Configuraciones 2 y 3b de la Ronda~5; las aplicaciones de
+terceros y el rendimiento no se midieron con ella, de modo que lo que el paquete vigente haría en
+esas pruebas queda por medir. Este resultado cubre la brecha identificada en los Antecedentes: las soluciones
+RASP comerciales requieren licencias o plataformas externas, y la única alternativa abierta para
+Node.js (node-rasp) exigía modificar el runtime y fue abandonada \cite{saparchive2019}.
+
+\textbf{Amenazas conocidas.} La detección y clasificación de las cuatro categorías se sustenta en
+el OE3 (Sección~\ref{sec:dis-oe3}): F1 de entre 0.9239 y 0.9956 sobre el conjunto de prueba.
+
+\textbf{Variantes desconocidas de los vectores cubiertos.} La evidencia de esta capacidad es el
+corpus limpio de la Ronda~5: 600 payloads de SQL Injection, Path Traversal y Command Injection
+generados con sqlmap y con generadores propios, y filtrados para excluir toda coincidencia exacta
+del campo completo con el entrenamiento. Son, por construcción, variantes que no coinciden de forma
+exacta con las que el modelo vio (4 de los 200 payloads de SQL Injection coinciden con alguna
+partición por igualdad normalizada, según la medición de solapamiento del trabajo de graduación de Diego Valenzuela \cite{valenzuela2026ia}, y ninguno de Path Traversal ni de Command Injection), con técnicas de codificación (doble codificación URL, UTF-8 sobrelargo, barra invertida,
+byte nulo) y separadores de shell distintos de los del entrenamiento. El paquete 0.1.0 bloqueó
+el 100~\% de las de SQL Injection, el 91.5~\% de las de Command Injection y el 85.0~\% de las de
+Path Traversal, y el modelo vigente, el 99.5~\%, el 96.0~\% y el 95.0~\%. Esta capacidad corresponde
+al Random Forest: la cobertura cuenta solo peticiones bloqueadas y el Isolation Forest no bloquea.
+El Isolation Forest cumple sus dos criterios sobre el conjunto de prueba (91.25~\% de detección con
+5.46~\% de falsos positivos), pero su contribución a la detección de variantes no vistas solo tiene
+evidencia indirecta: en el conjunto de validación del componente de Inteligencia Artificial \cite{valenzuela2026ia} marca 19
+de los 39 ataques que el Random Forest deja pasar, y bloquear sus marcas agregaría 866 benignos
+bloqueados; esas cifras son optimistas, porque el umbral del Isolation Forest se eligió sobre ese
+mismo conjunto, y no se evaluaron sobre el conjunto de prueba. Con el paquete 0.1.0, el límite inferior del intervalo de confianza de Path Traversal
+(79.4~\%) quedaba por debajo del criterio, pero esa cifra incluía dos defectos de medición ya
+corregidos; con el paquete 0.1.1 y el ejecutor corregido es de 100~\% (98.1--100.0~\%), medido
+sobre el mismo corpus que reveló los defectos y, por tanto, sin independencia
+(Sección~\ref{sec:met-validez}). El corpus propio de 200 payloads de XSS, medido con el paquete 0.1.1, se bloqueó en su
+totalidad (200 de 200; intervalo de Wilson al 95~\%: 98.1--100.0~\%); se construyó después de
+conocer los resultados de la Ronda~5, y 3 de sus payloads coinciden con el entrenamiento por
+subcadena normalizada, de modo que no es una evaluación ciega. Con esas salvedades, el sistema
+reconoce variantes no vistas de los vectores cubiertos en una proporción superior al criterio de
+cobertura del 80~\%.
+
+\textbf{Rendimiento del servidor anfitrión.} El Alcance fija dos criterios cuantitativos: la
+extracción de características en 5~ms o menos por petición y un incremento de la latencia p95 de
+15~ms como máximo bajo carga normal y bajo carga de ataque. Ambos se cumplen: la extracción,
+medida con la ida y vuelta completa a su \texttt{worker\_thread}, tardó 0.0273~ms en el p95, más
+de 180 veces por debajo del límite, y el incremento de latencia fue de
+12.08~ms y 12.85~ms. El valor relativo de esos mismos incrementos (+485~\% y +278~\%) confirma por
+qué el criterio se expresó en milisegundos: la aplicación de referencia responde en 2 a 5~ms, de
+modo que cualquier costo fijo produce porcentajes elevados sin que el usuario perciba una
+degradación proporcional; en una API con tiempos de respuesta de decenas o cientos de
+milisegundos, 12~ms adicionales representan una fracción menor. Con ello, el criterio de latencia se cumple en carga normal y de ataque; en el escenario de
+volumen no se cumple (\(\Delta p95\) de 6{,}495.46~ms y 7.00~\% de tiempos de espera).
+
+\textbf{Costo de recursos.} El protocolo definió además dos indicadores de costo, que no se
+cumplen: un incremento de memoria de 150~MB (143.1~MiB) como máximo y un incremento de CPU de
+15~\% como máximo. Con el middleware activo, el contenedor usó 332.0~MiB más de memoria bajo carga
+normal y 331.9~MiB más bajo carga de ataque, más del doble del límite, y el uso de CPU aumentó en
+89 y 85 puntos porcentuales. El incremento de memoria es casi idéntico entre escenarios, por lo
+que corresponde a un costo fijo de la arquitectura al activarse (el runtime nativo de ONNX y tres
+hilos de inferencia con sus modelos cargados) y no a un crecimiento con la carga. El límite de
+150~MB se fijó antes de medir la memoria nativa que reserva \texttt{onnxruntime-node} al cargar
+modelos de árboles, proporcional a su número de nodos, y pensando en instancias de 1~GB; en una
+instancia de ese tamaño, 332~MiB representan cerca de un tercio de la memoria disponible, un costo
+que debe considerarse al dimensionar la infraestructura. El incremento de CPU, medido en un
+ejecutor de 2~vCPU a 100 peticiones por segundo, equivale aproximadamente a un núcleo dedicado a
+la inferencia. Ambos costos son objetivos directos de optimización para la siguiente versión.
+
+\textbf{Veredicto sobre el objetivo general.} El objetivo general se cumple de forma parcial. Se
+cumplen la librería publicada, el pipeline, la clasificación de las cuatro categorías, la cobertura
+de variantes no vistas con el Random Forest (con las reservas indicadas) y el criterio de latencia
+en carga normal y de ataque. No se cumplen los indicadores de memoria y CPU, ni el criterio de
+latencia en el escenario de volumen, y el aporte del Isolation Forest a la detección de variantes
+desconocidas solo tiene evidencia indirecta. Atribuir ese resultado a la arquitectura y no a un
+modelo en particular es razonable para el costo de recursos, que es casi constante entre
+escenarios, pero no está comprobado: el costo por componente no se midió.
+
+% ------------------------------------------------------------------------------
+\section{Objetivo específico 1: selección de vectores}
+
+Los cuatro vectores quedaron mapeados a OWASP Top 10 2021 y a MITRE ATT\&CK con fuentes
+oficiales verificadas, y ese mapeo cumplió la función que el objetivo le asigna: definió las cinco
+clases canónicas del dataset y las categorías sobre las que se calculan todas las métricas del
+OE3. La precisión del mapeo se reforzó durante el proyecto: Path Traversal/LFI se ubicó en
+A01:2021 (Broken Access Control) y no en A03:2021 (Injection), lo que muestra que la selección de
+los cuatro vectores responde a un criterio operativo (todos materializan su payload en la petición
+HTTP y son detectables con las mismas características) y no a su pertenencia a una sola categoría
+de OWASP. El OE1 se cumple.
+
+% ------------------------------------------------------------------------------
+\section{Objetivo específico 2: dataset etiquetado}
+
+El corpus de 383{,}202 peticiones etiquetadas supera 3.8 veces el mínimo de 100{,}000 muestras. Su
+representatividad se sustenta en la diversidad de origen: siete fuentes públicas auditadas (más de
+la mitad de las filas proviene de la colección CAPEC y una cuarta parte de modsec-learn), entre
+ellas registros reales de un servidor en producción protegido por ModSecurity \cite{lucz2025}
+(1.0~\% de las filas), complementadas con dos listas públicas de payloads y con conjuntos propios,
+con las cinco clases presentes en las tres particiones. Construir el corpus a partir de fuentes
+públicas, en lugar de generarlo en su totalidad en el entorno controlado, aportó un volumen y una
+variedad de técnicas de ataque que el entorno no habría podido producir en el tiempo disponible;
+el entorno controlado se empleó para la validación, que es donde su reproducibilidad aporta más
+valor. El desbalance de clases se trató con ponderación en el entrenamiento, y su efecto queda
+acotado por los resultados: incluso la clase minoritaria, Command Injection (2.6~\% del conjunto de
+prueba), alcanzó un F1 de 0.9239. El objetivo pide balancear tráfico legítimo y ataques: el corpus contiene
+ambos en las cinco clases y en las tres particiones, pero no los equilibra en conteos (el 59.3~\%
+del conjunto de prueba es SQLi), de modo que el criterio se cumple como presencia de ambos tipos de
+tráfico y no como proporciones iguales. El etiquetado determinista y la partición verificada por hash
+permiten reconstruir cada partición a partir de sus fuentes públicas, con la excepción de los
+conjuntos sintéticos de Command Injection, cuyo generador no está versionado. El OE2 se cumple.
+
+% ------------------------------------------------------------------------------
+\section{Objetivo específico 3: efectividad de la detección}
+\label{sec:dis-oe3}
+
+El criterio del OE3 exige un F1 de al menos 0.80 en tres de las cuatro categorías. El sistema lo
+alcanzó en las cuatro, con un margen mínimo de 0.12 sobre el criterio (Command Injection, 0.9239) y
+un F1 macro de 0.9776. El AUC-ROC de entre 0.99899 y 0.99982 en las categorías de ataque indica que la capacidad de discriminar
+cada categoría no depende de un umbral particular. La precisión de 0.9984 en la clase legítima
+muestra que, dentro de la distribución del corpus, el modelo cumple el balance entre falsos
+negativos y falsos positivos que el objetivo plantea para un entorno sin analista dedicado.
+
+La cobertura sobre payloads no vistos confirma que estas métricas no dependen de memorizar el
+entrenamiento. La auditoría de fuga fue decisiva para esa conclusión: en Command Injection, el
+100~\% de la Ronda~4 correspondía en parte a plantillas presentes en el entrenamiento, y la cifra
+atribuible a detección real, medida con el corpus limpio, es 91.5~\% con el paquete 0.1.0 y
+96.0~\% con el tarball del modelo vigente, y 92.5~\% con el paquete 0.1.1 y el ejecutor corregido.
+Esta última cifra es más baja que la anterior, pero no significa que la detección haya empeorado:
+el ejecutor anterior volvía a codificar los payloads con separadores ya codificados, y 10 de ellos,
+corrompidos así, se bloqueaban, mientras que enviados correctamente no se bloquean (HTTP 200); es la
+primera medición correcta de esa técnica de evasión, y un límite real de la librería. En Path
+Traversal, el paquete 0.1.0 alcanzó 85.0~\% con un intervalo de confianza cuyo límite inferior
+(79.4~\%) quedaba por debajo del criterio, pero esa cifra no describe solo al paquete: sus fallos se
+concentraban en las categorías de codificación y tenían dos causas independientes, un defecto del
+middleware, que añadía una capa de codificación a la consulta, y un defecto del ejecutor de pruebas,
+que volvía a codificar payloads ya codificados. Ninguna corrección bastó por sí sola: con el
+middleware corregido y el ejecutor anterior los fallos fueron los mismos 10 que sin la corrección, y
+desaparecieron al corregir también el ejecutor. Con el paquete 0.1.1 instalado desde el registro de
+npm, la cobertura de Path Traversal es de 200 de 200 (intervalo de Wilson al 95~\%: 98.1--100.0~\%),
+por encima del criterio con un margen amplio. Esa cifra tiene dos límites. No se midió el paquete
+0.1.0 con el ejecutor corregido, por lo que no puede repartirse la mejora entre el modelo, el
+middleware y el ejecutor. Y se obtuvo sobre el mismo corpus que sirvió para encontrar los
+defectos, de modo que es optimista por construcción y debe confirmarse con un corpus nuevo. En XSS,
+la detección se sustenta en el F1 de 0.9877 sobre el conjunto de prueba, en el 98~\% de la suite
+extremo a extremo, en el 97.3~\% de la Ronda~4 y, desde el 25 de octubre de 2026, en la cobertura
+del corpus propio de 200 payloads: 200 de 200 (intervalo de Wilson al 95~\%: 98.1--100.0~\%) y 64
+de 64 en el campo vulnerable \texttt{bio} (94.3--100.0~\%). El criterio de cobertura del 80~\% se
+cumple para XSS con evidencia estadística. Esa cobertura tiene límites declarados: el corpus se
+construyó después de conocer los resultados de la Ronda~5, 136 de sus 200 payloads apuntan a
+campos sin vulnerabilidad confirmada y 3 coinciden con el entrenamiento por subcadena normalizada.
+La explotabilidad confirmada sigue descansando en el único caso que ZAP confirmó sobre la
+aplicación de referencia (\texttt{POST /profile}, bloqueado por todos los paquetes evaluados), con
+n=1. El OE3 se cumple, sin reservas en las métricas de clasificación y con reservas en la
+cobertura: que la medición vigente de Path Traversal y de Command Injection no es independiente
+del corpus que motivó las correcciones, y que la de XSS se hizo sobre un corpus construido después
+de conocer los resultados de la Ronda~5.
+
+% ------------------------------------------------------------------------------
+\section{Defensa en profundidad}
+\label{sec:dis-defensa}
+
+En la Ronda~4 (15 de agosto de 2026, con el tarball local de la 0.1.0, par~A, y el ejecutor anterior
+a la corrección, y la 3a en una rama distinta de la aplicación, de modo que no es un resultado
+de la 0.1.1), ModSecurity con OWASP CRS en nivel de
+paranoia 1 bloqueó el 93.2~\% de los ataques, \textit{logSguarDian} el 98.8~\% y ambas capas el
+99.5~\%; de los 40 ataques que el WAF dejó pasar, la librería bloqueó 37 (92.5~\%; intervalo de
+Wilson al 95~\%: 80.1--97.4~\%). Ese corpus tiene fuga confirmada en Command Injection, pero
+ninguno de los 40 ataques que el WAF no bloqueó pertenece a esa categoría (fueron 11 de SQL
+Injection, 3 de XSS y 26 de Path Traversal). Por igualdad normalizada, 7 de los 113 payloads de XSS
+y ninguno de los 77 de SQL Injection ni de los 200 de Path Traversal coinciden con alguna partición;
+por subcadena, 26 de SQL Injection y 13 de XSS, un criterio permisivo que el trabajo de graduación
+de Diego Valenzuela \cite{valenzuela2026ia} (sección VIII.3.5) califica de límite superior. Entre
+esos 40 ataques no se detectó coincidencia por igualdad normalizada, pero por subcadena coinciden 7
+de los 11 de SQL Injection y 1 de los 3 de XSS; la corrección del ejecutor solo cambia la
+petición de los payloads de Path Traversal y de Command Injection que ya traen una secuencia
+\texttt{\%XX}, y ninguno de los 40 ataques (11 de SQL Injection, 3 de XSS y 26 de Path Traversal)
+la cambia: los 26 de Path Traversal no contienen \texttt{\%XX}, de modo que el ejecutor anterior,
+que recodificaba los payloads ya codificados (Sección~\ref{sec:dis-oe3}), no los alteraba. Se
+comprobó construyendo las peticiones de los 590 payloads con ambos ejecutores; solo difieren las de
+los 200 de Command Injection, y la ronda no se repitió con el ejecutor corregido. Con esas salvedades, este
+resultado corrobora, con una muestra pequeña, que la librería agrega cobertura a un WAF; no permite
+por sí solo afirmar ni descartar que lo sustituya.
+
+La comparación sobre el corpus limpio de la Ronda~5, que no tiene la fuga de la Ronda~4, se repitió
+el 25 de octubre de 2026 con las cuatro configuraciones sobre el mismo árbol de la aplicación, con
+el ejecutor corregido y con 800 payloads, 200 de ellos de XSS. El WAF solo y la librería sola tienen
+perfiles distintos. En SQL Injection son equivalentes (99.5~\% ambos, 199 de 200). En Path
+Traversal no hay ventaja del WAF: con el paquete 0.1.1 la librería bloqueó 200 de 200 y el WAF
+197 de 200, una diferencia de tres payloads con intervalos de Wilson solapados. En Command
+Injection la librería bloquea más (92.5~\% frente a 82.0~\%); la cifra del WAF, con intervalo de
+Wilson al 95~\% de 76.1 a 86.7~\%, no permite afirmar que supere el 80~\%. El 68.0~\% que se había
+reportado para el WAF era un efecto del ejecutor anterior: al volver a ejecutarlo sobre el mismo
+árbol reprodujo 136 de 200, y el ejecutor corregido dio 164. Aun así, el WAF bloquea menos los
+payloads de Command Injection con separadores ya codificados (76.2~\%; intervalo de Wilson al
+95~\%: 67.2--83.3~\%) que los no codificados (88.4~\%; 80.4--93.4~\%), una diferencia de 12.2
+puntos porcentuales que se mantiene con el ejecutor corregido (prueba exacta de Fisher bilateral,
+$p = 0.028$; intervalo de confianza de Wald al 95~\% de la diferencia, de 1.8 a 22.6 puntos). Los
+dos subconjuntos no están controlados por otras características del payload, por lo que la
+diferencia no se atribuye a la codificación como causa. En XSS, el WAF bloqueó 189 de 200 (94.5~\%) y falló en 11 payloads con doble
+codificación URL enviados como JSON o \texttt{multipart/form-data}; la librería bloqueó los 200.
+
+En conjunto, la librería sola bloqueó 784 de 800 payloads, el WAF solo 749 y la combinación 797: la
+combinación bloqueó 13 payloads más que la librería sola sin las cabeceras del proxy, pero esa
+comparación mezcla condiciones, porque la librería dentro de la 3b las recibe. La descomposición es
+13 = 10 + 3: las cabeceras elevan en 10 los payloads que bloquea la librería sola (794 de 800 con
+cabeceras, frente a 784) y, en condiciones equiparadas, el WAF suma 3 de 800 payloads a la
+librería, todos de Command Injection, mientras que la librería suma 48 al WAF solo
+(Sección~\ref{anx:sensibilidad}). De los 51 ataques que el WAF no bloqueó, la combinación bloqueó
+48, igual que la librería con cabeceras (44 sin ellas). La complementariedad es asimétrica: en Path
+Traversal, SQL Injection y XSS la librería sola, con cabeceras, bloquea todo lo que bloquea la
+combinación, y solo en Command Injection cada capa detiene payloads que la otra deja pasar. Por eso no puede afirmarse que la combinación supere a ambas capas en todas
+las categorías. En Path Traversal, SQL Injection y XSS la librería con cabeceras subsume al WAF; en
+Command Injection el WAF bloquea 3 payloads que la librería con cabeceras deja pasar, de modo que en
+el corpus completo ninguna capa subsume a la otra (el WAF aporta 3 y la librería 48). Cuatro payloads de Command Injection los bloquea
+la combinación y no los bloquean ni la librería sola ni el WAF solo; las cuatro cabeceras
+\texttt{X-*} que agrega el proxy lo explican: al enviar esos payloads a la Configuración~2 con las
+cabeceras, la librería los bloqueó en las tres repeticiones, y sin ellas ninguno, porque las
+cabeceras elevan de 0 a 4 el recuento de cabeceras fuera de la lista estándar que usa el Random
+Forest. La Configuración~2 y la librería dentro de la 3b no son, por tanto, la misma medición, y el
+veredicto de la librería depende en parte de las cabeceras que agrega el despliegue. Tres payloads
+de Command Injection (\texttt{cmdi\_6}, \texttt{cmdi\_184} y \texttt{cmdi\_185}) no los bloquea
+ninguna configuración: el WAF no activa ninguna regla de CRS sobre ellos (puntaje de entrada 0
+frente al umbral de 5) y, en la Configuración~2, la clase de mayor probabilidad del Random Forest
+es benigna en \texttt{cmdi\_6} y, con las cabeceras del proxy, de ataque con probabilidad 0.3333 en
+\texttt{cmdi\_184} y \texttt{cmdi\_185}, a 0.0167 del umbral de 0.35 (a 0.05 en \texttt{cmdi\_185}
+sin cabeceras); no se investigó por qué. Los resultados respaldan dos afirmaciones con soportes distintos. La primera es que la librería
+agrega cobertura a un WAF: en la Ronda~5, que tiene filtrado contra el entrenamiento, la librería
+suma 48 de 800 payloads al WAF solo (6.0~\%; intervalo de Wilson al 95~\%: 4.6--7.9~\%) y bloquea
+48 de los 51 ataques que este no bloquea (94.1~\%; 84.1--98.0~\%); la Ronda~4 la corrobora con una
+muestra de 40 (37 de 40; 80.1--97.4~\%), con las salvedades de versión, ejecutor y solapamiento
+indicadas arriba. La segunda es que no se puede afirmar que la librería sustituya al WAF: en condiciones
+equiparadas el WAF suma 3 de 800 payloads a la librería (0.4~\%; 0.1--1.1~\%), y los 37 de 40 de la
+Ronda~4 miden la primera afirmación y no esta. Esa cautela no descansa en la cobertura medida sino
+en razones de prudencia, no de medición: la librería se evaluó solo en cuatro clases de ataque, de
+modo que no hay evidencia de cobertura fuera de ellas; su veredicto depende de un voto de árbol y de
+las cabeceras que agrega el despliegue (arriba); y la configuración recomendada para la población
+objetivo es el modo \texttt{monitor} hasta calibrar el umbral con el tráfico propio
+(recomendaciones~\ref{rec:monitor} y~\ref{rec:monitor-defecto}), por lo que la librería no puede ser
+la única capa que bloquea. Los bloqueos indebidos medidos en aplicaciones de terceros
+(Sección~\ref{sec:dis-despliegue}) sustentan esa recomendación, pero no demuestran que el WAF tenga
+menos falsos positivos, cuya tasa no se midió. Las Rondas 1 a 3 aportaron
+además un requisito de integración: la librería debe montarse después de los analizadores de
+cuerpo de la aplicación, porque con \texttt{multipart/form-data} procesado por ruta no veía el
+contenido de la petición.
+
+% ------------------------------------------------------------------------------
+\section{Contraste con los antecedentes y el marco teórico}
+
+Las métricas de clasificación de este trabajo están al nivel de las reportadas en los
+Antecedentes: F1 de 0.9956 en SQL Injection frente a un F1 de 0.98 del Random Forest de Peralta-Garcia et al.
+\cite{peralta2024sql}, y F1 de 0.9239 en Command Injection frente a una exactitud de 99.3~\% y un
+\textit{recall} de 98.2~\% de Wang et al. \cite{seyyar2024}\footnote{Wang et al. reportan 99.3~\% en
+el resumen y 99.21~\% en la comparación de la sección de resultados.}, cuyo modelo de aprendizaje
+profundo se evaluó en una GPU y no reporta latencia de inferencia ni despliegue como middleware. La comparación numérica directa tiene límites, porque los
+conjuntos de datos, las métricas y las unidades de análisis difieren. Las contribuciones de este
+trabajo están en lo que los anteriores no reportan. Frente al WAF de Durmuşkaya y Bayraklı \cite{durmuskaya2025waf}, el más cercano en arquitectura, \textit{logSguarDian} opera dentro del proceso sin un salto de red
+adicional; y, a diferencia de los trabajos revisados en los Antecedentes, este proyecto mide la latencia agregada
+bajo carga sostenida, evalúa la detección sobre payloads filtrados contra el entrenamiento y prueba
+la librería publicada en aplicaciones de terceros.
+
+Frente al Marco Teórico, los resultados confirman uno de sus planteamientos, respaldan en parte otro
+y obligan a matizar un tercero. Respaldan en parte el posicionamiento de un RASP como capa
+complementaria al WAF y no como su sustituto, con una salvedad: la Ronda~5 respalda que la librería, que analiza la petición dentro del
+proceso, agrega cobertura a un WAF perimetral (48 de 800 payloads), pero no que el WAF agregue
+cobertura a la librería (3 de 800 en condiciones equiparadas); que no pueda afirmarse su sustitución se
+sostiene en el alcance de cuatro clases de ataque, en la fragilidad del veredicto y en que la
+configuración recomendada es el modo \texttt{monitor} hasta calibrar
+(Sección~\ref{sec:dis-defensa}). Confirman también la descripción
+del Isolation Forest como detector que modela el tráfico legítimo y marca lo atípico: detecta el
+91.25~\% de los ataques del conjunto de prueba con 5.46~\% de falsos positivos. Obligan a matizar
+la expectativa de que ese detector aporte por sí solo a las variantes desconocidas, porque sus
+marcas sobre ataques que el Random Forest deja pasar existen (19 de 39 en validación \cite{valenzuela2026ia}) pero
+costarían 866 bloqueos indebidos, y por eso solo registra. La advertencia de Kapoor y Narayanan
+\cite{kapoor2023} sobre características no legítimas y conjuntos de prueba de la misma distribución
+que el entrenamiento resultó pertinente: la cabecera \texttt{User-Agent} y la saturación de
+casi-duplicados son ejemplos concretos en este corpus (Secciones~\ref{sec:dis-despliegue} y
+\ref{sec:dis-limitaciones}).
+
+% ------------------------------------------------------------------------------
+\section{Condiciones de despliegue}
+\label{sec:dis-despliegue}
+
+Dos evaluaciones adicionales, una de ellas con un criterio que no se cumple, delimitan las
+condiciones en que debe desplegarse.
+
+\textbf{Volumen de datos.} En un escenario no contemplado en el protocolo, pero evaluado contra el mismo criterio de 15~ms, con la base de datos
+sembrada y una ruta de listado que ya tardaba 63.84~ms sin middleware, el 7~\% de las peticiones
+terminó por tiempo de espera. Los tiempos de espera se concentraron al final de cada repetición,
+un patrón consistente con una cola que crece cuando el tiempo de servicio supera la tasa de
+llegada. El criterio de 15~ms no se cumple en este escenario ($\Delta p95$ de 6{,}495.46~ms), lo que
+limita el cumplimiento del objetivo general a las condiciones de carga normal y de ataque con
+respuestas de la aplicación cortas; identifica el límite operativo de la versión actual y
+orienta su siguiente iteración.
+
+\textbf{Calibración con tráfico real.} En tres aplicaciones de terceros, con la configuración por
+defecto, la librería bloqueó entre el 92.5~\% y el 100~\% del tráfico legítimo probado con un
+\texttt{User-Agent} de navegador, con muestras pequeñas o poco diversas (5 peticiones en DVNA; 50
+dirigidas a una sola ruta en node-api-goat); en Juice Shop, en modo \texttt{monitor}, el modelo asignó
+veredicto de bloqueo al 97.1~\%, y en el estudio con navegadores reales se bloquearon 13 de 15
+combinaciones de \texttt{User-Agent} (Cuadro~\ref{tab:res-terceros-ua}). La exclusión por fuente del trabajo del componente de Inteligencia Artificial
+\cite{valenzuela2026ia}, con modelos distintos del evaluado, apunta en el mismo
+sentido: sin \texttt{modsec\_learn}, \texttt{payloads\_csv} o \texttt{xss\_dataset} en el entrenamiento, el
+bloqueo de sus filas legítimas sube de 0.1~\%, 0.4~\% y 0.2~\% a 76.0~\%, 27.0~\% y 94.5~\%. El Alcance definió la validación en el entorno
+controlado como criterio principal y la validación externa como escenario complementario; estas
+pruebas, realizadas por recomendación del asesor, cumplen ese papel complementario y aportan el
+dato que el entorno controlado no podía dar. La hipótesis principal es un sesgo de representación
+del corpus: solo el 0.4~\% de las filas legítimas tiene una cabecera \texttt{User-Agent} de más de
+40 caracteres, frente al 33.3--97.7~\% de las clases de ataque, y esa característica es la de mayor
+contribución en el modelo vigente (\texttt{rf\_v11}) según el análisis SHAP \cite{lundberg2017unified,valenzuela2026ia}, y lo era también en
+\texttt{rf\_v3}. Esa hipótesis no es la única explicación: con el \texttt{User-Agent} por defecto de
+Node.js, dvws-node bloqueó el 75~\% del tráfico legítimo, y Juice Shop el 39.4~\% con cURL, de modo
+que el \texttt{User-Agent} amplifica el bloqueo sin explicarlo por completo, y no se verificó con un
+corpus legítimo alternativo. Kapoor y Narayanan describen este tipo
+de característica, que codifica el origen de los datos y no la propiedad de interés, como no
+legítima, y advierten que un conjunto de prueba de la misma distribución que el entrenamiento no
+representa la distribución de interés \cite{kapoor2023}. Si la hipótesis se confirma, el hallazgo sería corregible con datos y
+calibración, sin cambiar la arquitectura, y define la configuración recomendada para la población
+objetivo: instalación en modo \texttt{monitor} y calibración del umbral con el tráfico propio antes
+de activar el bloqueo.
+
+\textbf{Cabeceras que agrega el despliegue.} El Random Forest se compone de 30 árboles y, en los
+casos límite medidos, sus probabilidades son múltiplos de 1/30 (0.3333 y 0.3667); como el umbral de
+0.35 cae entre 10 y 11 árboles, en esos casos un solo árbol, movido por el recuento de cabeceras
+fuera de la lista estándar (\texttt{unusual\_headers\_count}), decide el bloqueo
+(Sección~\ref{anx:sensibilidad}). Es un artefacto de despliegue análogo al sesgo de la cabecera
+\texttt{User-Agent}, y no se midió la importancia de esa característica en el modelo.
+
+% ------------------------------------------------------------------------------
+\section{Cumplimiento de los objetivos}
+
+El Cuadro~\ref{tab:dis-cumplimiento} resume el cumplimiento de cada objetivo frente a su criterio
+de aceptación y la evidencia que lo sustenta.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|L{2.4cm}|L{1.9cm}|L{8.5cm}|}
+\hline
+\textbf{Objetivo} & \textbf{Estado} & \textbf{Evidencia principal} \\ \hline
+OE1 & Cumplido & Cuatro vectores mapeados a OWASP Top 10 2021 y MITRE ATT\&CK con fuente oficial; cinco clases canónicas que estructuran el dataset y la evaluación. \\ \hline
+OE2 & Cumplido & 383{,}202 muestras etiquetadas (3.8 veces el mínimo) de siete fuentes auditadas, dos listas públicas y conjuntos propios, con etiquetado determinista y partición verificada. \\ \hline
+OE3 & Cumplido, con reservas en la cobertura & F1 de 0.9239 a 0.9956 en 4 de 4 categorías; Isolation Forest con 91.25~\% de detección y 5.46~\% de falsos positivos; cobertura sobre payloads no vistos de 92.5 a 100~\% en las cuatro categorías con el paquete vigente 0.1.1 y el ejecutor corregido (Path Traversal 200/200, intervalo 98.1--100.0~\%; XSS 200/200, 98.1--100.0~\%). XSS: cumplido en cobertura (n=200); la explotabilidad confirmada sigue siendo n=1. Reservas: la medición de Path Traversal y de Command Injection se hizo sobre el corpus que reveló los defectos de medición, y la de XSS sobre un corpus construido después de conocer los resultados de la Ronda~5. \\ \hline
+Objetivo general & Cumplido de forma parcial & Librería publicada en npm; variantes no vistas sobre el criterio de 80~\% con el Random Forest; extracción de 0.0273~ms y $\Delta p95$ de 12.08 y 12.85~ms. No se cumplen memoria (+332~MiB), CPU (+89~pp) ni la carga de volumen; el aporte del Isolation Forest a las variantes solo tiene evidencia indirecta (19 de 39 en validación). \\ \hline
+\end{tabular}
+\caption[Cumplimiento de los objetivos]{Cumplimiento de los objetivos frente a sus criterios de aceptación}
+\label{tab:dis-cumplimiento}
+\end{table}
+{\footnotesize Nota. Elaboración propia con base en el Capítulo~\ref{cap:resultados}.}
+
+% ------------------------------------------------------------------------------
+\section{Hipótesis y validación de la solución}
+\label{sec:dis-validacion}
+
+El protocolo y el capítulo de Objetivos no formulan una hipótesis estadística contrastable, de
+modo que no corresponde aceptarla o rechazarla. El objetivo general cumple ese papel como
+afirmación de factibilidad: que un middleware de aprendizaje automático distribuido como paquete
+npm puede detectar y clasificar ataques web sin comprometer el rendimiento del servidor anfitrión.
+La evidencia respalda la primera parte (la detección y clasificación) y la mitad de la segunda
+(la latencia en carga normal y de ataque), y no respalda el resto: los recursos de memoria y CPU,
+el escenario de volumen y el comportamiento con tráfico legítimo real sin calibración previa. La
+afirmación queda, por tanto, respaldada de forma parcial.
+
+La validación de la solución combinó cuatro niveles de prueba. A nivel funcional, pruebas
+automatizadas en integración continua (incluida la paridad numérica entre Python y ONNX) y la
+instalación del paquete empaquetado en un directorio limpio contra una aplicación Express real.
+A nivel de clasificación, la lectura del conjunto de prueba bloqueado por hash. A nivel de sistema,
+las cuatro configuraciones de defensa sobre la aplicación de referencia, con un corpus filtrado
+contra el entrenamiento, y el benchmark de rendimiento en Linux nativo con cinco repeticiones por
+condición. Y a nivel externo, la integración en aplicaciones de terceros. Los criterios de
+aceptación se aplicaron tal como los fijaron el Alcance y la Metodología, y el
+Cuadro~\ref{tab:dis-cumplimiento} registra el estado de cada uno. Los dos niveles que más
+información aportaron fueron el corpus
+filtrado, que redujo la cobertura atribuible de Command Injection de 100~\% a 91.5~\%, y las
+aplicaciones de terceros, una validación complementaria, que mostraron que las métricas del corpus no predicen el comportamiento
+con tráfico legítimo real. Dos explicaciones quedan como posibles y no comprobadas: que el sesgo de
+la cabecera \texttt{User-Agent} sea la causa principal de los bloqueos indebidos, y que el costo de
+memoria y CPU se deba a la arquitectura de hilos y no a los modelos.
+
+% ------------------------------------------------------------------------------
+\section{Limitaciones}
+\label{sec:dis-limitaciones}
+
+Las amenazas a la validez descritas en la Sección~\ref{sec:met-validez} acotan el alcance de estas
+conclusiones. El conjunto de prueba se volvió a bloquear en cada generación del modelo y se leyó
+tres veces en la generación vigente; el corpus tiene una saturación de casi-duplicados que puede
+inflar las métricas, sobre todo las de SQL Injection (aproximadamente 395 veces más pares casi
+duplicados que filas, en una clase que es el 59.3~\% del conjunto de prueba) y que no se
+cuantificó; el origen de los datos restaurados no está registrado, y el
+17.8~\% de las filas de Command Injection del conjunto de prueba proviene de conjuntos sintéticos
+sin generador versionado. Las evaluaciones usaron tres pares de modelos con la misma arquitectura
+de ejecución pero no con la misma entrada (67 y 61 características en el par A; 69 y 63 en los otros dos), y el paquete con el que se hizo la medición principal de cobertura y se probaron las aplicaciones de terceros, el 0.1.0, no contiene el modelo cuyas
+métricas de prueba se reportan, que solo está en la versión 0.1.1, posterior a esas mediciones.
+La cobertura del modelo vigente sobre el corpus limpio no proviene de una evaluación estrictamente
+ciega, y cada medición de cobertura corresponde a una sola corrida. La cobertura de
+Path Traversal y de Command Injection con el paquete 0.1.1 se midió sobre el corpus que reveló los
+defectos; las mediciones del paquete 0.1.0 y del tarball de validación se hicieron con el ejecutor
+anterior y no se repitieron; la cobertura de XSS se midió sobre un corpus construido después de
+conocer los resultados de la Ronda~5 y la explotabilidad confirmada descansa en un único caso; y
+quedó pendiente la validación con una startup en producción. Estas
+limitaciones no modifican las cifras reportadas, pero cada una indica una verificación que
+fortalecería la evidencia en trabajos posteriores.
+
+% ------------------------------------------------------------------------------
+\section{Sugerencias derivadas de los resultados}
+\label{sec:dis-sugerencias}
+
+Los resultados sugieren las siguientes líneas, que se presentan como indicios que dan paso a las
+conclusiones y a las recomendaciones, no como compromisos ni instrucciones. Cada una indica la
+evidencia de la que parte.
+\begin{itemize}
+    \item \textbf{Instalar primero en modo \texttt{monitor}.} Los bloqueos de tráfico legítimo en
+    aplicaciones de terceros (92.5~\% en dvws-node con un \texttt{User-Agent} de navegador) sugieren
+    que la calibración con el tráfico propio debería preceder al bloqueo.
+    \item \textbf{Diversificar el corpus legítimo.} El 0.4~\% de filas legítimas con un
+    \texttt{User-Agent} largo, frente a hasta 97.7~\% en las clases de ataque, sugiere que la
+    representación de clientes HTTP es la primera variable que conviene probar.
+    \item \textbf{Medir el costo por componente.} Un incremento casi constante de 332~MiB entre
+    escenarios sugiere un costo fijo de la arquitectura, pero no permite repartirlo entre el Random
+    Forest, el Isolation Forest y el entorno de ejecución.
+    \item \textbf{Proteger al servidor ante saturación.} El patrón de tiempos de espera al final de
+    cada repetición del escenario de volumen sugiere una cola que crece; un mecanismo de
+    \textit{fail-open} por longitud de cola podría evitarlo.
+    \item \textbf{Repetir la medición con un corpus nuevo.} Que el 100~\% de Path Traversal se
+    obtuviera sobre el corpus que reveló los defectos sugiere confirmarlo con otra semilla antes de
+    atribuirlo a la librería.
+    \item \textbf{Aislar la contribución del Isolation Forest.} Que marque 19 de 39 ataques que el
+    Random Forest omite, a un costo de 866 bloqueos indebidos, sugiere evaluarlo fuera del conjunto
+    de validación y, quizá, con un umbral distinto.
+\end{itemize}
+
+\ifdefined\modoensamble
+\else
+	\section*{Referencias}
+	\printbibliography[heading=none]
+	\end{document}
+\fi

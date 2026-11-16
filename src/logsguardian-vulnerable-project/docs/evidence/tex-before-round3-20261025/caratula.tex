@@ -1,0 +1,74 @@
+% ==============================================================================
+% CARÁTULA (hoja blanca con datos institucionales)
+% ==============================================================================
+% Extraído del bloque \ifdefined\CAPcaratula de main.tex.
+%
+% NOTA sobre la línea de fecha: la plantilla original de UVG imprime
+% "Guatemala," y el año en líneas separadas (\\  + \vspace). Aquí se compone
+% en una sola línea ("Guatemala, mes del año") para igualar el formato de
+% referencia que se pidió replicar. \mesentrega se define en
+% 0-datos_estudiante.tex.
+\ifdefined\modoensamble
+\else
+	\input{0-preambulo_standalone}
+\fi
+
+\newpage
+\cleardoublepage\phantomsection
+\pagecolor{white}
+\color{black}
+\setcounter{page}{1}
+\pagenumbering{roman}
+\thispagestyle{empty}
+\begin{center}
+	\LARGE UNIVERSIDAD DEL VALLE DE GUATEMALA\\
+	\LARGE Facultad de \uvgfacultad \\[0.75cm]
+\end{center}
+\begin{figure}[h]
+	\begin{center}
+	\includegraphics[height=5.5 cm]{plantilla/escudoUVGnegro.eps}
+	\vspace{0.5in}
+	\end{center}
+\end{figure}
+\begin{center}
+	\Large \textbf{\nohyphens{\titulotesis}} \\
+	\vfill
+	\Large \nohyphens{Trabajo de graduación presentado por \nombreestudiante \ para optar al grado académico de Licenciado en \uvgcarrera} \\
+	\vfill
+	\large Guatemala, \mesentrega \ del \anoentrega
+\end{center}
+
+\ifdefined\printver
+	\blankpage
+	\blankpage
+
+	\newpage
+	\cleardoublepage\phantomsection
+	\pagecolor{white}
+	\color{black}
+	\setcounter{page}{1}
+	\pagenumbering{roman}
+	\thispagestyle{empty}
+	\begin{center}
+		\LARGE UNIVERSIDAD DEL VALLE DE GUATEMALA\\
+		\LARGE Facultad de \uvgfacultad \\[0.75cm]
+	\end{center}
+	\begin{figure}[h]
+		\begin{center}
+		\includegraphics[height=5.5 cm]{plantilla/escudoUVGnegro.eps}
+		\vspace{0.5in}
+		\end{center}
+	\end{figure}
+	\begin{center}
+		\Large \textbf{\nohyphens{\titulotesis}} \\
+		\vfill
+		\Large \nohyphens{Trabajo de graduación presentado por \nombreestudiante \ para optar al grado académico de Licenciado en \uvgcarrera} \\
+		\vfill
+		\large Guatemala, \mesentrega \ del \anoentrega
+	\end{center}
+\fi
+
+\ifdefined\modoensamble
+\else
+	\end{document}
+\fi

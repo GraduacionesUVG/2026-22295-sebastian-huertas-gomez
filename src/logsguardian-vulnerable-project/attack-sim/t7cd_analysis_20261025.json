@@ -1,0 +1,264 @@
+{
+  "t7c": {
+    "config1": {
+      "codificados": {
+        "k": 0,
+        "n": 105,
+        "p": 0.0,
+        "ic95": [
+          0,
+          0.0353
+        ]
+      },
+      "no_codificados": {
+        "k": 0,
+        "n": 95,
+        "p": 0.0,
+        "ic95": [
+          0,
+          0.0389
+        ]
+      }
+    },
+    "config2": {
+      "codificados": {
+        "k": 95,
+        "n": 105,
+        "p": 0.9048,
+        "ic95": [
+          0.8335,
+          0.9474
+        ]
+      },
+      "no_codificados": {
+        "k": 90,
+        "n": 95,
+        "p": 0.9474,
+        "ic95": [
+          0.8827,
+          0.9773
+        ]
+      }
+    },
+    "config3a": {
+      "codificados": {
+        "k": 80,
+        "n": 105,
+        "p": 0.7619,
+        "ic95": [
+          0.6721,
+          0.8332
+        ]
+      },
+      "no_codificados": {
+        "k": 84,
+        "n": 95,
+        "p": 0.8842,
+        "ic95": [
+          0.8045,
+          0.9341
+        ]
+      }
+    },
+    "config3b": {
+      "codificados": {
+        "k": 104,
+        "n": 105,
+        "p": 0.9905,
+        "ic95": [
+          0.948,
+          0.9983
+        ]
+      },
+      "no_codificados": {
+        "k": 93,
+        "n": 95,
+        "p": 0.9789,
+        "ic95": [
+          0.9265,
+          0.9942
+        ]
+      }
+    }
+  },
+  "t7d": {
+    "config1": {
+      "absolute_no_traversal": {
+        "k": 0,
+        "n": 15,
+        "p": 0.0
+      },
+      "raw": {
+        "k": 0,
+        "n": 25,
+        "p": 0.0
+      },
+      "url_single_or_mixed_case": {
+        "k": 0,
+        "n": 43,
+        "p": 0.0
+      },
+      "backslash": {
+        "k": 0,
+        "n": 25,
+        "p": 0.0
+      },
+      "null_byte_suffix": {
+        "k": 0,
+        "n": 29,
+        "p": 0.0
+      },
+      "overlong_utf8": {
+        "k": 0,
+        "n": 19,
+        "p": 0.0
+      },
+      "url_double_encoded": {
+        "k": 0,
+        "n": 23,
+        "p": 0.0
+      },
+      "dot_dot_bypass": {
+        "k": 0,
+        "n": 21,
+        "p": 0.0
+      }
+    },
+    "config2": {
+      "absolute_no_traversal": {
+        "k": 15,
+        "n": 15,
+        "p": 1.0
+      },
+      "raw": {
+        "k": 25,
+        "n": 25,
+        "p": 1.0
+      },
+      "url_single_or_mixed_case": {
+        "k": 43,
+        "n": 43,
+        "p": 1.0
+      },
+      "backslash": {
+        "k": 25,
+        "n": 25,
+        "p": 1.0
+      },
+      "null_byte_suffix": {
+        "k": 29,
+        "n": 29,
+        "p": 1.0
+      },
+      "overlong_utf8": {
+        "k": 19,
+        "n": 19,
+        "p": 1.0
+      },
+      "url_double_encoded": {
+        "k": 23,
+        "n": 23,
+        "p": 1.0
+      },
+      "dot_dot_bypass": {
+        "k": 21,
+        "n": 21,
+        "p": 1.0
+      }
+    },
+    "config3a": {
+      "absolute_no_traversal": {
+        "k": 14,
+        "n": 15,
+        "p": 0.9333
+      },
+      "raw": {
+        "k": 25,
+        "n": 25,
+        "p": 1.0
+      },
+      "url_single_or_mixed_case": {
+        "k": 43,
+        "n": 43,
+        "p": 1.0
+      },
+      "backslash": {
+        "k": 25,
+        "n": 25,
+        "p": 1.0
+      },
+      "null_byte_suffix": {
+        "k": 29,
+        "n": 29,
+        "p": 1.0
+      },
+      "overlong_utf8": {
+        "k": 19,
+        "n": 19,
+        "p": 1.0
+      },
+      "url_double_encoded": {
+        "k": 23,
+        "n": 23,
+        "p": 1.0
+      },
+      "dot_dot_bypass": {
+        "k": 19,
+        "n": 21,
+        "p": 0.9048
+      }
+    },
+    "config3b": {
+      "absolute_no_traversal": {
+        "k": 15,
+        "n": 15,
+        "p": 1.0
+      },
+      "raw": {
+        "k": 25,
+        "n": 25,
+        "p": 1.0
+      },
+      "url_single_or_mixed_case": {
+        "k": 43,
+        "n": 43,
+        "p": 1.0
+      },
+      "backslash": {
+        "k": 25,
+        "n": 25,
+        "p": 1.0
+      },
+      "null_byte_suffix": {
+        "k": 29,
+        "n": 29,
+        "p": 1.0
+      },
+      "overlong_utf8": {
+        "k": 19,
+        "n": 19,
+        "p": 1.0
+      },
+      "url_double_encoded": {
+        "k": 23,
+        "n": 23,
+        "p": 1.0
+      },
+      "dot_dot_bypass": {
+        "k": 21,
+        "n": 21,
+        "p": 1.0
+      }
+    }
+  },
+  "pt_style_counts": {
+    "absolute_no_traversal": 15,
+    "raw": 25,
+    "url_single_or_mixed_case": 43,
+    "backslash": 25,
+    "null_byte_suffix": 29,
+    "overlong_utf8": 19,
+    "url_double_encoded": 23,
+    "dot_dot_bypass": 21
+  }
+}

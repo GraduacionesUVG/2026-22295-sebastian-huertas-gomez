@@ -1,0 +1,322 @@
+{
+  "formula": "Wilson 95%: p=k/n; centro=(p+z^2/2n)/(1+z^2/n); margen=z*sqrt(p(1-p)/n+z^2/4n^2)/(1+z^2/n); z=1.959963984540054",
+  "global": {
+    "k": 200,
+    "n": 200,
+    "p": 1.0,
+    "ic95_low": 0.9811546736227335,
+    "ic95_high": 1.0
+  },
+  "por_estrato": {
+    "contexto": {
+      "attr_double": {
+        "k": 41,
+        "n": 41,
+        "p": 1.0,
+        "ic95_low": 0.9143,
+        "ic95_high": 1.0
+      },
+      "attr_single": {
+        "k": 44,
+        "n": 44,
+        "p": 1.0,
+        "ic95_low": 0.9197,
+        "ic95_high": 1.0
+      },
+      "attr_unquoted": {
+        "k": 23,
+        "n": 23,
+        "p": 1.0,
+        "ic95_low": 0.8569,
+        "ic95_high": 1.0
+      },
+      "html_body": {
+        "k": 47,
+        "n": 47,
+        "p": 1.0,
+        "ic95_low": 0.9244,
+        "ic95_high": 1.0
+      },
+      "html_comment": {
+        "k": 16,
+        "n": 16,
+        "p": 1.0,
+        "ic95_low": 0.8064,
+        "ic95_high": 1.0
+      },
+      "js_string": {
+        "k": 7,
+        "n": 7,
+        "p": 1.0,
+        "ic95_low": 0.6457,
+        "ic95_high": 1.0
+      },
+      "svg": {
+        "k": 13,
+        "n": 13,
+        "p": 1.0,
+        "ic95_low": 0.7719,
+        "ic95_high": 1.0
+      },
+      "url_href_src": {
+        "k": 9,
+        "n": 9,
+        "p": 1.0,
+        "ic95_low": 0.7009,
+        "ic95_high": 1.0
+      }
+    },
+    "vector": {
+      "event_onerror": {
+        "k": 37,
+        "n": 37,
+        "p": 1.0,
+        "ic95_low": 0.9059,
+        "ic95_high": 1.0
+      },
+      "event_onfocus_autofocus": {
+        "k": 15,
+        "n": 15,
+        "p": 1.0,
+        "ic95_low": 0.7961,
+        "ic95_high": 1.0
+      },
+      "event_onload_body": {
+        "k": 15,
+        "n": 15,
+        "p": 1.0,
+        "ic95_low": 0.7961,
+        "ic95_high": 1.0
+      },
+      "event_onmouseover": {
+        "k": 36,
+        "n": 36,
+        "p": 1.0,
+        "ic95_low": 0.9036,
+        "ic95_high": 1.0
+      },
+      "event_ontoggle": {
+        "k": 25,
+        "n": 25,
+        "p": 1.0,
+        "ic95_low": 0.8668,
+        "ic95_high": 1.0
+      },
+      "iframe_srcdoc": {
+        "k": 6,
+        "n": 6,
+        "p": 1.0,
+        "ic95_low": 0.6097,
+        "ic95_high": 1.0
+      },
+      "javascript_uri": {
+        "k": 9,
+        "n": 9,
+        "p": 1.0,
+        "ic95_low": 0.7009,
+        "ic95_high": 1.0
+      },
+      "script": {
+        "k": 21,
+        "n": 21,
+        "p": 1.0,
+        "ic95_low": 0.8454,
+        "ic95_high": 1.0
+      },
+      "svg_onload": {
+        "k": 36,
+        "n": 36,
+        "p": 1.0,
+        "ic95_low": 0.9036,
+        "ic95_high": 1.0
+      }
+    },
+    "funcion": {
+      "alert": {
+        "k": 28,
+        "n": 28,
+        "p": 1.0,
+        "ic95_low": 0.8794,
+        "ic95_high": 1.0
+      },
+      "confirm": {
+        "k": 31,
+        "n": 31,
+        "p": 1.0,
+        "ic95_low": 0.8897,
+        "ic95_high": 1.0
+      },
+      "document_cookie": {
+        "k": 18,
+        "n": 18,
+        "p": 1.0,
+        "ic95_low": 0.8241,
+        "ic95_high": 1.0
+      },
+      "eval_atob": {
+        "k": 32,
+        "n": 32,
+        "p": 1.0,
+        "ic95_low": 0.8928,
+        "ic95_high": 1.0
+      },
+      "fetch_externo": {
+        "k": 40,
+        "n": 40,
+        "p": 1.0,
+        "ic95_low": 0.9124,
+        "ic95_high": 1.0
+      },
+      "fromcharcode": {
+        "k": 29,
+        "n": 29,
+        "p": 1.0,
+        "ic95_low": 0.883,
+        "ic95_high": 1.0
+      },
+      "prompt": {
+        "k": 22,
+        "n": 22,
+        "p": 1.0,
+        "ic95_low": 0.8513,
+        "ic95_high": 1.0
+      }
+    },
+    "codificacion": {
+      "html_entities_dec": {
+        "k": 23,
+        "n": 23,
+        "p": 1.0,
+        "ic95_low": 0.8569,
+        "ic95_high": 1.0
+      },
+      "html_entities_hex": {
+        "k": 21,
+        "n": 21,
+        "p": 1.0,
+        "ic95_low": 0.8454,
+        "ic95_high": 1.0
+      },
+      "inline_comment": {
+        "k": 23,
+        "n": 23,
+        "p": 1.0,
+        "ic95_low": 0.8569,
+        "ic95_high": 1.0
+      },
+      "mixed_case": {
+        "k": 15,
+        "n": 15,
+        "p": 1.0,
+        "ic95_low": 0.7961,
+        "ic95_high": 1.0
+      },
+      "raw": {
+        "k": 14,
+        "n": 14,
+        "p": 1.0,
+        "ic95_low": 0.7847,
+        "ic95_high": 1.0
+      },
+      "slash_for_space": {
+        "k": 16,
+        "n": 16,
+        "p": 1.0,
+        "ic95_low": 0.8064,
+        "ic95_high": 1.0
+      },
+      "unicode_escape": {
+        "k": 18,
+        "n": 18,
+        "p": 1.0,
+        "ic95_low": 0.8241,
+        "ic95_high": 1.0
+      },
+      "url_double": {
+        "k": 25,
+        "n": 25,
+        "p": 1.0,
+        "ic95_low": 0.8668,
+        "ic95_high": 1.0
+      },
+      "url_single": {
+        "k": 25,
+        "n": 25,
+        "p": 1.0,
+        "ic95_low": 0.8668,
+        "ic95_high": 1.0
+      },
+      "whitespace_tab_newline": {
+        "k": 20,
+        "n": 20,
+        "p": 1.0,
+        "ic95_low": 0.8389,
+        "ic95_high": 1.0
+      }
+    },
+    "transporte": {
+      "json": {
+        "k": 68,
+        "n": 68,
+        "p": 1.0,
+        "ic95_low": 0.9465,
+        "ic95_high": 1.0
+      },
+      "multipart": {
+        "k": 68,
+        "n": 68,
+        "p": 1.0,
+        "ic95_low": 0.9465,
+        "ic95_high": 1.0
+      },
+      "urlencoded": {
+        "k": 64,
+        "n": 64,
+        "p": 1.0,
+        "ic95_low": 0.9434,
+        "ic95_high": 1.0
+      }
+    },
+    "campo": {
+      "bio": {
+        "k": 64,
+        "n": 64,
+        "p": 1.0,
+        "ic95_low": 0.9434,
+        "ic95_high": 1.0
+      },
+      "content": {
+        "k": 68,
+        "n": 68,
+        "p": 1.0,
+        "ic95_low": 0.9465,
+        "ic95_high": 1.0
+      },
+      "title": {
+        "k": 68,
+        "n": 68,
+        "p": 1.0,
+        "ic95_low": 0.9465,
+        "ic95_high": 1.0
+      }
+    },
+    "alert_literal": {
+      "con_alert": {
+        "k": 17,
+        "n": 17,
+        "p": 1.0,
+        "ic95_low": 0.8157,
+        "ic95_high": 1.0
+      },
+      "sin_alert": {
+        "k": 183,
+        "n": 183,
+        "p": 1.0,
+        "ic95_low": 0.9794,
+        "ic95_high": 1.0
+      }
+    }
+  },
+  "fallos_config2_run1": [],
+  "n_fallos": 0
+}

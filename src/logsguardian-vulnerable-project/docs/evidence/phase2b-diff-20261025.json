@@ -1,0 +1,87 @@
+{
+ "cmdi_112": {
+  "cuerpo_igual": true,
+  "objetivo_igual": true,
+  "solo_directa": {},
+  "solo_via_waf": {
+   "x-real-ip": "192.168.65.1",
+   "x-forwarded-for": "192.168.65.1",
+   "x-forwarded-port": "8080",
+   "x-forwarded-proto": "http"
+  },
+  "valor_distinto": {
+   "host": [
+    "127.0.0.1:9301",
+    "127.0.0.1"
+   ]
+  }
+ },
+ "cmdi_134": {
+  "cuerpo_igual": true,
+  "objetivo_igual": true,
+  "solo_directa": {},
+  "solo_via_waf": {
+   "x-real-ip": "192.168.65.1",
+   "x-forwarded-for": "192.168.65.1",
+   "x-forwarded-port": "8080",
+   "x-forwarded-proto": "http"
+  },
+  "valor_distinto": {
+   "host": [
+    "127.0.0.1:9301",
+    "127.0.0.1"
+   ]
+  }
+ },
+ "cmdi_31": {
+  "cuerpo_igual": true,
+  "objetivo_igual": true,
+  "solo_directa": {},
+  "solo_via_waf": {
+   "x-real-ip": "192.168.65.1",
+   "x-forwarded-for": "192.168.65.1",
+   "x-forwarded-port": "8080",
+   "x-forwarded-proto": "http"
+  },
+  "valor_distinto": {
+   "host": [
+    "127.0.0.1:9301",
+    "127.0.0.1"
+   ]
+  }
+ },
+ "cmdi_38": {
+  "cuerpo_igual": true,
+  "objetivo_igual": true,
+  "solo_directa": {},
+  "solo_via_waf": {
+   "x-real-ip": "192.168.65.1",
+   "x-forwarded-for": "192.168.65.1",
+   "x-forwarded-port": "8080",
+   "x-forwarded-proto": "http"
+  },
+  "valor_distinto": {
+   "host": [
+    "127.0.0.1:9301",
+    "127.0.0.1"
+   ]
+  }
+ },
+ "cmdi_6": {
+  "cuerpo_igual": true,
+  "objetivo_igual": true,
+  "solo_directa": {},
+  "solo_via_waf": {
+   "x-real-ip": "192.168.65.1",
+   "x-forwarded-for": "192.168.65.1",
+   "x-forwarded-port": "8080",
+   "x-forwarded-proto": "http"
+  },
+  "valor_distinto": {
+   "host": [
+    "127.0.0.1:9301",
+    "127.0.0.1"
+   ]
+  }
+ }
+}

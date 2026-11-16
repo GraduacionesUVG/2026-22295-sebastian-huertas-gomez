@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title><%= post.title %> — NotesApp</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<%- include('../_nav', { user: user }) %>
+<main>
+  <h1><%= post.title %></h1>
+  <p class="meta">
+    by <a href="/users/<%= post.user_id %>"><%= post.username %></a>
+    — <%= new Date(post.created_at).toLocaleDateString() %>
+  </p>
+
+  <%# VULNERABLE: raw-output tag renders post.content without HTML escaping — Stored XSS %>
+  <div class="post-content"><%- post.content %></div>
+
+  <% if (post.attachment) { %>
+    <p>
+      <a href="/posts/<%= post.id %>/attachment?file=<%= post.attachment %>">
+        Download attachment
+      </a>
+    </p>
+  <% } %>
+
+  <% if (user && (user.id === post.user_id || user.role === 'admin')) { %>
+    <div class="actions">
+      <a href="/posts/<%= post.id %>/edit" class="btn">Edit</a>
+      <form action="/posts/<%= post.id %>/delete" method="POST" style="display:inline">
+        <button type="submit" class="btn btn-danger"
+          onclick="return confirm('Delete this note?')">Delete</button>
+      </form>
+    </div>
+
+    <h3>Upload Attachment</h3>
+    <form action="/posts/<%= post.id %>/attachment" method="POST" enctype="multipart/form-data">
+      <input type="file" name="attachment">
+      <button type="submit">Upload</button>
+    </form>
+  <% } %>
+
+  <p><a href="/posts">&larr; Back to notes</a></p>
+</main>
+</body>
+</html>

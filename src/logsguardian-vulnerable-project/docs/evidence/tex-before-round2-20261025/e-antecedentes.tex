@@ -1,0 +1,199 @@
+% ==============================================================================
+% ANTECEDENTES
+% ==============================================================================
+% Contenido redactado y provisto directamente por el estudiante (no adaptado
+% del protocolo). Se aplicaron dos correcciones editoriales antes de
+% incorporarlo:
+%   1. La segunda tabla (comparativa de soluciones RASP) usaba columnas "l"
+%      sin ancho fijo con encabezados largos ("Detección de variantes
+%      desconocidas"), lo que se sale del margen de la página. Se cambió a
+%      columnas p{} con \small, igual que la primera tabla.
+%   2. La entrada bibliográfica mereani2019 traía \type{@article} con campos
+%      de conferencia (booktitle, organization); se corrigió a
+%      \type{@inproceedings}, que es el tipo correcto en biblatex para esos
+%      campos.
+\ifdefined\modoensamble
+\else
+	\input{0-preambulo_standalone}
+\fi
+
+\chapter{Antecedentes}
+
+\section{Estado del arte del problema}
+La detección automatizada de ataques a aplicaciones web mediante técnicas de aprendizaje
+automático ha sido un área de investigación activa desde al menos la década pasada, pero su
+consolidación como línea aplicable a arquitecturas de producción reales es reciente. La literatura
+puede organizarse en tres corrientes que convergen directamente en el problema que aborda este
+trabajo: (i) modelos de aprendizaje automático especializados en la detección de un vector de
+ataque específico (inyección SQL, XSS, path traversal o inyección de comandos) evaluados sobre
+conjuntos de datos aislados; (ii) soluciones comerciales de protección en tiempo de ejecución
+(RASP) orientadas a entornos empresariales con presupuesto de seguridad dedicado; y (iii) el
+contexto regulatorio y de madurez tecnológica de Guatemala, donde tanto la oferta de herramientas
+de seguridad accesibles como el marco legal que las incentivaría se encuentran en un estado
+incipiente. Ninguna de estas tres corrientes, por separado, resuelve el problema identificado en la
+sección 2 del protocolo de este trabajo: la ausencia de un mecanismo de detección multivector,
+integrado nativamente en el runtime de Node.js, distribuible sin costo y operable por equipos sin
+un analista de seguridad dedicado. Este capítulo revisa los antecedentes más relevantes de cada
+corriente, identifica sus aportes y limitaciones, y sintetiza el vacío de investigación que justifica la
+propuesta de \textit{logSguarDian}.
+
+\section{Contexto de ciberseguridad y marco regulatorio en Guatemala}
+El ecosistema tecnológico guatemalteco presenta una combinación de crecimiento acelerado en la
+adopción de aplicaciones web y ausencia casi total de controles de seguridad estructurados. El
+Índice de Delincuencia Organizada reporta un aumento de los delitos cibernéticos en el país que atribuye a la falta de regulación y
+control en internet \cite{lahora2025ley6347}. Esta carencia regulatoria no es un dato
+anecdótico: constituye en sí misma un antecedente directo del problema, porque en ausencia de
+un marco legal que obligue a las organizaciones a invertir en controles mínimos, la adopción de
+herramientas de seguridad depende exclusivamente de su accesibilidad económica y operativa, lo
+que es precisamente el vacío que este proyecto busca cerrar.
+
+Guatemala cuenta desde 2024 con la Iniciativa de Ley 6347, "Ley de Ciberseguridad", que propone
+la tipificación de nuevos delitos informáticos y la creación de un Centro de Respuesta a Incidentes
+de Seguridad Informática (CSIRT-GT) como órgano técnico nacional \cite{congreso2025dictamen}.
+La iniciativa recibió dictamen favorable de la Comisión de Asuntos de Seguridad Nacional en
+agosto de 2025 y fue aprobada en segunda lectura por el pleno del Congreso el 23 de septiembre
+de 2025; sin embargo, a la fecha de redacción de este documento permanece sin aprobación final,
+con su tercer debate reactivado hasta abril de 2026 tras más de seis meses de estancamiento
+\cite{lahora2026estancada}. Un análisis técnico-jurídico de la Alianza por un Congreso Eficiente sobre la iniciativa 6347 señaló
+además ambigüedades en varios tipos penales que comprometen el principio de legalidad y recomendó
+una revisión legislativa antes de su aprobación \cite{cien2025boletin}. Este antecedente
+regulatorio es relevante para el posicionamiento del proyecto por dos razones. Primero, confirma
+que, incluso si la ley se aprueba, su enfoque es punitivo y de respuesta institucional a incidentes,
+no preventivo a nivel de aplicación; no existe en la iniciativa ningún mecanismo que reduzca la
+brecha de herramientas de defensa activa para las startups que constituyen la mayoría del tejido
+empresarial guatemalteco. Segundo, mientras el marco legal no entre en vigor, la adopción de
+controles de seguridad en el país seguirá siendo enteramente voluntaria, lo que refuerza la
+necesidad de que dichos controles sean gratuitos y de instalación trivial para que exista algún
+incentivo real de adopción.
+
+\section{Trabajos académicos en detección de ataques web mediante aprendizaje automático}
+La aplicación de aprendizaje automático a la detección de ataques específicos de aplicaciones web
+ha producido resultados cuantitativos sólidos, pero con limitaciones estructurales consistentes en
+su diseño experimental. El Cuadro \ref{cuadro:trabajosprevios} resume los trabajos más
+relevantes para el contexto de este proyecto.
+
+\begin{table}[h]
+\small
+\begin{tabular}{|p{2.1cm}|p{1.6cm}|p{2.2cm}|p{1.6cm}|p{1.6cm}|p{3.3cm}|}
+\hline
+\textbf{Trabajo} & \textbf{Vector} & \textbf{Técnica} & \textbf{Dataset} & \textbf{Métrica} & \textbf{Limitación principal} \\ \hline
+Peralta-Garcia et al. \cite{peralta2024sql} & SQL Injection & Random Forest, árbol de decisión, SVM & Dataset público de 22{,}764 registros & Accuracy = 99~\%; F1 = 98~\% (Random Forest) & Solo cubre SQLi; el modelo se despliega en una arquitectura de microservicios que valida peticiones, es decir, como servicio separado de la aplicación \\ \hline
+Mereani \& Howe \cite{mereani2019} & XSS & SVM, k-NN, Random Forest & Código JavaScript etiquetado & No reportado & Clasifica código del lado del cliente, no parámetros de peticiones entrantes al servidor \\ \hline
+Wang et al. \cite{seyyar2024} & Command Injection & CCBA: CNN de doble canal, BiLSTM y atención & Dataset propio de inyección de comandos; evaluación cruzada en CSIC 2010 \cite{torrano2010csic} y HTTPParam & Accuracy = 99.3~\%; recall = 98.2~\% (dataset propio) & Modelo de aprendizaje profundo evaluado en una GPU; no reporta latencia de inferencia ni despliegue como middleware \\ \hline
+SAP node-rasp \cite{saparchive2019} & SQLi, NoSQLi, Path Traversal & Análisis léxico con reglas (no ML) & No aplica & No reportado & Requiere modificar el runtime de Node.js; abandonado desde LTS 10; no distribuible como paquete npm \\ \hline
+Durmuşkaya y Bayraklı \cite{durmuskaya2025waf} & SQLi, XSS, CMDi, LFI & Árbol de decisión (comparado con KNN, regresión logística, Naive Bayes y SVM) & CSIC 2010 \cite{torrano2010csic}, HTTPParams 2015 y conjunto propio & Accuracy = 93.27~\% (WAF en vivo) & Opera como proxy inverso externo (mitmproxy, Python); evaluado contra DVWA; sin cifra de latencia reportada \\ \hline
+\end{tabular}
+\caption[Comparativa de trabajos previos en detección de ataques web con ML]{Comparativa de trabajos previos en detección de ataques a aplicaciones web mediante aprendizaje automático}
+\label{cuadro:trabajosprevios}
+\end{table}
+{\footnotesize Nota. Elaboración propia con base en los trabajos citados en cada fila. Las métricas son las que reporta cada autor sobre sus propios datos y no son directamente comparables entre sí. WAF: \textit{Web Application Firewall}; SQLi: \textit{SQL Injection}; XSS: \textit{Cross-Site Scripting}; CMDi: \textit{Command Injection}; LFI: \textit{Local File Inclusion}.}
+
+El análisis de estos cinco trabajos revela un patrón consistente antes que hallazgos aislados. Con la excepción parcial de Durmuşkaya y Bayraklı \cite{durmuskaya2025waf}, quienes despliegan en su
+WAF un único árbol de decisión binario aunque evalúan el desempeño por vector con modelos separados,
+la totalidad de los trabajos revisados entrena y evalúa un clasificador por vector de ataque de forma
+independiente, sin considerar que en un escenario de producción real un mismo endpoint puede
+recibir simultáneamente intentos de inyección SQL, XSS y path traversal. Incluso el trabajo más cercano en arquitectura a la propuesta de este proyecto, el WAF de Durmuşkaya
+y Bayraklı \cite{durmuskaya2025waf}, resuelve el problema mediante un proxy inverso externo
+(mitmproxy, implementado en Python), lo que introduce un
+salto de red adicional y no captura el contexto interno del proceso Node.js (memoria del \texttt{event
+loop}, tiempos de procesamiento internos, encadenamiento de middlewares) que sí está disponible
+para una librería integrada directamente como middleware. Ninguno de los trabajos revisados
+reporta el impacto de su solución sobre la latencia del servidor protegido bajo carga sostenida, dato
+que es un criterio de aceptación explícito de este proyecto.
+
+Es pertinente señalar también una limitación metodológica: las métricas reportadas no son homogéneas entre los trabajos revisados (\textit{accuracy} y F1 en
+\cite{peralta2024sql}; \textit{accuracy} y \textit{recall} en \cite{seyyar2024}; \textit{accuracy} en \cite{durmuskaya2025waf}), lo que impide una comparación directa, y confiar en la
+\textit{accuracy} sola es una práctica problemática cuando los datasets de ataques suelen
+estar desbalanceados a favor del tráfico legítimo, ya que una accuracy alta puede ocultar una tasa
+de falsos negativos inaceptable para un sistema de seguridad en producción.
+
+\section{Soluciones RASP existentes: antecedentes tecnológicos}
+\label{sec:rasp-antecedentes}
+\label{sec:rasp-existentes}
+Además de los antecedentes académicos, es necesario revisar los desarrollos tecnológicos
+disponibles comercialmente bajo la categoría de Runtime Application Self-Protection (RASP), ya
+que representan el estado práctico de la industria frente al mismo problema. El Cuadro
+\ref{cuadro:rasp} compara las soluciones más relevantes.
+
+\begin{table}[h]
+\small
+\begin{tabular}{|p{2.4cm}|p{1.6cm}|p{2cm}|p{1.8cm}|p{2.6cm}|p{1.8cm}|}
+\hline
+\textbf{Solución} & \textbf{Soporte Node.js} & \textbf{Costo} & \textbf{Plataforma externa} & \textbf{Detección de variantes desconocidas} & \textbf{Operación autónoma} \\ \hline
+Contrast Protect \cite{contrastsecurity} & Sí & Licencia empresarial & Sí & Sí (IAST + RASP) & No \\ \hline
+Datadog App and API Protection (antes ASM; incorpora Sqreen) \cite{datadog2026nodejs,datadog2021sqreen} & Sí & Suscripción & Sí & Parcial & No \\ \hline
+OpenRASP (Baidu) \cite{baidu2026openrasp} & No & Gratuito & No & Limitado & Sí \\ \hline
+\textit{logSguarDian} (propuesto) & Sí & Gratuito (npm) & No & Sí (medida sobre corpus limpio) & Sí \\ \hline
+\end{tabular}
+\caption[Comparativa de soluciones RASP existentes]{Comparativa entre soluciones RASP comerciales existentes y la propuesta de este trabajo}
+\label{cuadro:rasp}
+\end{table}
+{\footnotesize Nota. Elaboración propia con base en la documentación de cada producto
+\cite{contrastsecurity,datadog2026nodejs,baidu2026openrasp}. Las columnas de costo, plataforma
+externa y detección de variantes desconocidas reflejan el criterio del autor y no una tarifa
+publicada.}
+
+Esta comparación establece un antecedente tecnológico claro: existe tecnología RASP madura en
+el mercado, pero ninguna de las soluciones revisadas combina soporte nativo para Node.js,
+gratuidad, y operación sin dependencia de una plataforma externa de análisis. Contrast Protect y Datadog, las opciones comerciales revisadas con soporte para Node.js, dependen, según el criterio del autor, de una plataforma del proveedor, lo que introduce costo recurrente y consideraciones de
+privacidad de datos que resultan prohibitivas para una startup guatemalteca sin presupuesto de
+seguridad. OpenRASP, la única alternativa gratuita entre las soluciones revisadas, ofrece agentes solo para
+Java y PHP \cite{baidu2026openrasp}, y su enfoque
+de detección basado en reglas es más limitado frente a variantes desconocidas que un clasificador
+entrenado sobre la distribución estadística de los ataques.
+
+\section{Análisis comparativo y vacíos identificados}
+La revisión conjunta de los antecedentes académicos y tecnológicos permite identificar tres brechas
+consistentes que ningún trabajo previo resuelve de forma simultánea.
+
+La primera es la \textbf{brecha de integración en runtime}. Los trabajos académicos de detección de
+SQLi y XSS revisados operan sobre datasets de cadenas de texto o payloads aislados, sin
+integrarse en el flujo de ejecución del servidor; incluso el WAF de Durmuşkaya y Bayraklı \cite{durmuskaya2025waf}, la propuesta arquitectónicamente
+más cercana entre las revisadas, opera como intermediario de red externo y no como componente interno del proceso Node.js. Esto significa que ninguno de estos
+sistemas ha sido validado bajo restricciones de latencia de producción con acceso al contexto
+interno completo de una petición HTTP.
+
+La segunda es la \textbf{brecha de cobertura multivector con enfoque unificado dentro del propio
+proceso de la aplicación}. Aunque Durmuşkaya y Bayraklı \cite{durmuskaya2025waf} sí cubren varios vectores de ataque (SQLi,
+XSS, inyección de comandos y LFI) en un mismo sistema, lo hacen desde un proxy inverso externo,
+entrenado con CSIC 2010 \cite{torrano2010csic}, HTTPParams 2015 y un conjunto propio, y evaluado contra DVWA, una
+aplicación de formularios, y no contra APIs REST modernas que transmiten payloads en cuerpos JSON en
+lugar de parámetros de URL. El resto de
+los trabajos académicos revisados aborda un único vector por sistema.
+
+La tercera es la \textbf{brecha de viabilidad operacional para organizaciones sin equipo de
+seguridad}, que es simultáneamente un vacío académico y comercial. Los trabajos académicos
+revisados reportan métricas de rendimiento del modelo pero no reportan impacto en latencia del
+servidor anfitrión ni consumo de memoria del proceso; las soluciones comerciales que sí resuelven
+estos aspectos operacionalmente lo hacen a un costo de licencia y de dependencia de
+infraestructura externa incompatible con el perfil de una startup guatemalteca. SAP node-rasp
+\cite{saparchive2019} es el único antecedente que intentó específicamente la protección en
+runtime de Node.js sin dependencias externas, pero su enfoque de modificar el binario del runtime
+lo hizo incompatible con entornos de producción estándar y fue abandonado sin soporte desde
+versiones posteriores a Node.js LTS 10.
+
+\section{Síntesis y relación con la propuesta de investigación}
+Los antecedentes revisados confirman que el problema abordado por este trabajo no es la ausencia
+de investigación en detección de ataques web mediante aprendizaje automático, tema que cuenta
+con una literatura considerable y en expansión activa, como lo demuestra la publicación de Durmuşkaya y Bayraklı \cite{durmuskaya2025waf} en 2025. El vacío real
+es la ausencia de una solución que combine simultáneamente cuatro condiciones que hasta ahora
+solo han sido resueltas de forma parcial y nunca en conjunto: integración nativa en el runtime de
+la aplicación en lugar de un componente de red externo, cobertura de múltiples vectores de ataque
+en un único pipeline de detección, gratuidad y distribución mediante un mecanismo trivial de
+instalación (\texttt{npm install}), y evaluación explícita del impacto en latencia y consumo de recursos
+como criterio de aceptación del sistema. A esto se suma el vacío de contexto local: en ausencia de
+un marco regulatorio vigente en Guatemala \cite{lahora2026estancada} y de herramientas
+adaptadas a la realidad operativa de las startups tecnológicas del país, la adopción de controles de
+seguridad depende enteramente de que existan opciones accesibles, lo cual no ha sido el caso
+hasta ahora. \textit{logSguarDian} se posiciona precisamente en la intersección de estos vacíos: no
+compite con las soluciones RASP empresariales ni pretende sustituir a los WAF perimetrales
+existentes, sino que ocupa el espacio que ninguno de los antecedentes revisados cubre
+completamente, proporcionando un mecanismo de detección multivector, integrado, gratuito y
+operable sin equipo de seguridad dedicado.
+
+\ifdefined\modoensamble
+\else
+	\section*{Referencias}
+	\printbibliography[heading=none]
+	\end{document}
+\fi

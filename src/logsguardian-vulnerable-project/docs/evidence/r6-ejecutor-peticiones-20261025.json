@@ -1,0 +1,49 @@
+{
+ "descripcion": "Peticiones construidas por el ejecutor anterior (00ea3a3^) y por el corregido, sin red, para los 590 payloads de la Ronda 4 (corpus de af61eba); se compara metodo, URL, cuerpo y cabeceras",
+ "por_categoria_y_transporte": [
+  {
+   "categoria": "cmdi",
+   "transporte": "POST formulario application/x-www-form-urlencoded",
+   "n": 200,
+   "identicas": 0,
+   "distintas": 200
+  },
+  {
+   "categoria": "path_traversal",
+   "transporte": "GET consulta",
+   "n": 200,
+   "identicas": 200,
+   "distintas": 0
+  },
+  {
+   "categoria": "sqli",
+   "transporte": "GET consulta",
+   "n": 77,
+   "identicas": 77,
+   "distintas": 0
+  },
+  {
+   "categoria": "xss",
+   "transporte": "POST formulario application/x-www-form-urlencoded",
+   "n": 113,
+   "identicas": 113,
+   "distintas": 0
+  }
+ ],
+ "ids_con_peticion_distinta_por_grupo_primeros_5": {
+  "cmdi|POST formulario application/x-www-form-urlencoded": [
+   "cmdi_0",
+   "cmdi_1",
+   "cmdi_2",
+   "cmdi_3",
+   "cmdi_4"
+  ]
+ },
+ "total_distintas": 200,
+ "tipos_de_payload_en_los_40": {
+  "('sqli', 'GET')": 11,
+  "('xss', 'POST')": 3,
+  "('path_traversal', 'GET')": 26
+ },
+ "los_40_con_peticion_distinta": []
+}

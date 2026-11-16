@@ -1,0 +1,277 @@
+{
+ "A1": {
+  "por_corrida": {
+   "run1": {
+    "sqli": [
+     200,
+     200,
+     [
+      98.1,
+      100.0
+     ]
+    ],
+    "path_traversal": [
+     200,
+     200,
+     [
+      98.1,
+      100.0
+     ]
+    ],
+    "cmdi": [
+     194,
+     200,
+     [
+      93.6,
+      98.6
+     ]
+    ],
+    "xss": [
+     200,
+     200,
+     [
+      98.1,
+      100.0
+     ]
+    ],
+    "total": [
+     794,
+     800,
+     [
+      98.4,
+      99.7
+     ]
+    ],
+    "status_distintos_frente_a_run1": []
+   },
+   "run2": {
+    "sqli": [
+     200,
+     200,
+     [
+      98.1,
+      100.0
+     ]
+    ],
+    "path_traversal": [
+     200,
+     200,
+     [
+      98.1,
+      100.0
+     ]
+    ],
+    "cmdi": [
+     194,
+     200,
+     [
+      93.6,
+      98.6
+     ]
+    ],
+    "xss": [
+     200,
+     200,
+     [
+      98.1,
+      100.0
+     ]
+    ],
+    "total": [
+     794,
+     800,
+     [
+      98.4,
+      99.7
+     ]
+    ],
+    "status_distintos_frente_a_run1": []
+   },
+   "run3": {
+    "sqli": [
+     200,
+     200,
+     [
+      98.1,
+      100.0
+     ]
+    ],
+    "path_traversal": [
+     200,
+     200,
+     [
+      98.1,
+      100.0
+     ]
+    ],
+    "cmdi": [
+     194,
+     200,
+     [
+      93.6,
+      98.6
+     ]
+    ],
+    "xss": [
+     200,
+     200,
+     [
+      98.1,
+      100.0
+     ]
+    ],
+    "total": [
+     794,
+     800,
+     [
+      98.4,
+      99.7
+     ]
+    ],
+    "status_distintos_frente_a_run1": []
+   }
+  },
+  "ids_con_veredicto_distinto_entre_las_tres_corridas": [],
+  "ids_con_status_distinto_entre_las_tres_corridas": []
+ },
+ "A2": {
+  "a_config2_con_cabeceras_run1": {
+   "total": 794,
+   "sqli": 200,
+   "path_traversal": 200,
+   "cmdi": 194,
+   "xss": 200
+  },
+  "b_descomposicion": {
+   "3b_menos_config2_sin_cabeceras": 13,
+   "efecto_cabeceras_neto_sobre_la_libreria": 10,
+   "aporte_waf_condiciones_equiparadas_3b_menos_config2_con_cabeceras": 3,
+   "ids_aporte_waf": [
+    "cmdi_51",
+    "cmdi_9",
+    "cmdi_94"
+   ],
+   "categorias_aporte_waf": {
+    "cmdi": 3
+   },
+   "los_3_los_bloquea_la_3a": [
+    "cmdi_51",
+    "cmdi_9",
+    "cmdi_94"
+   ],
+   "los_3_no_los_bloquea_la_config2_con_cabeceras": [
+    "cmdi_51",
+    "cmdi_9",
+    "cmdi_94"
+   ],
+   "config2_con_cabeceras_menos_3b": [],
+   "suma_comprobada": true
+  },
+  "c_cambios_por_cabeceras": {
+   "a_bloqueado": [
+    "cmdi_112",
+    "cmdi_120",
+    "cmdi_134",
+    "cmdi_155",
+    "cmdi_28",
+    "cmdi_31",
+    "cmdi_36",
+    "cmdi_38",
+    "cmdi_40",
+    "cmdi_66",
+    "cmdi_7",
+    "sqli_75"
+   ],
+   "a_no_bloqueado": [
+    "cmdi_51",
+    "cmdi_94"
+   ],
+   "brutos_a_bloqueado": 12,
+   "brutos_a_no_bloqueado": 2,
+   "neto": 10,
+   "entre_los_51_que_el_waf_no_bloquea": {
+    "a_bloqueado": [
+     "cmdi_112",
+     "cmdi_134",
+     "cmdi_31",
+     "cmdi_38"
+    ],
+    "a_no_bloqueado": [],
+    "neto": 4,
+    "categorias": {
+     "cmdi": 4
+    }
+   },
+   "entre_los_que_el_waf_si_bloquea": {
+    "a_bloqueado": [
+     "cmdi_120",
+     "cmdi_155",
+     "cmdi_28",
+     "cmdi_36",
+     "cmdi_40",
+     "cmdi_66",
+     "cmdi_7",
+     "sqli_75"
+    ],
+    "a_no_bloqueado": [
+     "cmdi_51",
+     "cmdi_94"
+    ],
+    "neto": 6,
+    "categorias_a_bloqueado": {
+     "cmdi": 7,
+     "sqli": 1
+    },
+    "categorias_a_no_bloqueado": {
+     "cmdi": 2
+    }
+   }
+  },
+  "d_cruce_51_waf_no_bloquea": {
+   "run1": {
+    "n": 51,
+    "config2_con_cabeceras_bloquea": 48,
+    "3b_bloquea": 48,
+    "ids_con_veredicto_distinto": [],
+    "coinciden": 51
+   },
+   "run2": {
+    "n": 51,
+    "config2_con_cabeceras_bloquea": 48,
+    "3b_bloquea": 48,
+    "ids_con_veredicto_distinto": [],
+    "coinciden": 51
+   },
+   "run3": {
+    "n": 51,
+    "config2_con_cabeceras_bloquea": 48,
+    "3b_bloquea": 48,
+    "ids_con_veredicto_distinto": [],
+    "coinciden": 51
+   }
+  },
+  "d_cruce_todos_los_800": {
+   "run1": {
+    "ids_distintos_frente_a_3b": [
+     "cmdi_51",
+     "cmdi_9",
+     "cmdi_94"
+    ]
+   },
+   "run2": {
+    "ids_distintos_frente_a_3b": [
+     "cmdi_51",
+     "cmdi_9",
+     "cmdi_94"
+    ]
+   },
+   "run3": {
+    "ids_distintos_frente_a_3b": [
+     "cmdi_51",
+     "cmdi_9",
+     "cmdi_94"
+    ]
+   }
+  }
+ }
+}

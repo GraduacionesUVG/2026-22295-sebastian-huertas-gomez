@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Panel — NotesApp</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<%- include('../_nav', { user: user }) %>
+<main>
+  <h1>Admin Panel</h1>
+
+  <section>
+    <h2>Statistics</h2>
+    <p>Total posts: <strong><%= postCount %></strong></p>
+    <p>Total users: <strong><%= users.length %></strong></p>
+  </section>
+
+  <section>
+    <h2>Users</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Username</th>
+          <th>Role</th>
+          <th>Joined</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% users.forEach(u => { %>
+          <tr>
+            <td><%= u.id %></td>
+            <td><a href="/users/<%= u.id %>"><%= u.username %></a></td>
+            <td><%= u.role %></td>
+            <td><%= new Date(u.created_at).toLocaleDateString() %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>Connectivity Diagnostic</h2>
+    <form action="/admin/ping" method="POST">
+      <label>Host to ping
+        <input type="text" name="host" placeholder="e.g. 8.8.8.8" required>
+      </label>
+      <button type="submit">Ping</button>
+    </form>
+    <% if (pingResult) { %>
+      <pre class="output"><%= pingResult %></pre>
+    <% } %>
+    <% if (pingError) { %>
+      <pre class="output error"><%= pingError %></pre>
+    <% } %>
+  </section>
+</main>
+</body>
+</html>

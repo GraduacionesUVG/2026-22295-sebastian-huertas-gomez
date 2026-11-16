@@ -1,0 +1,40 @@
+{
+  "metodo": "Para Config 3b, un bloqueo (status 403) se atribuye a logSguardian si existe una fila en detection_events (dentro del contenedor app, snapshot preservado antes de reiniciar) con verdict=block para ese metodo+ruta, excluyendo las filas identificables como los pings de login propios del arnes (predicted_class=benign, verdict=pass_anomaly, en /login GET y POST). Un bloqueo se atribuye al WAF si no hay fila correspondiente en detection_events (la peticion nunca llego a la app). No es un join por payload individual (detection_events no guarda un id de peticion) - es una atribucion a nivel de categoria, usando el conteo de eventos que SI llegaron a la app, restado del total de bloqueos de esa categoria.",
+  "fuente_detection_events": "attack-sim/events-config3b-run1-20261025.db (snapshot via better-sqlite3 .backup(), preservado antes de reiniciar el contenedor para la corrida 2)",
+  "fuente_waf_audit": "attack-sim/waf-audit-20261025/audit-config3b-run1-20261025.jsonl (797 lineas, ModSecurity audit JSON, RelevantOnly)",
+  "eventos_totales_en_detection_events": 56,
+  "eventos_de_login_del_arnes_excluidos": 3,
+  "por_categoria": {
+    "sqli": {
+      "total_bloqueado_3b": 200,
+      "eventos_app_bloqueo": 1,
+      "atribuido_logsguardian": 1,
+      "atribuido_waf": 199,
+      "nota": "coincide con Config 3a (199/200 bloqueado solo por WAF)"
+    },
+    "path_traversal": {
+      "total_bloqueado_3b": 200,
+      "eventos_app_bloqueo": 3,
+      "atribuido_logsguardian": 3,
+      "atribuido_waf": 197,
+      "nota": "coincide exactamente con Config 3a (197/200)"
+    },
+    "cmdi": {
+      "total_bloqueado_3b": 197,
+      "eventos_app_bloqueo": 33,
+      "atribuido_logsguardian": 33,
+      "atribuido_waf": 164,
+      "nota": "coincide exactamente con Config 3a (164/200) - el WAF-layer de 3b reproduce el valor de 3a de forma independiente, confirmando que la medicion unificada es consistente consigo misma"
+    },
+    "xss": {
+      "total_bloqueado_3b": 200,
+      "eventos_app_bloqueo": 11,
+      "atribuido_logsguardian": 11,
+      "atribuido_waf": 189,
+      "nota": "coincide exactamente con Config 3a (189/200)"
+    }
+  },
+  "confusion_de_clase_observada_en_admin_ping": {
+    "nota": "De los 37 eventos reales en /admin/ping (33 block + 3 pass_anomaly + 1 benign-pass_anomaly), 29 de los block y 2 de los pass_anomaly se etiquetaron predicted_class=sqli en vez de cmdi - mismo patron de confusion cmdi/sqli ya documentado en docs/config2-results-v1.md y k-resultados.tex:376-378. No afecta el conteo de bloqueo (verdict=block es lo que cuenta), solo la etiqueta de clase."
+  }
+}

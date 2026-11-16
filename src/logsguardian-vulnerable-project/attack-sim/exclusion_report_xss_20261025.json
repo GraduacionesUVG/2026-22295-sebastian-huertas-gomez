@@ -1,0 +1,29 @@
+{
+  "input_count": 200,
+  "kept_count": 200,
+  "discarded_count": 0,
+  "discard_reasons": {},
+  "discard_examples": [],
+  "training_files_read": [
+    "/Users/xtsebas/Universidad/logSguarDian/training/data_clean/capec.jsonl",
+    "/Users/xtsebas/Universidad/logSguarDian/training/data_clean/command_injection.jsonl",
+    "/Users/xtsebas/Universidad/logSguarDian/training/data_clean/modsec_learn.jsonl",
+    "/Users/xtsebas/Universidad/logSguarDian/training/data_clean/owasp_logs.jsonl",
+    "/Users/xtsebas/Universidad/logSguarDian/training/data_clean/patt_cmdi_curated.jsonl",
+    "/Users/xtsebas/Universidad/logSguarDian/training/data_clean/payload_full.jsonl",
+    "/Users/xtsebas/Universidad/logSguarDian/training/data_clean/payloads_csv.jsonl",
+    "/Users/xtsebas/Universidad/logSguarDian/training/data_clean/seclists_cmdi.jsonl",
+    "/Users/xtsebas/Universidad/logSguarDian/training/data_clean/synthetic_cmdi_compound.jsonl",
+    "/Users/xtsebas/Universidad/logSguarDian/training/data_clean/synthetic_cmdi_minimal_context.jsonl",
+    "/Users/xtsebas/Universidad/logSguarDian/training/data_clean/synthetic_cmdi_windows.jsonl",
+    "/Users/xtsebas/Universidad/logSguarDian/training/data_clean/synthetic_evasion.jsonl",
+    "/Users/xtsebas/Universidad/logSguarDian/training/data_clean/synthetic_multifield.jsonl",
+    "/Users/xtsebas/Universidad/logSguarDian/training/data_clean/synthetic_nav.jsonl",
+    "/Users/xtsebas/Universidad/logSguarDian/training/data_clean/synthetic_nav_ecommerce.jsonl",
+    "/Users/xtsebas/Universidad/logSguarDian/training/data_clean/telemetry_curated_2026-08-29.jsonl",
+    "/Users/xtsebas/Universidad/logSguarDian/training/data_clean/unified.jsonl",
+    "/Users/xtsebas/Universidad/logSguarDian/training/data_clean/xss_dataset.jsonl",
+    "/Users/xtsebas/Universidad/logSguarDian/data/seclists_command-injection-commix.txt"
+  ],
+  "training_records_read": 1355483
+}

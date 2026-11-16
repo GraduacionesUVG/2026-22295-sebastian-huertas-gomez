@@ -1,0 +1,128 @@
+% ==============================================================================
+% INTRODUCCIÓN
+% ==============================================================================
+% Adaptado de protocolo_sebastian_v1 (3).pdf, sección 1 "Descripción General
+% del Trabajo" y subsección 1.1 "Entorno tecnológico". Se conserva el
+% contenido y las citas del protocolo; se reescribió el registro (de
+% "protocolo" a capítulo de tesis) y se dejó fuera, a propósito, el detalle
+% exhaustivo de los cinco entregables y de la Definición del Problema
+% (protocolo, secciones 1 y 2): esos dos bloques se reservan para los
+% capítulos de Alcance/Metodología y Antecedentes/Justificación
+% respectivamente, para no duplicar contenido entre capítulos.
+%
+% El último párrafo (organización del documento) es una convención de
+% redacción estándar de introducciones de tesis, no contenido tomado del
+% protocolo.
+\ifdefined\modoensamble
+\else
+	\input{0-preambulo_standalone}
+\fi
+
+\pagenumbering{arabic}
+\setcounter{page}{1}
+\chapter{Introducción}
+
+Las aplicaciones web modernas exponen interfaces de programación cuya superficie de ataque incluye la inyección SQL, el \textit{Cross-Site Scripting}, el \textit{Path Traversal} y la inyección de comandos del sistema operativo. Estas categorías figuran entre los riesgos más críticos del estándar OWASP Top 10 \cite{owasp2021} y comparten una propiedad: la evidencia del ataque reside en una sola petición HTTP. Las \textit{startups} y empresas tecnológicas que desarrollan servicios sobre Node.js rara vez cuentan con un equipo de seguridad dedicado. Este trabajo parte de la premisa de que, para esas organizaciones, las soluciones perimetrales resultan costosas de operar y mantener. De ahí surge la necesidad de una herramienta de protección que opere dentro de la propia aplicación.
+
+El presente trabajo de graduación corresponde a la contribución individual de Sebastián
+Huertas Gómez al proyecto integrador \emph{logSguarDian}, desarrollado en paralelo con el
+estudiante Diego Valenzuela (carné 22309), quien presenta un trabajo independiente
+correspondiente al componente de Inteligencia Artificial del mismo proyecto. Ambos
+trabajos comparten el contexto general de \emph{logSguarDian}, pero los entregables,
+objetivos específicos, metodología y evaluación documentados en este informe corresponden
+exclusivamente a la contribución del autor en el área de ciberseguridad. Los puntos de
+integración técnica con el componente de Inteligencia Artificial se identifican
+explícitamente a lo largo del documento como interfaces (entrada/salida) y no como
+entregables propios.
+
+El trabajo consiste en el diseño, desarrollo e implementación de una librería de software
+distribuida a través de npm, orientada a la detección de amenazas de seguridad en
+endpoints de aplicaciones desarrolladas en Node.js. Esta integración tecnológica busca
+democratizar el acceso a capacidades avanzadas de Inteligencia Artificial, transformando la
+defensa tradicional y reactiva en un análisis probabilístico y predictivo en tiempo real. El
+proyecto tiene como finalidad proporcionar una solución accesible, automatizada y
+técnicamente fundamentada que permita a startups y empresas sin departamento formal de
+ciberseguridad fortalecer la protección de sus servicios web frente a ataques comunes y
+avanzados.
+
+La librería se integra como \textit{middleware} dentro de aplicaciones Node.js y analiza cada
+petición HTTP dirigida a los \textit{endpoints} antes de que alcance la lógica de negocio. Para limitar su impacto sobre el rendimiento del servidor, implementa un \textit{pipeline} de ingeniería de
+características que transforma cada petición en un vector numérico de 76 características y ejecuta
+la inferencia en hilos de trabajo (\texttt{worker\_threads}), fuera del \textit{event loop} de la
+aplicación. El análisis es petición a petición: el sistema no correlaciona peticiones entre sí, y
+las características temporales que calcula el extractor no forman parte de la entrada de los
+modelos. A partir de ese vector, el sistema identifica patrones asociados a inyección SQL (SQLi),
+\textit{Cross-Site Scripting} (XSS), \textit{Path Traversal}/\textit{Local File Inclusion} (LFI) e
+inyección de comandos del sistema operativo (\textit{Command Injection}, CMDi), y registra como anómalas
+las peticiones que se desvían de la distribución del tráfico legítimo.
+
+La detección se apoya en modelos de aprendizaje automático desarrollados por el componente de
+Inteligencia Artificial del proyecto, sobre criterios técnicos de ciberseguridad definidos en este
+trabajo: la selección de vectores de ataque y su alineación con OWASP y MITRE ATT\&CK. El componente
+de Inteligencia Artificial aporta un modelo híbrido: un clasificador supervisado (Random Forest) que
+clasifica las cuatro categorías de ataque y es el único con autoridad para bloquear una petición, y
+un detector de anomalías no supervisado (Isolation Forest) que modela el tráfico legítimo y marca en
+el registro las peticiones atípicas, sin bloquearlas. Ambos modelos se ejecutan dentro del proceso
+de la aplicación, sin servicios externos, y se entrenaron con un corpus etiquetado construido a
+partir de fuentes públicas, complementado con conjuntos sintéticos propios.
+
+El proyecto se sitúa en el entorno de aplicaciones web empresariales desarrolladas con
+Node.js, específicamente en interfaces de programación de aplicaciones (API) REST utilizadas por startups y empresas tecnológicas en
+Guatemala que carecen de un equipo dedicado de seguridad informática.
+
+\section*{Entorno tecnológico}
+
+Las startups y empresas tecnológicas guatemaltecas que constituyen el contexto de este
+proyecto comparten un conjunto de características de infraestructura bien definidas. En
+cuanto a proveedores de nube, la adopción regional se concentra principalmente en Amazon
+Web Services (AWS), Microsoft Azure y Google Cloud Platform (GCP), que en conjunto dominan
+el mercado global de infraestructura cloud con cuotas del 30~\%, 21~\% y 12~\% respectivamente en el cuarto trimestre de 2024 \cite{synergy2025cloud}. Para el contexto de este proyecto se asume que las startups guatemaltecas despliegan sobre alguno de
+estos tres proveedores o sobre proveedores de infraestructura más simples y de menor costo, como
+DigitalOcean o Linode. El diseño de la librería no depende de ningún proveedor, porque se ejecuta
+dentro del proceso de la aplicación.
+
+En términos de arquitectura, las startups con servicios basados en Node.js tienden a
+adoptar uno de tres patrones predominantes. El primero es la arquitectura monolítica
+modular con Express.js o Fastify, típica de equipos pequeños y proyectos en etapa inicial,
+donde todos los endpoints se sirven desde un único proceso Node.js desplegado en una
+instancia virtual (EC2, Droplet o equivalente). El segundo es la arquitectura de
+microservicios, en la que cada dominio funcional (autenticación, pagos, notificaciones) se
+implementa como un servicio independiente que expone su propia API REST o GraphQL, con
+comunicación entre servicios a través de HTTP o colas de mensajes como RabbitMQ. El tercer patrón es la arquitectura serverless, donde funciones individuales se despliegan en servicios como AWS Lambda o
+Google Cloud Functions, eliminando la gestión directa de servidores, pero introduciendo
+nuevos vectores de ataque a nivel de endpoint. Express.js, NestJS y Fastify figuran entre los frameworks web más usados según la encuesta de Stack
+Overflow de 2025 (19.9~\%, 6.7~\% y 2.9~\% del total de encuestados, respectivamente)
+\cite{stackoverflow2025survey}; a ellos se suma Koa, que esa encuesta no cuantifica.
+
+En todos estos patrones, los endpoints HTTP representan la superficie de ataque principal.
+Las aplicaciones suelen operar detrás de un proxy inverso como Nginx o un API Gateway
+administrado, pero la lógica de negocio y la validación de entradas recaen directamente
+sobre el código Node.js. La ausencia de departamentos de seguridad dedicados en la mayoría
+de estas organizaciones implica que estas capas de lógica raramente cuentan con mecanismos
+automatizados de detección de patrones anómalos, lo que constituye la brecha que este
+proyecto pretende cerrar.
+
+La solución propuesta se integra directamente en el ciclo de ejecución del servidor,
+actuando como una capa adicional de protección que complementa mecanismos tradicionales
+como validaciones de entrada y controles de autenticación. De esta manera, la librería no
+reemplaza la necesidad de buenas prácticas de desarrollo seguro, sino que funciona como un
+sistema de detección y apoyo a la gestión de riesgos en entornos con recursos limitados.
+
+\section*{Organización del documento}
+
+El resto del documento se organiza de la siguiente forma: el Capítulo~2 (Antecedentes) y el
+Capítulo~3 (Justificación) desarrollan el problema y las deficiencias de las soluciones existentes;
+el Capítulo~4 establece los objetivos y el Capítulo~5 delimita el alcance; el Capítulo~6 (Marco
+teórico) cubre los fundamentos de Node.js, de la seguridad de aplicaciones web y de las técnicas de
+detección empleadas; el Capítulo~7 (Metodología) describe el enfoque, los procedimientos y las
+métricas; los Capítulos~8 y~9 presentan y analizan los resultados; y los Capítulos~10 y~11 exponen las conclusiones y las recomendaciones. Los anexos reúnen la
+procedencia de los modelos y de los paquetes publicados, el historial de bloqueo del conjunto de
+prueba, la auditoría de fuentes y la evidencia de la corrida de latencia, y el glosario define los
+términos técnicos empleados.
+
+\ifdefined\modoensamble
+\else
+	\section*{Referencias}
+	\printbibliography[heading=none]
+	\end{document}
+\fi

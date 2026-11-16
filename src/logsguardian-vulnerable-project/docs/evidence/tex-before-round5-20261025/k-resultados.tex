@@ -1,0 +1,1085 @@
+% ==============================================================================
+% RESULTADOS
+% ==============================================================================
+% Organizado por objetivo (general, OE1, OE2, OE3), con un cuadro SMART al
+% inicio de cada uno. Cada cifra proviene de un artefacto del repositorio;
+% la fuente se indica en la nota de cada cuadro o figura.
+%
+% Fuentes principales (repositorio logSguarDian salvo indicación):
+%   - docs/cybersecurity-objectives-compliance.md (estado al 2026-10-02).
+%   - training/results/v11_test_results.json (lectura de prueba 2026-09-26).
+%   - training/models/parity_report.json (vigente, rf_v11/if_v10).
+%   - docs/results.md (A19, A24, F4.4).
+%   - benchmarks/results/extractor-2026-10-09T23-34-*.json (extractor, PR #97;
+%     reemplaza la cifra F1.8 de docs/results.md, que no tenía artefacto).
+%   - docs/vulnerable-projects-tests/ y docs/limitations.md (terceros).
+%   - logSguarDian-vulnerable-project: docs/config3b-results.md,
+%     attack-sim/ua_fp_study_results.json, exclusion_report.json.
+%
+% Imágenes: copiadas de docs/cibersecurity-images/ y training/results/ a
+% figuras/resultados/. Las capturas que muestran una generación de modelo o
+% un estado anterior se rotulan como tales en su leyenda; ninguna se
+% presenta como cifra vigente si no lo es.
+%
+% Se omitieron obj3-b (reporte de validación de una generación anterior,
+% redundante con obj3-a y con el cuadro vigente) y obj3-f (misma Ronda 4
+% que obj3-g, solo Configuración 2).
+\ifdefined\modoensamble
+\else
+	\input{0-preambulo_standalone}
+\fi
+
+\chapter{Resultados}
+\label{cap:resultados}
+
+Este capítulo presenta la evidencia obtenida mediante los procedimientos del
+Capítulo~\ref{cap:metodologia}, organizada por objetivo: primero el objetivo general y después
+los tres objetivos específicos. Cada sección inicia con un cuadro que descompone el objetivo según
+los criterios SMART \cite{doran1981smart} (específico, medible, alcanzable, relevante y temporal) y asocia cada criterio
+con la evidencia correspondiente. A continuación se presentan los datos, mediciones y capturas que
+sustentan esa evidencia. Cuando un indicador tiene un criterio de aceptación, se indica si el valor
+medido lo cumple; la interpretación de los resultados se desarrolla en el capítulo de Análisis de resultados.
+
+Cada resultado indica el par de modelos ONNX con que se obtuvo, según el
+Cuadro~\ref{tab:pares-modelos}: las métricas sobre el conjunto de prueba, la evaluación en OWASP
+Juice Shop y las Configuraciones 2 y 3b de la medición unificada del 25 de octubre de 2026
+corresponden al par~C, que es el contenido del paquete 0.1.1; el paquete 0.1.0, la
+medición principal de cobertura sobre el corpus limpio y el estudio de \texttt{User-Agent}, al
+par~A; las aplicaciones DVNA, node-api-goat y
+dvws-node, con atribución probable al par~A, pues el modelo exacto de cada medición no consta en el
+repositorio; y el benchmark de rendimiento y la repetición de la Configuración~2 del 9 de
+septiembre, al par~B. Algunas
+capturas reflejan generaciones anteriores del modelo o del proyecto y se incluyen como valores
+iniciales para la comparación; su leyenda lo indica de forma explícita.
+
+% ==============================================================================
+\section{Objetivo general}
+\label{sec:res-og}
+
+El objetivo general establece: diseñar e implementar una librería npm que integre un pipeline de
+ingeniería de características y un modelo híbrido de aprendizaje automático capaz de detectar y
+clasificar amenazas conocidas y anomalías estadísticas en endpoints Node.js en tiempo de
+ejecución, sin comprometer el rendimiento del servidor anfitrión. El Cuadro~\ref{tab:res-smart-og}
+lo descompone según los criterios SMART.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|L{2.2cm}|L{5.2cm}|L{5.6cm}|}
+\hline
+\textbf{Criterio} & \textbf{Definición en el objetivo} & \textbf{Evidencia obtenida} \\ \hline
+Específico & Librería npm para Express con pipeline de características y modelo híbrido (Random
+Forest + Isolation Forest) & Paquete \texttt{logsguardian} publicado (0.1.0 y 0.1.1); extractor de 76
+características; RF con autoridad de bloqueo e IF de registro de anomalías
+(Sección~\ref{subsec:res-og-libreria}) \\ \hline
+Medible & Paridad ONNX $<$0.1~\%; extracción $\leq$5~ms; $\Delta p95_{\mathrm{abs}}\leq$15~ms;
+$\Delta$ memoria $\leq$150~MB (143.1~MiB); CPU $\leq$15~\% & Valores en los Cuadros~\ref{tab:res-paridad},
+\ref{tab:res-extractor}, \ref{tab:res-latencia} y \ref{tab:res-memoria} \\ \hline
+Alcanzable & Stack de código abierto, sin costo de licencias & Construido con Node.js,
+\texttt{onnxruntime-node}, SQLite, Docker y GitHub Actions, sin licencias de pago \\ \hline
+Relevante & Protección a nivel de aplicación para organizaciones sin equipo de seguridad &
+Instalación con un solo comando (\texttt{npm i logsguardian}); validación en cuatro aplicaciones de
+terceros (Sección~\ref{subsec:res-og-terceros}) \\ \hline
+Temporal & Mayo a octubre de 2026 & Publicación en npm el 30 de agosto de 2026 (0.1.0) y el 11 de octubre de 2026 (0.1.1); mediciones finales entre el 23 de septiembre y el 11 de octubre de 2026 \\ \hline
+\end{tabular}
+\caption[Criterios SMART del objetivo general]{Criterios SMART del objetivo general y evidencia asociada}
+\label{tab:res-smart-og}
+\end{table}
+{\footnotesize Nota. Elaboración propia.}
+
+\subsection{Librería publicada y verificación funcional}
+\label{subsec:res-og-libreria}
+
+La Figura~\ref{fig:res-npm} muestra el paquete publicado en el registro público de npm, en su
+versión 0.1.0, con licencia MIT, publicada el 30 de agosto de 2026. El 11 de octubre de 2026 se
+publicó la versión 0.1.1, hoy la vigente, que incorpora los modelos \texttt{rf\_v11} e
+\texttt{if\_v10} y la corrección del defecto de recodificación de la consulta
+(Cuadro~\ref{tab:pares-modelos}). La publicación se realiza de forma automática desde GitHub
+Actions al fusionar la rama \texttt{develop} en \texttt{main}, siempre que la versión local difiera
+de la publicada.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.92\textwidth]{resultados/obj0-a.png}
+\caption[Paquete logsguardian publicado en npm]{Página del paquete \texttt{logsguardian} en el registro público de npm (versión 0.1.0, captura previa a la publicación de la 0.1.1)}
+\label{fig:res-npm}
+\end{figure}
+{\footnotesize Nota. Captura de npmjs.com/package/logsguardian. Fecha de publicación según el registro de npm.}
+
+La Figura~\ref{fig:res-tests} muestra la estructura del monorepo (paquetes \texttt{core},
+\texttt{extractor} y \texttt{mlops}) y la ejecución de la suite de pruebas del extractor de
+características: 11 suites y 74 pruebas aprobadas, entre ellas las de determinismo,
+decodificación recursiva y Command Injection compuesto.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.92\textwidth]{resultados/obj0-b.png}
+\caption[Paquetes del monorepo y pruebas del extractor]{Paquetes del monorepo y resultado de la suite de pruebas del extractor de características}
+\label{fig:res-tests}
+\end{figure}
+{\footnotesize Nota. Captura de terminal, rama \texttt{feat/goals\_ciber}, repositorio \texttt{logSguarDian}.}
+
+La Figura~\ref{fig:res-cli} muestra la CLI de la librería ejecutada dentro del contenedor de la
+aplicación de referencia: \texttt{attacks list} cataloga los eventos clasificados por tipo (294
+SQLi, 181 Path Traversal, 90 XSS y 23 Command Injection en la base de eventos de esa sesión), y
+\texttt{attacks inspect sqli} muestra las métricas del modelo, las características de mayor
+importancia y ejemplos de payloads detectados. En esa captura, de \texttt{rf\_v3}, la característica
+de mayor importancia global del Random Forest es la longitud de la cabecera \texttt{User-Agent}
+(\texttt{ua\_length}, 0.0796). En el análisis SHAP \cite{lundberg2017unified,valenzuela2026ia} de \texttt{rf\_v11}, \texttt{ua\_length} es también
+la característica de mayor contribución media en las clases legítima (0.0866) y SQLi (0.0734).
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{resultados/obj3-d.png}
+\caption[CLI de logsguardian: attacks list e inspect]{Salida de los comandos \texttt{attacks list} y \texttt{attacks inspect sqli} de la CLI de \texttt{logsguardian}}
+\label{fig:res-cli}
+\end{figure}
+{\footnotesize Nota. Captura de terminal, 22 de septiembre de 2026. Las métricas que muestra
+\texttt{attacks inspect} en esta captura corresponden a \texttt{rf\_v3}; el archivo de métricas se
+actualizó después a \texttt{rf\_v11}, y la versión 0.1.1 del paquete ya lo incluye
+(Cuadro~\ref{tab:res-rf}).}
+
+La Figura~\ref{fig:res-e2e} muestra la suite de pruebas extremo a extremo, que envía por HTTP real
+100 payloads por clase a una aplicación Express con el middleware y los modelos ONNX publicados.
+Las ocho pruebas se aprobaron: 100~\% de bloqueo en SQLi, 98~\% en XSS, 99~\% en Path Traversal,
+96~\% en Command Injection y 2~\% de falsos positivos sobre peticiones legítimas. Como se indicó en
+la Sección~\ref{subsec:met-fuga}, este conjunto comparte payloads con el entrenamiento; por ello
+se presenta como verificación del funcionamiento extremo a extremo de la librería y no como
+medición de detección sobre payloads nuevos, que se reporta en la Sección~\ref{subsec:res-oe3-cobertura}.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.62\textwidth]{resultados/obj3-e.png}
+\caption[Suite de pruebas extremo a extremo]{Resultado de la suite de detección extremo a extremo (\texttt{pnpm run test:e2e})}
+\label{fig:res-e2e}
+\end{figure}
+{\footnotesize Nota. Captura de terminal, repositorio \texttt{logSguarDian}.}
+
+\subsection{Paridad de la serialización ONNX}
+
+El Cuadro~\ref{tab:res-paridad} presenta la paridad entre las predicciones de los modelos en
+Python y sus versiones ONNX, calculada sobre 1{,}000 muestras para los modelos vigentes. Las
+diferencias máximas son del orden de $10^{-7}$, por debajo del criterio de 0.1~\%. La
+Figura~\ref{fig:res-paridad} muestra el reporte de paridad y la prueba automatizada que compara
+\texttt{onnxruntime-node} con Python, con diferencia máxima de 0 en ambos modelos en esa captura, previa al reentrenamiento.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|L{4.6cm}|L{3.2cm}|L{3.2cm}|}
+\hline
+\textbf{Indicador} & \textbf{Random Forest} & \textbf{Isolation Forest} \\ \hline
+Versión del modelo & \texttt{rf\_v11} & \texttt{if\_v10} \\ \hline
+Características de entrada & 69 & 63 \\ \hline
+Diferencia máxima Python--ONNX & $1.01\times10^{-7}$ & $2.42\times10^{-7}$ \\ \hline
+Muestras comparadas & 1{,}000 & 1{,}000 \\ \hline
+Criterio ($<$0.1~\%) & Cumple & Cumple \\ \hline
+\end{tabular}
+\caption[Paridad entre modelos Python y ONNX]{Paridad entre las predicciones de los modelos en Python y en ONNX}
+\label{tab:res-paridad}
+\end{table}
+{\footnotesize Nota. Elaboración propia con datos de \texttt{training/models/parity\_report.json}.}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.72\textwidth]{resultados/obj3-k.png}
+\caption[Reporte y prueba de paridad ONNX]{Reporte de paridad ONNX y prueba automatizada de paridad entre Node.js y Python}
+\label{fig:res-paridad}
+\end{figure}
+{\footnotesize Nota. Captura de terminal, repositorio \texttt{logSguarDian}. La captura es previa al
+reentrenamiento del 26 de septiembre de 2026; los valores vigentes son los del
+Cuadro~\ref{tab:res-paridad}.}
+
+\subsection{Rendimiento: extracción de características y latencia}
+
+El Cuadro~\ref{tab:res-extractor} presenta el tiempo de extracción del vector de características
+por petición en dos series: la extracción directa en el hilo principal y la ida y vuelta completa
+a un \texttt{worker\_thread} que ejecuta el extractor, que corresponde a la forma en que el
+Alcance define el criterio. Cada serie se midió de forma serial sobre 2{,}000 iteraciones por tipo
+de petición, en tres corridas independientes. En tráfico mixto, el p95 fue de 0.0126~ms en la
+serie directa y de 0.0273~ms en la ida y vuelta al hilo; el mayor p95 de cualquier tipo de petición
+en la ida y vuelta fue de 0.0305~ms (XSS). Todos los valores están por debajo del criterio de 5~ms.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|L{2.9cm}|L{1.5cm}|L{1.5cm}|L{1.5cm}|L{1.5cm}|L{1.5cm}|L{1.5cm}|}
+\hline
+ & \multicolumn{3}{L{5.34cm}|}{\textbf{Directa, hilo principal (ms)}} & \multicolumn{3}{L{5.34cm}|}{\textbf{Ida y vuelta a \texttt{worker\_thread} (ms)}} \\ \hline
+\textbf{Tipo de petición} & \textbf{p50} & \textbf{p95} & \textbf{p99} & \textbf{p50} & \textbf{p95} & \textbf{p99} \\ \hline
+Legítima & 0.0103 & 0.0169 & 0.0409 & 0.0213 & 0.0304 & 0.0467 \\ \hline
+SQLi & 0.0092 & 0.0120 & 0.0340 & 0.0210 & 0.0275 & 0.0405 \\ \hline
+XSS & 0.0102 & 0.0135 & 0.0340 & 0.0226 & 0.0305 & 0.0430 \\ \hline
+Path Traversal & 0.0076 & 0.0097 & 0.0302 & 0.0162 & 0.0264 & 0.0377 \\ \hline
+Command Injection & 0.0090 & 0.0102 & 0.0314 & 0.0212 & 0.0283 & 0.0405 \\ \hline
+\textbf{Mixto} & \textbf{0.0097} & \textbf{0.0126} & \textbf{0.0350} & \textbf{0.0206} & \textbf{0.0273} & \textbf{0.0413} \\ \hline
+\end{tabular}
+\caption[Tiempo de extracción de características]{Tiempo de extracción del vector de características por petición, directa y con ida y vuelta a un \texttt{worker\_thread}}
+\label{tab:res-extractor}
+\end{table}
+{\footnotesize Nota. Elaboración propia con datos de \texttt{benchmarks/results/extractor-2026-10-09T23-34-*.json}
+(repositorio \texttt{logSguarDian}, commit \texttt{7b036bb}). Mediana de tres corridas; Apple M5,
+Node.js v25.6.0; 200 iteraciones de calentamiento descartadas por serie.}
+
+El Cuadro~\ref{tab:res-latencia} presenta la latencia del servidor anfitrión medida en Linux
+nativo (GitHub Actions, \texttt{ubuntu-latest}, 26 de septiembre de 2026), con cinco repeticiones
+por condición y la mediana como valor reportado. En los escenarios normal y de ataque, el
+incremento absoluto del p95 fue de 12.08~ms y 12.85~ms respectivamente, ambos por debajo del
+criterio de 15~ms. En el escenario de volumen, el criterio de 15~ms no se cumple: el p95 con middleware fue de 6{,}559.3~ms y el
+7.00~\% de las peticiones (1{,}824 de 26{,}048) terminó por tiempo de espera excedido; en las
+demás combinaciones de escenario y condición no hubo tiempos de espera excedidos. Los tiempos de
+espera se concentraron en los últimos intervalos de cada repetición.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|L{2.3cm}|L{1.6cm}|L{1.6cm}|L{1.7cm}|L{1.7cm}|L{2.6cm}|}
+\hline
+\textbf{Escenario} & \textbf{p95 base (ms)} & \textbf{p95 activo (ms)} & \textbf{$\Delta p95_{\mathrm{abs}}$ (ms)} & \textbf{$\Delta p95_{\mathrm{rel}}$} & \textbf{Tiempos de espera excedidos} \\ \hline
+Normal & 2.49 & 14.57 & 12.08 & +485.1~\% & 0 \\ \hline
+Ataque & 4.62 & 17.47 & 12.85 & +278.1~\% & 0 \\ \hline
+Volumen & 63.84 & 6{,}559.30 & 6{,}495.46 & +10{,}174.6~\% & 1{,}824 / 26{,}048 (7.00~\%) \\ \hline
+\multicolumn{3}{|L{6.3cm}|}{Criterio ($\Delta p95_{\mathrm{abs}}\leq$15~ms)} & \multicolumn{3}{L{6.8cm}|}{Cumple en normal y en ataque; no cumple en volumen} \\ \hline
+\end{tabular}
+\caption[Latencia p95 con y sin middleware]{Latencia p95 del servidor anfitrión con y sin middleware, Linux nativo}
+\label{tab:res-latencia}
+\end{table}
+{\footnotesize Nota. Elaboración propia con datos del flujo \texttt{latency-benchmark.yml}
+(repositorio \texttt{logSguarDian-vulnerable-project}). Mediana de cinco repeticiones; el p95 de
+cada repetición es el promedio ponderado de los p95 por intervalo posteriores al calentamiento.
+Corrida 36276690236 de GitHub Actions (2 vCPU, 7.8~GiB), par de modelos B; evidencia cruda en
+\texttt{docs/evidence/latency-linux-2026-09-26.tgz}.}
+
+Como valores iniciales, la Figura~\ref{fig:res-lat-hist} (paneles~\ref{fig:res-lat-hist-rel} y~\ref{fig:res-lat-hist-abs})
+presenta las mediciones previas en Docker Desktop sobre macOS, para cuatro variantes de la
+arquitectura de escritura y de espera del Isolation Forest. La variante publicada (híbrida)
+registró un incremento absoluto de 7 a 9~ms y relativo de +142~\% a +178~\%.
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[t]{0.52\textwidth}
+\centering
+\includegraphics[width=\textwidth]{resultados/obj3-h1.png}
+\caption{Incremento relativo}
+\label{fig:res-lat-hist-rel}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.46\textwidth}
+\centering
+\includegraphics[width=\textwidth]{resultados/obj3-h2.png}
+\caption{Incremento absoluto}
+\label{fig:res-lat-hist-abs}
+\end{subfigure}
+\caption[Latencia inicial en Docker Desktop por variante de arquitectura]{Incremento de latencia p95 por variante de arquitectura, mediciones iniciales en Docker Desktop sobre macOS}
+\label{fig:res-lat-hist}
+\end{figure}
+{\footnotesize Nota. Capturas de \texttt{docs/vulnerable-app-evaluation/config2-latency-evaluation.md}.
+Mediciones previas a la metodología en Linux nativo del Cuadro~\ref{tab:res-latencia}.}
+
+\subsection{Memoria y CPU}
+
+El Cuadro~\ref{tab:res-memoria} presenta la memoria y el uso de CPU del contenedor de la
+aplicación en la corrida de Linux nativo, con las muestras asignadas a cada repetición y el periodo
+de calentamiento excluido. La memoria se expresa en MiB, la unidad que reporta \texttt{docker
+stats}. Sin middleware, el contenedor usó en promedio entre 63 y 83~MiB; con el middleware activo,
+entre 395 y 459~MiB. El incremento pareado de memoria fue de 332.02~MiB bajo carga normal,
+331.86~MiB bajo carga de ataque y 375.92~MiB en el escenario de volumen. El criterio del protocolo
+es un incremento de 150~MB (143.1~MiB) como máximo, y el valor medido lo supera más de dos veces en
+los tres escenarios. El incremento de CPU fue de 88.93 puntos porcentuales bajo carga normal
+(+614~\%) y de 85.12 bajo carga de ataque (+530~\%), por encima del criterio de 15~\%. El incremento
+de memoria fue prácticamente igual en los escenarios normal y de ataque.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|L{1.8cm}|L{1.8cm}|L{1.8cm}|L{2.0cm}|L{2.0cm}|L{2.3cm}|}
+\hline
+\textbf{Escenario} & \textbf{Memoria base (MiB)} & \textbf{Memoria activo (MiB)} & \textbf{$\Delta$ memoria (MiB)} & \textbf{CPU base / activo (\%)} & \textbf{$\Delta$ CPU (pp; relativo)} \\ \hline
+Normal & 65.18 & 397.51 & +332.02 & 14.48 / 103.32 & +88.93 (+614~\%) \\ \hline
+Ataque & 63.22 & 394.78 & +331.86 & 16.07 / 101.25 & +85.12 (+530~\%) \\ \hline
+Volumen & 83.29 & 459.15 & +375.92 & 82.34 / 115.29 & +32.99 (+40~\%) \\ \hline
+\multicolumn{3}{|L{6.24cm}|}{Criterio: $\Delta$ memoria $\leq$150~MB (143.1~MiB); $\Delta$ CPU $\leq$15~\%} & \multicolumn{3}{L{7.14cm}|}{No cumple en ninguno de los escenarios} \\ \hline
+\end{tabular}
+\caption[Memoria y CPU con y sin middleware]{Memoria y CPU del contenedor de la aplicación con y sin middleware, Linux nativo}
+\label{tab:res-memoria}
+\end{table}
+{\footnotesize Nota. Elaboración propia con datos de \texttt{docs/evidence/resources\_summary.md}
+(repositorio \texttt{logSguarDian-vulnerable-project}), ventana A: periodo medido de cada
+repetición, primeros 15~s excluidos; media de cinco repeticiones por condición e incremento como
+media de las diferencias pareadas. Corrida 36276690236, par de modelos B, 2 vCPU. La memoria es
+la del contenedor completo, no solo la del proceso Node.js. Los valores de CPU superiores a 100~\%
+corresponden a más de un núcleo.}
+
+\subsection{Validación en aplicaciones de terceros}
+\label{subsec:res-og-terceros}
+
+El Cuadro~\ref{tab:res-terceros} presenta los resultados de integrar el paquete publicado en npm, entonces la versión 0.1.0 (atribución
+probable al par~A; el modelo exacto de cada medición no consta en el repositorio), en modo \texttt{block} y con la configuración por defecto, en tres aplicaciones vulnerables de
+terceros. En cada una se confirmó primero la explotabilidad sin protección. Las tasas de bloqueo en
+ataques se obtuvieron con el conjunto de payloads de la suite extremo a extremo
+(Sección~\ref{sec:met-validez}), y las tasas sobre tráfico legítimo con peticiones de cada
+aplicación. En modo \texttt{block}, la librería bloqueó entre el 92.5~\% y el 100~\% de los ataques y una proporción igual
+de alta del tráfico legítimo con \texttt{User-Agent} de navegador, aunque las muestras de tráfico legítimo difieren en tamaño y
+diversidad: en node-api-goat, las 50 peticiones se dirigieron a una sola ruta
+(\texttt{/hexToRgb}), y la medición de DVNA, con 5 peticiones, es preliminar.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|L{2.0cm}|L{2.4cm}|L{1.3cm}|L{1.3cm}|L{1.4cm}|L{1.3cm}|L{1.8cm}|}
+\hline
+\textbf{Aplicación} & \textbf{Arquitectura} & \textbf{SQLi} & \textbf{XSS} & \textbf{Path Trav.} & \textbf{CMDi} & \textbf{Legítimo bloqueado} \\ \hline
+DVNA \cite{appsecco2026dvna} & Express, EJS, MySQL & 38/40 & 39/40 & No aplica & 37/40 & 5/5 (100~\%)\textsuperscript{a} \\ \hline
+node-api-goat \cite{layro012026nodeapigoat} & API pura sin base de datos & No aplica & 49/50 & 50/50 & 48/50 & 50/50 (100~\%)\textsuperscript{b} \\ \hline
+dvws-node \cite{snoopysecurity2026dvwsnode} & Express, MongoDB/MySQL, SOAP/GraphQL & 40/40 & 37/40 & 40/40 & 40/40 & 37/40 (92.5~\%) \\ \hline
+\end{tabular}
+\caption[Bloqueo en aplicaciones de terceros]{Ataques y peticiones legítimas bloqueados en aplicaciones vulnerables de terceros}
+\label{tab:res-terceros}
+\end{table}
+{\footnotesize Nota. Elaboración propia con datos de \texttt{docs/vulnerable-projects-tests/}. "No
+aplica": la aplicación no expone un endpoint vulnerable a ese vector (verificado en el código).
+En node-api-goat, sin base de datos, la categoría SQLi no se evaluó como vulnerabilidad.
+\textsuperscript{a}Medición preliminar, $n=5$. \textsuperscript{b}50 valores distintos enviados a una
+sola ruta (\texttt{/hexToRgb}), todos con el \texttt{User-Agent} de Chrome 128; una comprobación con
+cinco peticiones y el mismo \texttt{User-Agent} bloqueó 4 de 5. Commits base evaluados, clonados el 30 de septiembre de 2026 y modificados con los cambios de integración y de compatibilidad registrados en \texttt{docs/vulnerable-projects-tests/}, sin commitear: DVNA \cite{appsecco2026dvna}, commit \texttt{9ba473a} (8 de noviembre de
+2023); node-api-goat \cite{layro012026nodeapigoat}, commit \texttt{868ee6c} (12 de agosto de 2024);
+dvws-node \cite{snoopysecurity2026dvwsnode}, commit \texttt{eb6e288} (7 de septiembre de 2026).}
+
+Dos resultados complementan el cuadro. En dvws-node, la tasa de bloqueo de tráfico legítimo fue
+de 75~\% (30/40) con el \texttt{User-Agent} por defecto de Node.js y de 92.5~\% (37/40) con un
+\texttt{User-Agent} de navegador. En OWASP Juice Shop, evaluada por el componente de IA en modo
+\texttt{monitor} con una copia local del paquete que contiene el par~C (\texttt{25b407e6...} y
+\texttt{5be28ee8...}), y no con el paquete del registro, el modelo habría bloqueado 303 de 312
+peticiones legítimas con \texttt{User-Agent} de navegador (97.1~\%) y 123 de 312 con cURL
+(39.4~\%). El Cuadro~\ref{tab:res-terceros-ua} reúne, para cada medición de bloqueo de tráfico legítimo, el
+modelo, el modo y el \texttt{User-Agent}, porque las cifras no son comparables entre sí si se omite
+alguna de esas tres condiciones. En modo \texttt{monitor} la librería no bloquea: la cifra es la
+proporción de peticiones a las que el modelo asignó veredicto de bloqueo.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|L{2.6cm}|L{2.2cm}|L{1.8cm}|L{3.0cm}|L{3.0cm}|}
+\hline
+\textbf{Aplicación} & \textbf{Modelo} & \textbf{Modo} & \textbf{User-Agent} & \textbf{Legítimo con veredicto de bloqueo} \\ \hline
+Juice Shop & Par~C & \texttt{monitor} & Navegador / cURL & 303/312 (97.1~\%) / 123/312 (39.4~\%) \\ \hline
+dvws-node & No consta & \texttt{block} & Navegador / Node.js por defecto & 37/40 (92.5~\%) / 30/40 (75~\%) \\ \hline
+node-api-goat & No consta & \texttt{block} & Chrome 128 & 50/50 en una ruta; 4/5 en una comprobación \\ \hline
+DVNA & No consta & \texttt{block} & No consta & 5/5, preliminar \\ \hline
+Aplicación de referencia (Artillery) & Par~B & \texttt{block} & Artillery & 0 bloqueos (0 de 6{,}300 por repetición) \\ \hline
+Aplicación de referencia (navegadores) & Par~A & \texttt{block} & 15 combinaciones de navegadores reales & 13/15 \\ \hline
+\end{tabular}
+\caption[Bloqueo de tráfico legítimo por condición]{Bloqueo de tráfico legítimo según aplicación, modelo, modo y \texttt{User-Agent}}
+\label{tab:res-terceros-ua}
+\end{table}
+{\footnotesize Nota. Elaboración propia con datos de \texttt{docs/vulnerable-projects-tests/} y de las corridas de latencia y de User-Agent del proyecto. ``No consta'': el modelo exacto de la medición no se registró; la atribución probable de las tres aplicaciones de terceros es el par~A.}
+
+En las tres aplicaciones de la tabla, la clase predicha de los ataques bloqueados
+difirió con frecuencia de la clase real; por ejemplo, en DVNA, 27 de los 37 Command Injection
+bloqueados se clasificaron como SQLi. Una quinta aplicación, OWASP NodeGoat, no se integró porque
+su imagen base (Node.js 12) es incompatible con los requisitos de la librería (Node.js $\geq$20).
+
+% ==============================================================================
+\section{Objetivo específico 1: evaluación de los vectores de ataque}
+\label{sec:res-oe1}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|L{2.2cm}|L{5.2cm}|L{5.6cm}|}
+\hline
+\textbf{Criterio} & \textbf{Definición en el objetivo} & \textbf{Evidencia obtenida} \\ \hline
+Específico & Cuatro vectores intra-request: SQLi, XSS, Path Traversal/LFI y Command Injection &
+Cinco clases canónicas (cuatro de ataque y una legítima) en la taxonomía del dataset \\ \hline
+Medible & Mapeo de cada vector a OWASP Top 10 2021 y MITRE ATT\&CK & 4/4 vectores mapeados a
+categoría OWASP, CWE y técnica ATT\&CK, verificados en fuente oficial \\ \hline
+Alcanzable & Marcos públicos y gratuitos & Páginas oficiales de OWASP y MITRE \\ \hline
+Relevante & Estructurar el dataset del OE2 y los criterios del OE3 & Las cinco clases definen la
+etiqueta de M1 y las categorías de todas las métricas del OE3 \\ \hline
+Temporal & Fase 1 (mayo de 2026) & Taxonomía versionada en junio de 2026 \\ \hline
+\end{tabular}
+\caption[Criterios SMART del objetivo específico 1]{Criterios SMART del objetivo específico 1 y evidencia asociada}
+\label{tab:res-smart-oe1}
+\end{table}
+{\footnotesize Nota. Elaboración propia.}
+
+El Cuadro~\ref{tab:res-smart-oe1} resume el objetivo. El mapeo de los cuatro vectores a CWE, OWASP
+Top 10 2021 y MITRE ATT\&CK se presenta en el Cuadro~\ref{cuadro:owasp-mitre-cwe} del Marco
+Teórico: SQL Injection, XSS y Command Injection corresponden a A03:2021 (Injection) y Path
+Traversal/LFI a A01:2021 (Broken Access Control). El Cuadro~\ref{tab:res-oe1} presenta cómo cada
+vector se materializó en el proyecto: su clase canónica, su origen en la fuente CAPEC del corpus, el
+endpoint de la aplicación de referencia donde se evaluó y la herramienta que generó sus payloads de
+evaluación.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|L{2.3cm}|L{2.0cm}|L{2.3cm}|L{3.4cm}|L{2.6cm}|}
+\hline
+\textbf{Vector} & \textbf{Clase canónica} & \textbf{Columna CAPEC} & \textbf{Endpoint de evaluación} & \textbf{Generación de payloads} \\ \hline
+SQL Injection & \texttt{sqli} & 66 & \texttt{GET /posts/search?q=}, \texttt{POST /login} & sqlmap \\ \hline
+XSS & \texttt{xss} & 242 (Code Injection) & \texttt{POST /posts}, \texttt{POST /profile} & Generador propio (semilla 20261025) \\ \hline
+Path Traversal/LFI & \texttt{path\_traversal} & 126 & \texttt{GET /posts/:id/ attachment?file=} & Generador propio \\ \hline
+Command Injection & \texttt{cmdi} & 88, 248 & \texttt{POST /admin/ping} & Generador propio \\ \hline
+\end{tabular}
+\caption[Materialización de los vectores en el proyecto]{Materialización de los cuatro vectores en la taxonomía del dataset y en el entorno de evaluación}
+\label{tab:res-oe1}
+\end{table}
+{\footnotesize Nota. Elaboración propia con datos de \texttt{training/label\_map.yaml} y del
+repositorio \texttt{logSguarDian-vulnerable-project}. La asignación de CAPEC-242 a \texttt{xss} es
+una decisión de mapeo del dataset, no una equivalencia conceptual. El corpus de XSS lo genera
+\texttt{generate\_xss.py} (400 candidatos, muestreo estratificado a 200, filtro de exclusión y
+auditoría de fuga) con la semilla 20261025 el 25 de octubre de 2026; la semilla y la fecha difieren
+de las de las otras tres categorías (20260923).}
+
+La Figura~\ref{fig:res-labelmap} muestra la taxonomía de cinco clases y el mapeo de las columnas
+CAPEC en el archivo versionado de etiquetas. La Figura~\ref{fig:res-featurespec} muestra un
+fragmento de la especificación del vector de características, que define cada característica, su
+fórmula y la categoría de ataque que discrimina; el vector completo tiene 76 características, de
+las cuales el Random Forest consume 69 y el Isolation Forest 63.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.68\textwidth]{resultados/obj1-a.png}
+\caption[Taxonomía de clases en label\_map.yaml]{Taxonomía canónica de cinco clases y mapeo de columnas CAPEC en \texttt{label\_map.yaml}}
+\label{fig:res-labelmap}
+\end{figure}
+{\footnotesize Nota. Captura de \texttt{training/label\_map.yaml}, repositorio \texttt{logSguarDian}.}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{resultados/obj1-b.png}
+\caption[Fragmento de la especificación de características]{Fragmento de la especificación del vector de características}
+\label{fig:res-featurespec}
+\end{figure}
+{\footnotesize Nota. Captura de \texttt{docs/feature-spec.md}, repositorio \texttt{logSguarDian}.}
+
+% ==============================================================================
+\section{Objetivo específico 2: dataset etiquetado}
+\label{sec:res-oe2}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|L{2.2cm}|L{5.2cm}|L{5.6cm}|}
+\hline
+\textbf{Criterio} & \textbf{Definición en el objetivo} & \textbf{Evidencia obtenida} \\ \hline
+Específico & Dataset de tráfico HTTP etiquetado con tráfico legítimo y las cuatro categorías &
+Corpus M1 con cinco clases presentes en las tres particiones \\ \hline
+Medible & Mínimo 100{,}000 muestras etiquetadas & 383{,}202 muestras (Cuadro~\ref{tab:res-particiones}) \\ \hline
+Alcanzable & Fuentes públicas y conjuntos sintéticos & Siete fuentes públicas auditadas en el
+corpus, más dos listas públicas de payloads y conjuntos propios
+(Cuadro~\ref{tab:met-origenes}, Figura~\ref{fig:res-auditoria}) \\ \hline
+Relevante & Base de entrenamiento y validación representativa & Partición estratificada por clase y
+fuente con verificación de integridad \\ \hline
+Temporal & Fase 1 (mayo de 2026) & Corpus inicial en junio de 2026; regenerado hasta septiembre de
+2026 \\ \hline
+\end{tabular}
+\caption[Criterios SMART del objetivo específico 2]{Criterios SMART del objetivo específico 2 y evidencia asociada}
+\label{tab:res-smart-oe2}
+\end{table}
+{\footnotesize Nota. Elaboración propia.}
+
+El Cuadro~\ref{tab:res-smart-oe2} resume el objetivo. El Cuadro~\ref{tab:res-particiones} presenta
+el tamaño de cada partición del corpus vigente: 383{,}202 muestras etiquetadas, 3.8 veces el mínimo
+de 100{,}000 establecido. Las particiones de validación y de prueba tienen el mismo tamaño
+(57{,}481 filas) por la proporción 70/15/15.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|L{4.0cm}|L{2.8cm}|L{2.8cm}|}
+\hline
+\textbf{Partición} & \textbf{Filas} & \textbf{Proporción} \\ \hline
+Entrenamiento & 268{,}240 & 70~\% \\ \hline
+Validación & 57{,}481 & 15~\% \\ \hline
+Prueba & 57{,}481 & 15~\% \\ \hline
+\textbf{Total} & \textbf{383{,}202} & \textbf{100~\%} \\ \hline
+Criterio ($\geq$100{,}000) & \multicolumn{2}{L{6.0cm}|}{Cumple} \\ \hline
+\end{tabular}
+\caption[Tamaño de las particiones del corpus]{Tamaño de las particiones del corpus etiquetado}
+\label{tab:res-particiones}
+\end{table}
+{\footnotesize Nota. Elaboración propia con datos de \texttt{training/results/v11\_test\_results.json}
+y conteo directo de \texttt{training/splits/*.parquet}.}
+
+El Cuadro~\ref{tab:res-clases} presenta la distribución por clase en el conjunto de prueba. El
+corpus no está balanceado en conteos: SQLi representa el 59.3~\% de la partición y Command
+Injection el 2.6~\%. El desbalance se trató con ponderación de clases en el entrenamiento. Como
+referencia, antes de la deduplicación y el filtrado las fuentes crudas sumaban 974{,}718 filas
+(57.8~\% legítimas, 30.3~\% SQLi, 7.1~\% Path Traversal, 3.8~\% XSS y 0.9~\% Command Injection).
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|L{4.0cm}|L{2.8cm}|L{2.8cm}|}
+\hline
+\textbf{Clase} & \textbf{Filas} & \textbf{Proporción} \\ \hline
+\texttt{sqli} & 34{,}107 & 59.3~\% \\ \hline
+\texttt{benign} & 14{,}886 & 25.9~\% \\ \hline
+\texttt{xss} & 4{,}491 & 7.8~\% \\ \hline
+\texttt{path\_traversal} & 2{,}529 & 4.4~\% \\ \hline
+\texttt{cmdi} & 1{,}468 & 2.6~\% \\ \hline
+\textbf{Total} & \textbf{57{,}481} & \textbf{100~\%} \\ \hline
+\end{tabular}
+\caption[Distribución por clase del conjunto de prueba]{Distribución por clase del conjunto de prueba}
+\label{tab:res-clases}
+\end{table}
+{\footnotesize Nota. Elaboración propia con datos de \texttt{training/results/v11\_test\_results.json}.}
+
+La Figura~\ref{fig:res-train-dist} muestra la distribución por clase de la partición de
+entrenamiento en la generación del corpus previa a su regeneración del 12 de septiembre de 2026,
+con el mismo orden de magnitud por clase que la partición de prueba vigente.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.62\textwidth]{resultados/obj2-b.png}
+\caption[Distribución por clase de la partición de entrenamiento]{Carga de características y distribución por clase de la partición de entrenamiento}
+\label{fig:res-train-dist}
+\end{figure}
+{\footnotesize Nota. Captura de notebook de entrenamiento, repositorio \texttt{logSguarDian}.
+Generación previa a la regeneración del 12 de septiembre de 2026 (268{,}064 filas de entrenamiento y
+57{,}443 de validación); el tamaño vigente es el del Cuadro~\ref{tab:res-particiones}.}
+
+La Figura~\ref{fig:res-auditoria} muestra la tabla de auditoría de las nueve fuentes candidatas,
+con su licencia verificada, DOI, formato, número de registros, categorías cubiertas y decisión de
+inclusión. Se aprobaron ocho y se excluyó AIT-LDSv2; siete de las aprobadas aportan filas al corpus
+(Cuadro~\ref{tab:met-origenes}). La Figura~\ref{fig:res-parsers}
+muestra los nueve analizadores por fuente y el validador del esquema canónico, junto con los
+documentos de metodología de etiquetado, deduplicación y muestreo.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{resultados/obj1-c.png}
+\caption[Auditoría de fuentes del dataset]{Tabla de auditoría de las fuentes del dataset}
+\label{fig:res-auditoria}
+\end{figure}
+{\footnotesize Nota. Captura de \texttt{docs/dataset-audit.md}, repositorio \texttt{logSguarDian}.}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{resultados/obj2-e.png}
+\caption[Analizadores por fuente y documentación del etiquetado]{Analizadores por fuente y documentación de la metodología de etiquetado}
+\label{fig:res-parsers}
+\end{figure}
+{\footnotesize Nota. Captura de terminal, repositorio \texttt{logSguarDian}.}
+
+La Figura~\ref{fig:res-lock} muestra el historial de commits de bloqueo del conjunto de prueba, desde el inicial del 11 de junio
+hasta el de \texttt{rf\_v11} del 30 de agosto de 2026. No hay un único bloqueo por generación: el valor del bloqueo cambió nueve
+veces en total, la última el 23 de septiembre de 2026 (hash \texttt{7486c258...}), con el mismo
+cambio repartido en tres commits, y la lectura del 26 de septiembre verificó ese hash antes de cualquier
+inferencia.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.78\textwidth]{resultados/obj2-f.png}
+\caption[Historial de bloqueos del conjunto de prueba]{Historial de commits de bloqueo del conjunto de prueba}
+\label{fig:res-lock}
+\end{figure}
+{\footnotesize Nota. Captura de terminal, repositorio \texttt{logSguarDian}. El hash mostrado
+(\texttt{a3140ab3...}) corresponde al bloqueo del 30 de agosto de 2026, previo al bloqueo vigente.}
+
+% ==============================================================================
+\section{Objetivo específico 3: efectividad del sistema de detección}
+\label{sec:res-oe3}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|L{2.2cm}|L{5.2cm}|L{5.6cm}|}
+\hline
+\textbf{Criterio} & \textbf{Definición en el objetivo} & \textbf{Evidencia obtenida} \\ \hline
+Específico & Precisión, recall y F1 por categoría de ataque & Reporte de clasificación de
+\texttt{rf\_v11} sobre el conjunto de prueba bloqueado (Cuadro~\ref{tab:res-rf}) \\ \hline
+Medible & F1 $\geq$0.80 en al menos 3 de 4 categorías; cobertura $\geq$80~\% por categoría & F1
+entre 0.9239 y 0.9956 (4/4); cobertura entre 92.5~\% y 100~\% en las 4 categorías con el paquete 0.1.1 (85.0~\% en Path Traversal con la 0.1.0) \\ \hline
+Alcanzable & Conjunto de prueba bloqueado y entorno Docker reproducible & Lectura de prueba con
+verificación de hash; corpus limpio reproducible con semilla fija \\ \hline
+Relevante & Balance entre falsos negativos y falsos positivos sin analista dedicado & Falsos
+positivos medidos en el conjunto de prueba, en la suite E2E y con navegadores reales \\ \hline
+Temporal & Fases 4 y 5 (agosto a septiembre de 2026) & Lectura de prueba el 26 de septiembre;
+corpus limpio el 24 de septiembre de 2026 \\ \hline
+\end{tabular}
+\caption[Criterios SMART del objetivo específico 3]{Criterios SMART del objetivo específico 3 y evidencia asociada}
+\label{tab:res-smart-oe3}
+\end{table}
+{\footnotesize Nota. Elaboración propia.}
+
+El Cuadro~\ref{tab:res-smart-oe3} resume el objetivo según los criterios SMART.
+
+\subsection{Métricas de clasificación sobre el conjunto de prueba}
+
+El Cuadro~\ref{tab:res-rf} presenta las métricas del Random Forest \texttt{rf\_v11} (par C) sobre
+el conjunto de prueba bloqueado (57{,}481 filas), obtenidas en la lectura del 26 de septiembre de
+2026, que verificó el hash del conjunto y las sumas de verificación de los binarios evaluados. Fue la tercera lectura
+del conjunto de prueba para la generación \texttt{rf\_v11}; las dos anteriores se describen en la
+Sección~\ref{subsec:met-f2}. Las métricas asignan a cada petición la clase de mayor probabilidad,
+sin aplicar el umbral de bloqueo de 0.35. Las cuatro categorías de ataque superaron el
+criterio de F1 $\geq$0.80. El F1 más bajo fue el de Command Injection (0.9239) y el más alto el de
+SQLi (0.9956). La exactitud global fue de 0.9932 y el F1 macro de 0.9776. En la clase legítima, 23
+de 14{,}886 peticiones (0.15~\%) se clasificaron como ataque.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|L{3.2cm}|L{1.8cm}|L{1.8cm}|L{1.8cm}|L{1.8cm}|L{1.6cm}|}
+\hline
+\textbf{Clase} & \textbf{Precisión} & \textbf{Recall} & \textbf{F1} & \textbf{AUC-ROC} & \textbf{Soporte} \\ \hline
+\texttt{cmdi} & 0.9015 & 0.9475 & 0.9239 & 0.99901 & 1{,}468 \\ \hline
+\texttt{path\_traversal} & 0.9853 & 0.9798 & 0.9826 & 0.99899 & 2{,}529 \\ \hline
+\texttt{sqli} & 0.9955 & 0.9956 & 0.9956 & 0.99982 & 34{,}107 \\ \hline
+\texttt{xss} & 0.9950 & 0.9804 & 0.9877 & 0.99930 & 4{,}491 \\ \hline
+\texttt{benign} & 0.9984 & 0.9985 & 0.9984 & 0.99998 & 14{,}886 \\ \hline
+\textbf{Macro} & 0.9751 & 0.9804 & \textbf{0.9776} & --- & 57{,}481 \\ \hline
+\multicolumn{3}{|L{7.6cm}|}{Criterio (F1 $\geq$0.80 en $\geq$3 de 4)} & \multicolumn{3}{L{6.0cm}|}{Cumple (4 de 4)} \\ \hline
+\end{tabular}
+\caption[Métricas del Random Forest sobre el conjunto de prueba]{Métricas por clase del Random Forest (\texttt{rf\_v11}) sobre el conjunto de prueba bloqueado}
+\label{tab:res-rf}
+\end{table}
+{\footnotesize Nota. Elaboración propia con datos de \texttt{training/results/v11\_test\_results.json}
+(26 de septiembre de 2026). AUC-ROC en esquema uno contra el resto.}
+
+Como valor inicial, la Figura~\ref{fig:res-rfv3} muestra las métricas de \texttt{rf\_v3} sobre el
+conjunto de prueba de su generación (59{,}947 filas), con un F1 macro de 0.9682 y un F1 de 0.8954
+en Command Injection. Entre \texttt{rf\_v3} y \texttt{rf\_v11}, el F1 de Command Injection pasó de
+0.8954 a 0.9239, el de Path Traversal de 0.9671 a 0.9826, el de XSS de 0.9844 a 0.9877 y el de SQLi
+de 0.9955 a 0.9956. Las particiones de ambas generaciones no son idénticas.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.66\textwidth]{resultados/obj3-a.png}
+\caption[Métricas iniciales de rf\_v3]{Métricas por clase de \texttt{rf\_v3} sobre el conjunto de prueba de su generación (valor inicial)}
+\label{fig:res-rfv3}
+\end{figure}
+{\footnotesize Nota. Captura de \texttt{docs/decision-policy.md}, sección 2.1, repositorio \texttt{logSguarDian}.}
+
+La Figura~\ref{fig:res-cmdi-evol} muestra una de las iteraciones de la Fase~5 sobre la categoría
+de menor desempeño: la incorporación de 2{,}470 payloads reales y diversos de Command Injection en
+\texttt{v9}, que elevó el F1 de esa clase en validación de 0.89--0.90 a 0.9369, después de que el
+sobremuestreo sintético (SMOTE) produjera una mejora de solo 0.015.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\textwidth]{resultados/obj2-d.png}
+\caption[Evolución del F1 de Command Injection con datos reales diversos]{Evolución del desempeño en Command Injection al incorporar datos reales diversos (\texttt{v9})}
+\label{fig:res-cmdi-evol}
+\end{figure}
+{\footnotesize Nota. Captura de \texttt{docs/limitations.md}, sección 1.1, repositorio \texttt{logSguarDian}.}
+
+La Figura~\ref{fig:res-confusion} presenta la matriz de confusión del Random Forest sobre la
+partición de validación. La confusión más frecuente fue la de SQLi clasificada como Command
+Injection (106 casos), seguida de XSS clasificada como SQLi (56 casos).
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.74\textwidth]{resultados/rf_confusion_matrix.png}
+\caption[Matriz de confusión del Random Forest]{Matriz de confusión del Random Forest sobre la partición de validación}
+\label{fig:res-confusion}
+\end{figure}
+{\footnotesize Nota. Generada con scikit-learn \cite{pedregosa2011}; archivo
+\texttt{training/results/rf\_confusion\_matrix.png}, 26 de septiembre de 2026.}
+
+El Cuadro~\ref{tab:res-if} presenta las métricas del Isolation Forest sobre el mismo conjunto de
+prueba, con el umbral fijado en sus metadatos (0.00421), seleccionado sobre validación. La tasa de detección de anomalías fue de
+91.25~\% y la de falsos positivos de 5.46~\%; ambos criterios se cumplen. La
+Figura~\ref{fig:res-ifcurve} muestra la curva de recall frente a la tasa de falsos positivos y el
+punto de operación seleccionado.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|L{4.6cm}|L{2.6cm}|L{2.6cm}|L{2.2cm}|}
+\hline
+\textbf{Indicador} & \textbf{Valor} & \textbf{Criterio} & \textbf{Estado} \\ \hline
+Detección de anomalías (recall) & 91.25~\% (38{,}868 / 42{,}595) & $\geq$50~\% & Cumple \\ \hline
+Tasa de falsos positivos & 5.46~\% (813 / 14{,}886) & $\leq$10~\% & Cumple \\ \hline
+Precisión & 97.95~\% & --- & --- \\ \hline
+Recall por clase: \texttt{cmdi} / \texttt{path\_traversal} & 95.64~\% / 99.68~\% & --- & --- \\ \hline
+Recall por clase: \texttt{sqli} / \texttt{xss} & 89.54~\% / 98.02~\% & --- & --- \\ \hline
+\end{tabular}
+\caption[Métricas del Isolation Forest sobre el conjunto de prueba]{Métricas del Isolation Forest (\texttt{if\_v10}) sobre el conjunto de prueba bloqueado}
+\label{tab:res-if}
+\end{table}
+{\footnotesize Nota. Elaboración propia con datos de \texttt{training/results/v11\_test\_results.json}.}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{resultados/if_recall_fp_curve.png}
+\caption[Curva de recall frente a falsos positivos del Isolation Forest]{Recall frente a tasa de falsos positivos del Isolation Forest y punto de operación seleccionado}
+\label{fig:res-ifcurve}
+\end{figure}
+{\footnotesize Nota. Archivo \texttt{training/results/if\_recall\_fp\_curve.png}, 26 de septiembre de 2026.}
+
+\subsection{Cobertura sobre el corpus limpio}
+\label{subsec:res-oe3-cobertura}
+
+El Cuadro~\ref{tab:res-corpus} presenta la construcción del corpus limpio de la Ronda~5 y el
+Cuadro~\ref{tab:res-cobertura} la cobertura obtenida con la Configuración~2. El corpus de la
+Ronda~5 original contenía 601 peticiones: 200 por cada una de las categorías SQLi, Path Traversal y
+Command Injection, y un payload de XSS confirmado con OWASP ZAP. El 25 de octubre de 2026 se agregó
+un corpus propio de 200 payloads de XSS, con lo que el corpus de cobertura tiene 800 peticiones.
+El filtro de exclusión descartó 3 candidatos de Path Traversal por
+coincidencia exacta con una fuente de entrenamiento; en SQLi y Command Injection no hubo descartes.
+Con el paquete 0.1.0 (par~A), la cobertura fue de 100~\% en SQLi, 91.5~\% en Command Injection
+y 85.0~\% en Path Traversal, con intervalos de Wilson \cite{wilson1927probable} al 95~\% de 98.1--100.0~\%, 86.8--94.6~\% y
+79.4--89.3~\%, respectivamente. Con el tarball de validación 22550ea (par~C) y el mismo corpus, la
+cobertura fue de 99.5~\%, 96.0~\% y 95.0~\%, con intervalos de 97.2--99.9~\%, 92.3--98.0~\% y
+91.0--97.3~\%. Las tres categorías superan el criterio de 80~\% con ambos pares, pero con el par~A
+el límite inferior del intervalo de Path Traversal queda por debajo de ese umbral. Con el paquete
+0.1.1, publicado después, instalado desde el registro de npm y medido con el ejecutor corregido, la
+cobertura fue de 99.5~\% en SQLi, 100.0~\% en Path Traversal y 92.5~\% en Command Injection, con
+intervalos de 97.2--99.9~\%, 98.1--100.0~\% y 88.0--95.4~\%. La medición del par~C no es una
+evaluación estrictamente ciega, y la del paquete 0.1.1 se hizo sobre el corpus que reveló los
+defectos de medición (Sección~\ref{sec:met-validez}). Cada medición corresponde a una sola corrida, salvo la de XSS, que se midió en tres corridas idénticas.
+Dos peticiones se contaron como no detectadas por fallos y no por el veredicto del modelo:
+\texttt{cmdi\_94} terminó por tiempo de espera en la corrida del par~A y \texttt{sqli\_75} devolvió
+HTTP 500 en la del par~C. En XSS, el \textit{Active Scan} de ZAP, dirigido por su API REST y con
+sesión autenticada, produjo 538 alertas, de las cuales una sola es de XSS: \texttt{POST /profile},
+campo \texttt{bio}, con el payload \texttt{</div><scrIpt>alert(1);</scRipt><div>} y riesgo alto.
+Los campos \texttt{content} y \texttt{title} de \texttt{POST /posts} se escanearon con la misma
+política y no resultaron vulnerables. Aunque la regla de ZAP se llama \textit{Reflected}, la
+vulnerabilidad es de XSS almacenado, porque \texttt{bio} se guarda y se vuelve a mostrar en cada
+vista del perfil. Ese payload fue bloqueado por ambos pares de modelos (1 de 1), y el 25 de octubre de 2026 se
+reconfirmó que el servidor lo almacena sin escapar (HTTP 200) sin protección y que la librería lo
+bloquea (HTTP 403); la ejecución en un navegador no se verificó. Los
+dos resultados responden preguntas distintas: ZAP (n=1) mide la explotabilidad confirmada, y el
+corpus propio (n=200), la cobertura de detección.
+
+La cobertura de XSS sobre el corpus propio, con el paquete 0.1.1 del registro de npm, fue de 200
+de 200 payloads bloqueados (100.0~\%; intervalo de Wilson al 95~\%: 98.1--100.0~\%), sin variación
+entre las tres corridas ni entre los tres transportes (64 de 64 en
+\texttt{application/x-www-form-urlencoded}, 68 de 68 en JSON y 68 de 68 en
+\texttt{multipart/form-data}); sin protección se bloquearon 0 de 200. De los 200 payloads, 64 se
+dirigen al campo vulnerable \texttt{bio}, y los 64 se bloquearon (94.3--100.0~\%). Los otros 136 se
+dirigen a \texttt{content} y \texttt{title}, campos sin vulnerabilidad confirmada: sin protección la
+aplicación los rechaza con HTTP 400 porque la ruta exige ambos campos, y con la librería reciben
+HTTP 403, de modo que miden la detección y no la explotabilidad. El filtro de exclusión de XSS se
+aplicó después del muestreo y descartó 0 candidatos, y la auditoría posterior de fuga encontró 3
+payloads con coincidencia normalizada por subcadena con el entrenamiento (Cuadro~\ref{tab:res-corpus});
+sin ellos, la librería bloquea 197 de 197.
+
+Los fallos de Path Traversal se concentraban en las categorías de codificación. El desglose por
+estilo de codificación, calculado con \texttt{training/audit/breakdown\_config2.py} sobre los
+resultados de la Configuración~2 con el ejecutor anterior, muestra que el paquete 0.1.0 (par~A) no
+bloqueó 30 payloads: 21 de los 43 con codificación URL o mixta, 7 de los 23 con doble codificación
+y 2 de los 19 con UTF-8 sobrelargo. Con el modelo vigente (par~C) los fallos eran 10: 9 de los 23
+con doble codificación y 1 de los 19 con UTF-8 sobrelargo.
+
+Esos fallos tenían dos causas independientes, y ninguna era una limitación de detección. La primera
+era un defecto del middleware, que reconstruía la cadena de consulta a partir de \texttt{req.query},
+ya decodificada una vez por Express, y le añadía una capa de codificación. La segunda era un defecto
+del ejecutor de pruebas, que volvía a codificar los payloads de Path Traversal y Command Injection
+que el generador ya había codificado. El Cuadro~\ref{tab:res-pt-causas} muestra que ninguna
+corrección bastó por sí sola: con el paquete 0.1.1, que incluye la corrección del middleware, y el
+ejecutor anterior, los 10 fallos de Path Traversal fueron los mismos que con el tarball sin esa
+corrección (payload por payload), y desaparecieron solo al corregir también el ejecutor. Con ambas
+correcciones, el paquete 0.1.1, instalado desde el registro de npm, bloqueó 200 de 200 payloads de
+Path Traversal (intervalo de Wilson al 95~\%: 98.1--100.0~\%).
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|L{5.4cm}|L{2.4cm}|L{2.8cm}|L{2.4cm}|}
+\hline
+\textbf{Paquete y ejecutor} & \textbf{Fallos de Path Traversal} & \textbf{Fallos de Command Injection} & \textbf{Fallos de SQLi} \\ \hline
+0.1.0 (par~A), ejecutor anterior & 30 & 17 & 0 \\ \hline
+Tarball 22550ea (par~C), ejecutor anterior & 10 & 8 & 1 \\ \hline
+0.1.1 (par~C), ejecutor anterior & 10 & 8 & 1 \\ \hline
+0.1.1 (par~C), ejecutor corregido & 0 & 15 (1 por tiempo de espera) & 1 \\ \hline
+\end{tabular}
+\caption[Fallos por paquete y versión del ejecutor]{Payloads no bloqueados de cada categoría, por paquete y por versión del ejecutor de pruebas}
+\label{tab:res-pt-causas}
+\end{table}
+{\footnotesize Nota. Elaboración propia con datos de los archivos de resultados de la Configuración~2
+(repositorio \texttt{logSguarDian-vulnerable-project}). No se midió el paquete 0.1.0 con el
+ejecutor corregido, de modo que la mejora de 85.0~\% a 100.0~\% en Path Traversal no puede
+repartirse entre el cambio de modelo, la corrección del middleware y la del ejecutor.}
+
+Con el ejecutor corregido, la cobertura de Command Injection pasó de 96.0~\% a 92.5~\% (185 de 200;
+intervalo de Wilson al 95~\%: 88.0--95.4~\%). Esto no es un empeoramiento de la detección. Los
+generadores producen 105 de los 200 payloads de Command Injection con separadores ya codificados
+(\texttt{\%26}, \texttt{\%7c}, \texttt{\%0a}, \texttt{\%3B}), y el ejecutor anterior los codificaba
+una segunda vez. De esos, 10 se bloqueaban en su forma corrompida y no se bloquean al enviarse
+correctamente (todos reciben HTTP 200); otros 3 hicieron el recorrido contrario, y 1 terminó por
+tiempo de espera. El resultado neto es de 7 payloads bloqueados menos. El 96.0~\% estaba inflado
+por ese defecto, y el 92.5~\% es la primera medición correcta de esta técnica de evasión: la
+librería no detecta 10 payloads de Command Injection con separadores codificados, un límite real de
+la detección.
+
+La corrección del ejecutor afecta también a las demás mediciones de Path Traversal y Command
+Injection de este capítulo con el ejecutor anterior (paquete 0.1.0 y tarball de validación), que no
+se repitieron; las cuatro configuraciones se midieron de nuevo con el ejecutor corregido el 25 de
+octubre de 2026 (Cuadro~\ref{tab:res-ronda5}).
+
+El filtro de exclusión descarta únicamente las coincidencias exactas del campo completo (y, en
+Command Injection, las de plantilla), por lo que no garantiza la ausencia de solapamiento por
+forma normalizada. La medición de solapamiento del trabajo de graduación de Diego Valenzuela \cite{valenzuela2026ia}
+(sección VIII.3.6), con \texttt{training/leakage\_check.py} (commit \texttt{22550ea}) sobre las
+particiones de entrenamiento, validación y prueba, da los siguientes resultados. Con igualdad
+normalizada del campo completo (decodificación de URL, minúsculas y dígitos sustituidos), 4 de los
+200 payloads de SQLi coinciden con alguna partición (4 con entrenamiento, 1 con validación y 2
+con prueba) y ninguno de Path Traversal ni de Command Injection. Con la regla de subcadena, un
+criterio permisivo que su autor califica de límite superior y no de medida de solapamiento, Path
+Traversal alcanza 7 coincidencias y Command Injection 2. La auditoría de subcadena repetida el 25 de
+octubre de 2026 sobre los cuatro corpus da 4 coincidencias en SQLi, 7 en Path Traversal, 2 en
+Command Injection y 3 en XSS, de 200 payloads cada uno. La cobertura de SQLi reportada incluye,
+por lo tanto, esos 4 payloads. Las cifras anteriores a esta ronda no son comparables: el corpus
+de la Ronda~4 tiene 200 de 200 payloads de Command Injection y 7 de 113 de XSS que coinciden por
+igualdad normalizada, y ninguno de SQLi ni de Path Traversal; por subcadena, 26 de SQLi y 13 de
+XSS.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|L{2.7cm}|L{4.2cm}|L{1.8cm}|L{1.8cm}|L{1.4cm}|}
+\hline
+\textbf{Categoría} & \textbf{Fuente} & \textbf{Candidatos} & \textbf{Descartados} & \textbf{Finales} \\ \hline
+SQLi & sqlmap v1.10.9 & 1{,}995 & 0 & 200 \\ \hline
+Path Traversal & Generador propio & 400 & 3 & 200 \\ \hline
+Command Injection & Generador propio (no derivado de SecLists) & 400 & 0 & 200 \\ \hline
+XSS (hallazgo de ZAP) & OWASP ZAP (\textit{Active Scan}, API REST) & 1 alerta confirmada & 0 & 1 \\ \hline
+XSS (cobertura) & Generador propio (\texttt{generate\_xss.py}) & 400 & 0\textsuperscript{a} & 200 \\ \hline
+\end{tabular}
+\caption[Construcción del corpus limpio]{Construcción del corpus limpio de evaluación (Ronda~5, semilla 20260923; XSS, semilla 20261025)}
+\label{tab:res-corpus}
+\end{table}
+{\footnotesize Nota. Elaboración propia con datos de \texttt{docs/config3b-results.md},
+\texttt{attack-sim/exclusion\_report.json}, \texttt{attack-sim/exclusion\_report\_xss\_20261025.json}
+y \texttt{attack-sim/leakage\_report\_xss\_20261025.json} (repositorio
+\texttt{logSguarDian-vulnerable-project}). \textsuperscript{a}Los 200 payloads finales de XSS son
+el resultado del muestreo estratificado de los 400 candidatos, no del filtro. El filtro de exclusión
+se aplicó después del muestreo, en orden inverso al de las otras categorías, y descartó 0; la
+auditoría posterior de fuga encontró 3 payloads (\texttt{xss\_118}, \texttt{xss\_254} y
+\texttt{xss\_342}) con coincidencia normalizada por subcadena con las particiones de entrenamiento y
+de prueba, que no se corrigieron.}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|L{2.2cm}|L{1.9cm}|L{2.0cm}|L{2.0cm}|L{2.2cm}|L{1.9cm}|}
+\hline
+\textbf{Categoría} & \textbf{Ronda 4 (par A)} & \textbf{Ronda 5, 0.1.0 (par A)\textsuperscript{a}} & \textbf{Ronda 5, tarball 22550ea (par C)\textsuperscript{a}} & \textbf{Ronda 5, 0.1.1 (par C), ejecutor corregido\textsuperscript{b}} & \textbf{Criterio ($\geq$80~\%)} \\ \hline
+SQLi & 76/77 (98.7~\%) & 200/200 (100.0~\%) & 199/200 (99.5~\%) & 199/200 (99.5~\%) & Cumple \\ \hline
+Path Traversal & 197/200 (98.5~\%) & 170/200 (85.0~\%) & 190/200 (95.0~\%) & 200/200 (100.0~\%) & Cumple \\ \hline
+Command Injection & 200/200 (100.0~\%) & 183/200 (91.5~\%) & 192/200 (96.0~\%) & 185/200 (92.5~\%) & Cumple \\ \hline
+XSS (corpus propio, n=200) & 110/113 (97.3~\%) & No medido\textsuperscript{c} & No medido\textsuperscript{c} & 200/200 (100.0~\%)\textsuperscript{c} & Cumple \\ \hline
+XSS (ZAP, n=1) & --- & 1/1 (n=1, corpus anterior, no comparable) & 1/1 (n=1, corpus anterior, no comparable) & 1/1 (n=1) & No aplica; explotabilidad confirmada en un caso \\ \hline
+\end{tabular}
+\caption[Cobertura por categoría con logsguardian]{Cobertura por categoría con \textit{logSguarDian} activo (Configuración~2)}
+\label{tab:res-cobertura}
+\end{table}
+{\footnotesize Nota. Elaboración propia con datos de \texttt{docs/config3b-results.md} y
+\texttt{attack-sim/results\_config2-develop-tarball-20261009.json} (repositorio
+\texttt{logSguarDian-vulnerable-project}). El corpus de la Ronda~4 tiene fuga confirmada en Command Injection (200/200 payloads coinciden por plantilla con
+una fuente de entrenamiento). \textsuperscript{a}Medido con la versión del ejecutor anterior a la
+corrección descrita en el texto, que añadía una capa de codificación a los payloads de Path
+Traversal y Command Injection ya codificados. \textsuperscript{b}Paquete instalado desde el registro de
+npm (\texttt{attack-sim/results\_config2-published-0.1.1-harness-fixed-20261010.json}); es la única
+columna medida con el ejecutor corregido. Las columnas de la Ronda~5 con el ejecutor anterior no
+son comparables con ella. \textsuperscript{c}La cobertura de XSS sobre el corpus propio se midió el
+25 de octubre de 2026 con el paquete 0.1.1 del registro (archivo SHA-256 \texttt{abf8d5c4...}) y el
+emisor \texttt{send\_xss\_corpus.py}, en la corrida 1 de tres idénticas
+(\texttt{attack-sim/results\_combined\_config2\_run1\_20261025.json}); intervalo de Wilson al 95~\%:
+98.1--100.0~\%. No se midió con el paquete 0.1.0 ni con el tarball de validación. El caso de ZAP se
+midió con un corpus anterior de un solo payload y no es comparable con el de 200.}
+
+\subsection{Comparación con un WAF y defensa en profundidad}
+
+Las Rondas 1 a 3, con un corpus pequeño construido a mano, produjeron tres resultados: ModSecurity
+con OWASP CRS en nivel de paranoia 1 bloqueó los 9 ataques originales y las 14 variantes de evasión
+(0 de 14 llegaron a la aplicación); con el WAF en modo de solo detección, \textit{logSguarDian} bloqueó inicialmente 16 de los 23
+payloads; los 7 no detectados eran de XSS enviados como \texttt{multipart/form-data}, que la
+librería no inspeccionaba porque el analizador de ese tipo de cuerpo se montaba por ruta, después
+del middleware. Tras montar un analizador global antes del middleware, \textit{logSguarDian}
+bloqueó los 23 (23/23), y esa misma corrección evidenció una vulnerabilidad de XSS almacenado en la
+aplicación de referencia.
+
+La Figura~\ref{fig:res-ronda4} presenta la Ronda~4, que comparó las cuatro configuraciones sobre
+590 payloads de SecLists. La configuración sin protección no bloqueó ningún ataque (0/590), el WAF
+solo bloqueó 550/590 (93.2~\%), \textit{logSguarDian} solo 583/590 (98.8~\%) y ambas capas 587/590
+(99.5~\%). De los 40 ataques que el WAF no bloqueó, \textit{logSguarDian} bloqueó 37. Los resultados
+de Command Injection de esta ronda están afectados por la fuga descrita en la nota del
+Cuadro~\ref{tab:res-cobertura}; la comparación se repitió después con el corpus limpio de la Ronda~5 (Cuadro~\ref{tab:res-ronda5}). La
+Configuración~2 se repitió sobre los mismos 590 payloads el 9 de septiembre de 2026 con el par~B y
+también bloqueó 583 de 590, aunque 10 payloads cambiaron de estado entre ambas corridas. En esa
+repetición, los 200 payloads de Command Injection se registraron con la clase \texttt{sqli}; la
+confusión afecta la clase reportada en el registro, no la decisión de bloqueo.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.88\textwidth]{resultados/obj3-g.png}
+\caption[Comparación de configuraciones en la Ronda 4]{Ataques bloqueados por configuración y análisis de defensa en profundidad (Ronda~4)}
+\label{fig:res-ronda4}
+\end{figure}
+{\footnotesize Nota. Captura de \texttt{docs/config3b-results.md}, repositorio
+\texttt{logSguarDian-vulnerable-project}.}
+
+El Cuadro~\ref{tab:res-ronda5} repite la comparación con el corpus limpio de la Ronda~5, que no
+tiene la fuga de la Ronda~4, ampliado con el corpus propio de XSS (800 peticiones). A diferencia de
+la medición del 10 de octubre de 2026, que se descartó, las cuatro configuraciones se ejecutaron de
+nuevo el 25 de octubre de 2026 sobre el mismo árbol de la aplicación, con el mismo
+\texttt{Dockerfile} y el ejecutor corregido, y con el paquete 0.1.1 en las Configuraciones 2 y 3b
+(Procedimiento~4.1). La Configuración~1 bloqueó 0 de 800 payloads, lo que confirma que el corpus y
+el ejecutor miden lo que declaran. En total, la librería sola (2) bloqueó 784 de 800 payloads
+(98.0~\%), el WAF solo (3a) 749 (93.6~\%) y ambas capas (3b) 797 (99.6~\%).
+
+Por categoría, el WAF solo bloqueó el 99.5~\% de SQLi, igual que la librería, el 98.5~\% de Path
+Traversal, el 82.0~\% de Command Injection (intervalo de Wilson al 95~\%: 76.1--86.7~\%) y el
+94.5~\% de XSS. En Path Traversal no hay ventaja del WAF: con el paquete 0.1.1 la librería bloqueó
+200 de 200 y el WAF 197 de 200, una diferencia de tres payloads con intervalos de Wilson que se
+solapan (98.1--100.0~\% y 95.7--99.5~\%). En Command Injection la librería bloqueó el 92.5~\%, el
+WAF el 82.0~\% y la combinación el 98.5~\%. El 68.0~\% que se reportó para el WAF en la medición del
+10 de octubre se reprodujo al volver a ejecutar el ejecutor anterior sobre este mismo árbol (136 de
+200, con el mismo veredicto en los 600 payloads de esa medición), de modo que la diferencia con el
+82.0~\% se debe al ejecutor, que volvía a codificar los separadores ya codificados, y no a la
+aplicación. Aun con el ejecutor corregido, el WAF bloquea menos los 105 payloads de Command
+Injection con separadores ya codificados (80 de 105, 76.2~\%) que los 95 sin codificar (84 de 95,
+88.4~\%); la diferencia es de 12.2 puntos porcentuales (prueba exacta de Fisher bilateral,
+$p = 0.028$; intervalo de confianza de Wald al 95~\% de la diferencia, de 1.8 a 22.6 puntos;
+Cuadro~\ref{tab:anx-cmdi-codificacion}). Los dos subconjuntos no están controlados por otras
+características del payload, por lo que la diferencia no se atribuye a la codificación como causa. En XSS, los 11 payloads que el WAF no bloqueó
+usan doble codificación URL y se envían como JSON o \texttt{multipart/form-data}; la librería sola
+los bloqueó todos.
+
+De los 51 ataques que el WAF solo no bloqueó (1 de SQLi, 3 de Path Traversal, 36 de Command
+Injection y 11 de XSS), la Configuración~3b bloqueó 48 y la Configuración~2, 44 (48 con las cabeceras del proxy). Para el WAF, los
+ataques no bloqueados pasan de 68 a 40 en las tres categorías comparables con la medición anterior
+(de 64 a 36 en Command Injection), y la reejecución del ejecutor anterior sobre el mismo árbol
+muestra que esa reducción se debe al ejecutor. No se compara con las mediciones anteriores la
+Configuración~3b ni la 2, porque provienen de otras versiones de la librería: la Configuración~2
+anterior usó el par~A y de la 3b anterior no consta el paquete. Frente a la Configuración~2 sin las cabeceras del proxy, la combinación bloqueó 13 payloads
+más (1 de SQLi y 12 de Command Injection), pero esa diferencia mezcla dos condiciones: la librería
+dentro de la 3b recibe las cabeceras que agrega el proxy y la Configuración~2 no. La descomposición
+es 13 = 10 + 3: las cabeceras elevan en 10 los payloads que bloquea la librería sola (794 de 800
+en la Configuración~2 con cabeceras, frente a 784), y en condiciones equiparadas el WAF suma 3 de
+800 payloads a la librería (\texttt{cmdi\_9}, \texttt{cmdi\_51} y \texttt{cmdi\_94}, de Command
+Injection y bloqueados por la 3a). La librería suma 48 payloads sobre el WAF solo
+(Sección~\ref{anx:sensibilidad}). La complementariedad es asimétrica: en Path Traversal, SQLi y XSS
+la librería sola, con cabeceras, bloquea todo lo que bloquea la combinación y el WAF no agrega
+nada, y solo en Command Injection cada capa bloquea payloads que la otra no (3 el WAF y 33 la
+librería). Tres
+payloads de Command Injection (\texttt{cmdi\_6}, \texttt{cmdi\_184} y \texttt{cmdi\_185}) no los
+bloquea ninguna configuración. Cuatro payloads de la misma categoría (\texttt{cmdi\_112},
+\texttt{cmdi\_134}, \texttt{cmdi\_31} y \texttt{cmdi\_38}) los bloquea la 3b y no los bloquean ni la
+3a ni la Configuración~2: con un servidor de captura se comprobó que el cuerpo y el objetivo de la
+petición llegan idénticos por ambas rutas y que el proxy agrega cuatro cabeceras \texttt{X-*}, y al
+enviar los cuatro payloads a la Configuración~2 con esas cabeceras el paquete 0.1.1 los bloqueó en
+las tres repeticiones, y sin ellas no bloqueó ninguno. La diferencia queda explicada por el proxy
+(el recuento de cabeceras fuera de la lista estándar que lee el extractor pasa de 0 a 4), de modo
+que la Configuración~2 y la librería dentro de la 3b no son la misma medición
+(Sección~\ref{sec:met-validez}).
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|L{2.7cm}|L{2.0cm}|L{2.6cm}|L{2.6cm}|L{2.6cm}|}
+\hline
+\textbf{Categoría} & \textbf{Config.~1 (sin protección)} & \textbf{Config.~2 (solo \textit{logSguarDian}, 0.1.1)} & \textbf{Config.~3a (solo WAF)} & \textbf{Config.~3b (ambas capas, 0.1.1)} \\ \hline
+SQLi & 0/200 (0.0~\%) & 199/200 (99.5~\%) & 199/200 (99.5~\%) & 200/200 (100.0~\%) \\ \hline
+Path Traversal & 0/200 (0.0~\%) & 200/200 (100.0~\%) & 197/200 (98.5~\%) & 200/200 (100.0~\%) \\ \hline
+Command Injection & 0/200 (0.0~\%) & 185/200 (92.5~\%) & 164/200 (82.0~\%) & 197/200 (98.5~\%) \\ \hline
+XSS & 0/200 (0.0~\%) & 200/200 (100.0~\%) & 189/200 (94.5~\%) & 200/200 (100.0~\%) \\ \hline
+\textbf{Total} & 0/800 (0.0~\%) & 784/800 (98.0~\%) & 749/800 (93.6~\%) & 797/800 (99.6~\%) \\ \hline
+\end{tabular}
+\caption[Cuatro configuraciones sobre el corpus limpio de la Ronda 5 con XSS]{Payloads bloqueados por configuración sobre el corpus limpio de la Ronda~5 ampliado con XSS (800 peticiones)}
+\label{tab:res-ronda5}
+\end{table}
+{\footnotesize Nota. Elaboración propia con datos de
+\texttt{attack-sim/results\_combined\_config\{1,2,3a,3b\}\_run1\_20261025.json} (repositorio
+\texttt{logSguarDian-vulnerable-project}); conteos recalculados a partir de los archivos de
+resultados. Medición del 25 de octubre de 2026, corrida 1 de tres idénticas, con el mismo árbol de
+la aplicación y el mismo \texttt{Dockerfile} en las cuatro configuraciones, el ejecutor corregido y
+el corpus combinado de 800 peticiones (SHA-256 \texttt{f1fb0b0a...}). Configuraciones 2 y 3b con el
+paquete 0.1.1 del registro de npm (archivo SHA-256 \texttt{abf8d5c4...}; modelos \texttt{25b407e6...}
+y \texttt{5be28ee8...}, par~C; ver Sección~\ref{subsec:met-f2}). Intervalos de Wilson al 95~\% en
+SQLi, Path Traversal, Command Injection y XSS: Configuración~2, 97.2--99.9, 98.1--100.0,
+88.0--95.4 y 98.1--100.0~\%; Configuración~3a, 97.2--99.9, 95.7--99.5, 76.1--86.7 y 90.4--96.9~\%;
+Configuración~3b, 98.1--100.0, 98.1--100.0, 95.7--99.5 y 98.1--100.0~\%. Las mediciones anteriores
+de la Configuración~2 con el paquete 0.1.0 (Cuadro~\ref{tab:res-cobertura}) no se incluyen ni se
+comparan con la Configuración~3a. La Configuración~2 de este cuadro se midió sin las
+cuatro cabeceras \texttt{X-*} que agrega el proxy, por lo que sus cifras describen un despliegue
+directo, sin proxy. Con esas cabeceras, en tres corridas, dio 794 de 800 (SQLi 200, Path Traversal
+200, Command Injection 194 y XSS 200), y en condiciones equiparadas (Configuración~2 con cabeceras)
+el aporte del WAF sobre la librería es de 3 payloads. Las cifras de este cuadro no cambian
+(Sección~\ref{anx:sensibilidad}).}
+
+\subsection{Falsos positivos con navegadores reales}
+
+El Cuadro~\ref{tab:res-ua} presenta el estudio de falsos positivos con cadenas
+\texttt{User-Agent} de cinco navegadores reales sobre tres rutas sin consulta ni cuerpo de la
+aplicación de referencia. De las 15 combinaciones legítimas, 13 (86.7~\%) se bloquearon. Solo
+Firefox en macOS evitó el bloqueo en dos rutas (\texttt{/login} y \texttt{/posts}). Como contraste,
+la suite E2E registró 2 de 100 peticiones legítimas bloqueadas (Figura~\ref{fig:res-e2e}).
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|L{3.6cm}|L{2.2cm}|L{2.2cm}|L{2.2cm}|L{2.0cm}|}
+\hline
+\textbf{\texttt{User-Agent}} & \textbf{\texttt{/login}} & \textbf{\texttt{/posts}} & \textbf{\texttt{/profile}} & \textbf{Bloqueadas} \\ \hline
+Chrome (macOS) & 403 & 403 & 403 & 3/3 \\ \hline
+Chrome (Windows) & 403 & 403 & 403 & 3/3 \\ \hline
+Safari (macOS) & 403 & 403 & 403 & 3/3 \\ \hline
+Safari (iOS) & 403 & 403 & 403 & 3/3 \\ \hline
+Firefox (macOS) & 200 & 200 & 403 & 1/3 \\ \hline
+\textbf{Total} & 4/5 & 4/5 & 5/5 & \textbf{13/15} \\ \hline
+\end{tabular}
+\caption[Falsos positivos con User-Agent de navegadores reales]{Respuesta del middleware a peticiones legítimas con \texttt{User-Agent} de navegadores reales}
+\label{tab:res-ua}
+\end{table}
+{\footnotesize Nota. Elaboración propia con datos de \texttt{attack-sim/ua\_fp\_study\_results.json}
+(repositorio \texttt{logSguarDian-vulnerable-project}). \texttt{/login} sin sesión; \texttt{/posts} y
+\texttt{/profile} con sesión iniciada. Ejecutado con el par~A; atribución por la fecha del commit, ya
+que el archivo de resultados no registra el modelo.}
+
+% ==============================================================================
+\section{Resumen de indicadores}
+\label{sec:res-resumen}
+
+El Cuadro~\ref{tab:res-resumen} consolida los indicadores definidos en el
+Cuadro~\ref{tab:met-metricas} de la Metodología, con el valor medido y su estado frente al
+criterio.
+
+\begin{longtable}{|L{3.5cm}|L{1.2cm}|L{2.7cm}|L{3.0cm}|L{2.1cm}|}
+\hline
+\textbf{Indicador} & \textbf{Obj.} & \textbf{Criterio} & \textbf{Valor medido} & \textbf{Estado} \\ \hline
+\endfirsthead
+\multicolumn{5}{l}{\footnotesize\textit{(continuación)}} \\ \hline
+\textbf{Indicador} & \textbf{Obj.} & \textbf{Criterio} & \textbf{Valor medido} & \textbf{Estado} \\ \hline
+\endhead
+\multicolumn{5}{r}{\footnotesize\textit{Continúa en la página siguiente}} \\
+\endfoot
+\endlastfoot
+Vectores mapeados a OWASP, CWE y ATT\&CK & OE1 & 4/4 & 4/4 & Cumple \\ \hline
+Tamaño del corpus & OE2 & $\geq$100{,}000 & 383{,}202 & Cumple \\ \hline
+Clases representadas por partición & OE2 & 5/5 & 5/5 & Cumple \\ \hline
+F1 por categoría & OE3 & $\geq$0.80 en $\geq$3 de 4 & 0.9239--0.9956 (4/4) & Cumple \\ \hline
+AUC-ROC por categoría & OE3 & Referencia & 0.99899--0.99982 & --- \\ \hline
+Detección del IF & OE3 & $\geq$50~\% & 91.25~\% & Cumple \\ \hline
+Falsos positivos del IF & OE3 & $\leq$10~\% & 5.46~\% & Cumple \\ \hline
+Cobertura SQLi / PT / CMDi (paquete 0.1.0, ejecutor anterior) & OE3 & $\geq$80~\% & 100 / 85.0 / 91.5~\% (PT, IC 95~\%: 79.4--89.3~\%) & Cumple; no robusto en PT \\ \hline
+Cobertura SQLi / PT / CMDi (modelo vigente, tarball) & OE3 & $\geq$80~\% & 99.5 / 95.0 / 96.0~\% (PT, IC 95~\%: 91.0--97.3~\%) & Cumple \\ \hline
+Cobertura SQLi / PT / CMDi (paquete 0.1.1, ejecutor corregido) & OE3 & $\geq$80~\% & 99.5 / 100.0 / 92.5~\% (PT, IC 95~\%: 98.1--100.0~\%; CMDi, IC 95~\%: 88.0--95.4~\%) & Cumple \\ \hline
+Cobertura XSS (corpus propio, paquete 0.1.1) & OE3 & $\geq$80~\% & 200/200 (100.0~\%; IC 95~\%: 98.1--100.0~\%); 64/64 en \texttt{bio} (IC 95~\%: 94.3--100.0~\%) & Cumple en cobertura (n=200) \\ \hline
+Explotabilidad de XSS confirmada (ZAP) & OE3 & Descriptivo & 1 caso (\texttt{POST /profile}, \texttt{bio}; n=1) & --- \\ \hline
+Falsos positivos con navegador & OE3 & Descriptivo & 13/15 combinaciones de \texttt{User-Agent} & --- \\ \hline
+Paridad ONNX & OG & $<$0.1~\% & $\leq2.42\times10^{-7}$ & Cumple \\ \hline
+Extracción de características (p95, ida y vuelta al hilo) & OG & $\leq$5~ms & 0.0273~ms & Cumple \\ \hline
+$\Delta p95_{\mathrm{abs}}$ normal / ataque & OG & $\leq$15~ms & 12.08 / 12.85~ms & Cumple \\ \hline
+$\Delta p95_{\mathrm{rel}}$ normal / ataque & OG & Complementario & +485.1 / +278.1~\% & --- \\ \hline
+$\Delta p95_{\mathrm{abs}}$ volumen (con 7.00~\% de tiempos de espera) & OG & $\leq$15~ms (referencia) & 6{,}495.46~ms & No cumple \\ \hline
+Memoria adicional bajo carga (normal / ataque) & OG & $\leq$150~MB (143.1~MiB) & +332.02 / +331.86~MiB & No cumple \\ \hline
+CPU adicional bajo carga (normal / ataque) & OG & $\leq$15~\% & +614 / +530~\% & No cumple \\ \hline
+Contribución en defensa en profundidad (Ronda~5, 25 de octubre de 2026) & OG & Descriptivo & La 3b bloqueó 48 de los 51 ataques no bloqueados por el WAF; la Configuración~2, 44 sin las cabeceras del proxy y 48 con ellas. En condiciones equiparadas el WAF suma 3 de 800 payloads a la librería (13 = 10 por las cabeceras + 3 por el WAF) & --- \\ \hline
+Bloqueo de legítimos en terceros (Cuadro~\ref{tab:res-terceros-ua}) & OG & Descriptivo & 92.5--100~\% (modo \texttt{block}); 97.1~\% veredicto en Juice Shop (modo \texttt{monitor}) & --- \\ \hline
+\caption[Resumen de indicadores]{Resumen de indicadores: criterio, valor medido y estado}
+\label{tab:res-resumen}
+\end{longtable}
+{\footnotesize Nota. Elaboración propia con datos de las secciones anteriores de este capítulo.}
+
+\ifdefined\modoensamble
+\else
+	\section*{Referencias}
+	\printbibliography[heading=none]
+	\end{document}
+\fi

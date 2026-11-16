@@ -1,0 +1,15 @@
+\ifdefined\modoensamble
+\else
+	\input{0-preambulo_standalone}
+	\chapter*{Resumen}
+\fi
+
+Las startups que desarrollan servicios sobre Node.js rara vez cuentan con un equipo de seguridad dedicado. Este trabajo presenta logSguarDian, una librería npm que implementa un middleware de autoprotección en tiempo de ejecución (RASP) para Express y detecta inyección SQL, Cross-Site Scripting, Path Traversal e inyección de comandos. El middleware intercepta cada petición, extrae un vector de 76 características y un Random Forest decide el bloqueo (umbral de 0.35); un Isolation Forest registra las anomalías y nunca bloquea. Ambos modelos se ejecutan en formato ONNX (Open Neural Network Exchange) dentro de hilos de trabajo (\texttt{worker\_threads}). Este documento corresponde al componente de ciberseguridad: la selección y el mapeo de los vectores de ataque a OWASP y MITRE ATT\&CK, un corpus de 383{,}202 peticiones etiquetadas, el entorno de evaluación y las pruebas de penetración. Sobre el conjunto de prueba, el F1 fue de 0.9239 a 0.9956 por categoría. Sobre payloads no vistos (excluidos del entrenamiento por coincidencia exacta, con coincidencias residuales por subcadena normalizada de entre 1.0 y 3.5~\% por categoría y, en Cross-Site Scripting, con un corpus construido después de conocer los resultados de la Ronda~5), la versión 0.1.1 bloqueó 99.5~\% en inyección SQL, 100.0~\% en Path Traversal y 92.5~\% en inyección de comandos y 100.0~\% en Cross-Site Scripting (200 de 200 payloads de un corpus propio); la explotabilidad de Cross-Site Scripting se confirmó en un solo caso. El sobrecosto de latencia fue de 12.08~ms en carga normal y de 12.85~ms en carga de ataque, dentro del límite de 15~ms, pero el consumo de memoria (+332~MiB) y de CPU superó los criterios. Con tráfico legítimo de aplicaciones de terceros la librería generó bloqueos indebidos, por lo que no es apta para modo de bloqueo sin calibración previa. El objetivo general se cumplió de forma parcial.
+
+\medskip
+\noindent\textbf{Palabras clave:} RASP, middleware, Node.js, detección de intrusiones, Random Forest, Isolation Forest.
+
+\ifdefined\modoensamble
+\else
+	\end{document}
+\fi

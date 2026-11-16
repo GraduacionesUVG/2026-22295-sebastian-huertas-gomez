@@ -1,0 +1,1492 @@
+{
+  "archive": {
+    "path": "latency-linux-2026-09-26.tgz",
+    "sha256": "b96d901408547331fb4859a5dac4810abdb1caaeb2f15f3378877c2290187cec"
+  },
+  "segmentation_rule": "A sample belongs to repetition R when firstMetricAt <= timestamp <= lastMetricAt of R's Artillery report (epoch ms). Window A also drops samples with timestamp < firstMetricAt + 15 s (warmup). Window B keeps the whole repetition. Samples outside every repetition are out of window.",
+  "warmup_ms": 15000,
+  "csv_samples": 374,
+  "repetitions": 30,
+  "windows": {
+    "A": "measured period, first 15 s of each repetition dropped",
+    "B": "full repetition"
+  },
+  "groups": [
+    {
+      "scenario": "attack",
+      "condition": "baseline",
+      "window": "A",
+      "reps": 5,
+      "n": 45,
+      "mem_mb": {
+        "mean": 63.216,
+        "median": 66.24,
+        "max": 69.21
+      },
+      "cpu_pct": {
+        "mean": 16.072,
+        "median": 16.08,
+        "max": 28.82
+      }
+    },
+    {
+      "scenario": "attack",
+      "condition": "baseline",
+      "window": "B",
+      "reps": 5,
+      "n": 55,
+      "mem_mb": {
+        "mean": 61.159,
+        "median": 66.23,
+        "max": 69.21
+      },
+      "cpu_pct": {
+        "mean": 13.927,
+        "median": 14.12,
+        "max": 28.82
+      }
+    },
+    {
+      "scenario": "attack",
+      "condition": "active",
+      "window": "A",
+      "reps": 5,
+      "n": 43,
+      "mem_mb": {
+        "mean": 394.784,
+        "median": 401.0,
+        "max": 405.7
+      },
+      "cpu_pct": {
+        "mean": 101.25,
+        "median": 100.93,
+        "max": 120.6
+      }
+    },
+    {
+      "scenario": "attack",
+      "condition": "active",
+      "window": "B",
+      "reps": 5,
+      "n": 55,
+      "mem_mb": {
+        "mean": 387.053,
+        "median": 398.9,
+        "max": 405.7
+      },
+      "cpu_pct": {
+        "mean": 89.311,
+        "median": 99.5,
+        "max": 177.54
+      }
+    },
+    {
+      "scenario": "normal",
+      "condition": "baseline",
+      "window": "A",
+      "reps": 5,
+      "n": 45,
+      "mem_mb": {
+        "mean": 65.177,
+        "median": 66.25,
+        "max": 68.83
+      },
+      "cpu_pct": {
+        "mean": 14.476,
+        "median": 14.18,
+        "max": 20.61
+      }
+    },
+    {
+      "scenario": "normal",
+      "condition": "baseline",
+      "window": "B",
+      "reps": 5,
+      "n": 59,
+      "mem_mb": {
+        "mean": 61.361,
+        "median": 66.11,
+        "max": 68.83
+      },
+      "cpu_pct": {
+        "mean": 11.85,
+        "median": 12.96,
+        "max": 20.61
+      }
+    },
+    {
+      "scenario": "normal",
+      "condition": "active",
+      "window": "A",
+      "reps": 5,
+      "n": 44,
+      "mem_mb": {
+        "mean": 397.507,
+        "median": 399.25,
+        "max": 421.1
+      },
+      "cpu_pct": {
+        "mean": 103.321,
+        "median": 101.595,
+        "max": 126.95
+      }
+    },
+    {
+      "scenario": "normal",
+      "condition": "active",
+      "window": "B",
+      "reps": 5,
+      "n": 56,
+      "mem_mb": {
+        "mean": 388.786,
+        "median": 395.35,
+        "max": 421.1
+      },
+      "cpu_pct": {
+        "mean": 91.019,
+        "median": 100.955,
+        "max": 181.53
+      }
+    },
+    {
+      "scenario": "volume",
+      "condition": "baseline",
+      "window": "A",
+      "reps": 5,
+      "n": 43,
+      "mem_mb": {
+        "mean": 83.293,
+        "median": 81.47,
+        "max": 119.1
+      },
+      "cpu_pct": {
+        "mean": 82.336,
+        "median": 82.04,
+        "max": 89.99
+      }
+    },
+    {
+      "scenario": "volume",
+      "condition": "baseline",
+      "window": "B",
+      "reps": 5,
+      "n": 55,
+      "mem_mb": {
+        "mean": 82.773,
+        "median": 80.7,
+        "max": 119.1
+      },
+      "cpu_pct": {
+        "mean": 67.279,
+        "median": 80.85,
+        "max": 89.99
+      }
+    },
+    {
+      "scenario": "volume",
+      "condition": "active",
+      "window": "A",
+      "reps": 5,
+      "n": 50,
+      "mem_mb": {
+        "mean": 459.146,
+        "median": 475.55,
+        "max": 494.8
+      },
+      "cpu_pct": {
+        "mean": 115.287,
+        "median": 112.915,
+        "max": 149.33
+      }
+    },
+    {
+      "scenario": "volume",
+      "condition": "active",
+      "window": "B",
+      "reps": 5,
+      "n": 60,
+      "mem_mb": {
+        "mean": 454.323,
+        "median": 475.75,
+        "max": 494.8
+      },
+      "cpu_pct": {
+        "mean": 105.94,
+        "median": 112.215,
+        "max": 177.09
+      }
+    }
+  ],
+  "increments": [
+    {
+      "scenario": "attack",
+      "window": "A",
+      "pairs": [
+        {
+          "rep": 1,
+          "baseline_mem_mb": 61.266,
+          "active_mem_mb": 372.744,
+          "baseline_cpu_pct": 17.256,
+          "active_cpu_pct": 107.429
+        },
+        {
+          "rep": 2,
+          "baseline_mem_mb": 62.724,
+          "active_mem_mb": 396.5,
+          "baseline_cpu_pct": 15.218,
+          "active_cpu_pct": 102.262
+        },
+        {
+          "rep": 3,
+          "baseline_mem_mb": 62.681,
+          "active_mem_mb": 399.762,
+          "baseline_cpu_pct": 16.354,
+          "active_cpu_pct": 100.888
+        },
+        {
+          "rep": 4,
+          "baseline_mem_mb": 64.678,
+          "active_mem_mb": 402.775,
+          "baseline_cpu_pct": 16.388,
+          "active_cpu_pct": 98.869
+        },
+        {
+          "rep": 5,
+          "baseline_mem_mb": 64.733,
+          "active_mem_mb": 403.578,
+          "baseline_cpu_pct": 15.143,
+          "active_cpu_pct": 96.499
+        }
+      ],
+      "summary": {
+        "pairs": 5,
+        "mem_mb_delta": 331.855,
+        "mem_rel_pct": 524.95,
+        "cpu_pp_delta": 85.118,
+        "cpu_rel_pct": 529.61
+      }
+    },
+    {
+      "scenario": "attack",
+      "window": "B",
+      "pairs": [
+        {
+          "rep": 1,
+          "baseline_mem_mb": 54.785,
+          "active_mem_mb": 347.982,
+          "baseline_cpu_pct": 15.286,
+          "active_cpu_pct": 119.954
+        },
+        {
+          "rep": 2,
+          "baseline_mem_mb": 63.58,
+          "active_mem_mb": 392.382,
+          "baseline_cpu_pct": 13.092,
+          "active_cpu_pct": 87.31
+        },
+        {
+          "rep": 3,
+          "baseline_mem_mb": 60.104,
+          "active_mem_mb": 394.145,
+          "baseline_cpu_pct": 14.165,
+          "active_cpu_pct": 77.98
+        },
+        {
+          "rep": 4,
+          "baseline_mem_mb": 61.997,
+          "active_mem_mb": 398.173,
+          "baseline_cpu_pct": 14.275,
+          "active_cpu_pct": 78.592
+        },
+        {
+          "rep": 5,
+          "baseline_mem_mb": 65.331,
+          "active_mem_mb": 402.582,
+          "baseline_cpu_pct": 12.817,
+          "active_cpu_pct": 82.718
+        }
+      ],
+      "summary": {
+        "pairs": 5,
+        "mem_mb_delta": 325.893,
+        "mem_rel_pct": 532.86,
+        "cpu_pp_delta": 75.384,
+        "cpu_rel_pct": 541.28
+      }
+    },
+    {
+      "scenario": "normal",
+      "window": "A",
+      "pairs": [
+        {
+          "rep": 1,
+          "baseline_mem_mb": 63.032,
+          "active_mem_mb": 383.55,
+          "baseline_cpu_pct": 14.807,
+          "active_cpu_pct": 107.286
+        },
+        {
+          "rep": 2,
+          "baseline_mem_mb": 64.784,
+          "active_mem_mb": 391.8,
+          "baseline_cpu_pct": 14.194,
+          "active_cpu_pct": 105.356
+        },
+        {
+          "rep": 3,
+          "baseline_mem_mb": 65.439,
+          "active_mem_mb": 398.056,
+          "baseline_cpu_pct": 14.11,
+          "active_cpu_pct": 100.522
+        },
+        {
+          "rep": 4,
+          "baseline_mem_mb": 65.889,
+          "active_mem_mb": 410.711,
+          "baseline_cpu_pct": 14.966,
+          "active_cpu_pct": 105.621
+        },
+        {
+          "rep": 5,
+          "baseline_mem_mb": 66.742,
+          "active_mem_mb": 401.867,
+          "baseline_cpu_pct": 14.303,
+          "active_cpu_pct": 98.262
+        }
+      ],
+      "summary": {
+        "pairs": 5,
+        "mem_mb_delta": 332.02,
+        "mem_rel_pct": 509.41,
+        "cpu_pp_delta": 88.933,
+        "cpu_rel_pct": 614.35
+      }
+    },
+    {
+      "scenario": "normal",
+      "window": "B",
+      "pairs": [
+        {
+          "rep": 1,
+          "baseline_mem_mb": 57.204,
+          "active_mem_mb": 346.927,
+          "baseline_cpu_pct": 13.09,
+          "active_cpu_pct": 113.148
+        },
+        {
+          "rep": 2,
+          "baseline_mem_mb": 62.025,
+          "active_mem_mb": 389.182,
+          "baseline_cpu_pct": 11.417,
+          "active_cpu_pct": 89.945
+        },
+        {
+          "rep": 3,
+          "baseline_mem_mb": 60.094,
+          "active_mem_mb": 396.273,
+          "baseline_cpu_pct": 11.478,
+          "active_cpu_pct": 86.005
+        },
+        {
+          "rep": 4,
+          "baseline_mem_mb": 63.057,
+          "active_mem_mb": 405.891,
+          "baseline_cpu_pct": 11.963,
+          "active_cpu_pct": 90.043
+        },
+        {
+          "rep": 5,
+          "baseline_mem_mb": 64.077,
+          "active_mem_mb": 404.25,
+          "baseline_cpu_pct": 11.407,
+          "active_cpu_pct": 77.21
+        }
+      ],
+      "summary": {
+        "pairs": 5,
+        "mem_mb_delta": 327.213,
+        "mem_rel_pct": 533.86,
+        "cpu_pp_delta": 79.399,
+        "cpu_rel_pct": 668.85
+      }
+    },
+    {
+      "scenario": "volume",
+      "window": "A",
+      "pairs": [
+        {
+          "rep": 1,
+          "baseline_mem_mb": 91.629,
+          "active_mem_mb": 427.14,
+          "baseline_cpu_pct": 85.217,
+          "active_cpu_pct": 115.757
+        },
+        {
+          "rep": 2,
+          "baseline_mem_mb": 79.817,
+          "active_mem_mb": 470.62,
+          "baseline_cpu_pct": 81.122,
+          "active_cpu_pct": 110.589
+        },
+        {
+          "rep": 3,
+          "baseline_mem_mb": 80.903,
+          "active_mem_mb": 456.35,
+          "baseline_cpu_pct": 82.28,
+          "active_cpu_pct": 117.841
+        },
+        {
+          "rep": 4,
+          "baseline_mem_mb": 81.056,
+          "active_mem_mb": 470.1,
+          "baseline_cpu_pct": 80.519,
+          "active_cpu_pct": 114.852
+        },
+        {
+          "rep": 5,
+          "baseline_mem_mb": 82.75,
+          "active_mem_mb": 471.52,
+          "baseline_cpu_pct": 82.343,
+          "active_cpu_pct": 117.396
+        }
+      ],
+      "summary": {
+        "pairs": 5,
+        "mem_mb_delta": 375.915,
+        "mem_rel_pct": 451.65,
+        "cpu_pp_delta": 32.991,
+        "cpu_rel_pct": 40.09
+      }
+    },
+    {
+      "scenario": "volume",
+      "window": "B",
+      "pairs": [
+        {
+          "rep": 1,
+          "baseline_mem_mb": 86.405,
+          "active_mem_mb": 400.225,
+          "baseline_cpu_pct": 72.322,
+          "active_cpu_pct": 125.272
+        },
+        {
+          "rep": 2,
+          "baseline_mem_mb": 85.177,
+          "active_mem_mb": 472.825,
+          "baseline_cpu_pct": 68.479,
+          "active_cpu_pct": 97.381
+        },
+        {
+          "rep": 3,
+          "baseline_mem_mb": 79.823,
+          "active_mem_mb": 453.525,
+          "baseline_cpu_pct": 69.734,
+          "active_cpu_pct": 103.368
+        },
+        {
+          "rep": 4,
+          "baseline_mem_mb": 80.425,
+          "active_mem_mb": 470.133,
+          "baseline_cpu_pct": 61.77,
+          "active_cpu_pct": 100.808
+        },
+        {
+          "rep": 5,
+          "baseline_mem_mb": 82.037,
+          "active_mem_mb": 474.908,
+          "baseline_cpu_pct": 64.09,
+          "active_cpu_pct": 102.87
+        }
+      ],
+      "summary": {
+        "pairs": 5,
+        "mem_mb_delta": 371.55,
+        "mem_rel_pct": 448.88,
+        "cpu_pp_delta": 38.661,
+        "cpu_rel_pct": 57.46
+      }
+    }
+  ],
+  "out_of_window": {
+    "A": [
+      {
+        "timestamp_ms": 1790462171000,
+        "mem_mb": 219.2,
+        "cpu_pct": 184.7,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790462178000,
+        "mem_mb": 216.5,
+        "cpu_pct": 198.6,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790462184000,
+        "mem_mb": 24.86,
+        "cpu_pct": 9.06,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790462191000,
+        "mem_mb": 35.42,
+        "cpu_pct": 6.53,
+        "reason": "warmup",
+        "repetition": "normal-baseline-rep1"
+      },
+      {
+        "timestamp_ms": 1790462198000,
+        "mem_mb": 26.53,
+        "cpu_pct": 4.2,
+        "reason": "warmup",
+        "repetition": "normal-baseline-rep1"
+      },
+      {
+        "timestamp_ms": 1790462265000,
+        "mem_mb": 66.51,
+        "cpu_pct": 1.05,
+        "reason": "warmup",
+        "repetition": "normal-baseline-rep2"
+      },
+      {
+        "timestamp_ms": 1790462271000,
+        "mem_mb": 65.58,
+        "cpu_pct": 2.82,
+        "reason": "warmup",
+        "repetition": "normal-baseline-rep2"
+      },
+      {
+        "timestamp_ms": 1790462278000,
+        "mem_mb": 29.15,
+        "cpu_pct": 5.39,
+        "reason": "warmup",
+        "repetition": "normal-baseline-rep2"
+      },
+      {
+        "timestamp_ms": 1790462345000,
+        "mem_mb": 66.11,
+        "cpu_pct": 1.87,
+        "reason": "warmup",
+        "repetition": "normal-baseline-rep3"
+      },
+      {
+        "timestamp_ms": 1790462351000,
+        "mem_mb": 29.79,
+        "cpu_pct": 4.69,
+        "reason": "warmup",
+        "repetition": "normal-baseline-rep3"
+      },
+      {
+        "timestamp_ms": 1790462358000,
+        "mem_mb": 36.28,
+        "cpu_pct": 4.19,
+        "reason": "warmup",
+        "repetition": "normal-baseline-rep3"
+      },
+      {
+        "timestamp_ms": 1790462425000,
+        "mem_mb": 66.95,
+        "cpu_pct": 1.97,
+        "reason": "warmup",
+        "repetition": "normal-baseline-rep4"
+      },
+      {
+        "timestamp_ms": 1790462432000,
+        "mem_mb": 67.46,
+        "cpu_pct": 2.71,
+        "reason": "warmup",
+        "repetition": "normal-baseline-rep4"
+      },
+      {
+        "timestamp_ms": 1790462438000,
+        "mem_mb": 29.27,
+        "cpu_pct": 4.18,
+        "reason": "warmup",
+        "repetition": "normal-baseline-rep4"
+      },
+      {
+        "timestamp_ms": 1790462505000,
+        "mem_mb": 68.41,
+        "cpu_pct": 1.86,
+        "reason": "warmup",
+        "repetition": "normal-baseline-rep5"
+      },
+      {
+        "timestamp_ms": 1790462512000,
+        "mem_mb": 67.54,
+        "cpu_pct": 2.93,
+        "reason": "warmup",
+        "repetition": "normal-baseline-rep5"
+      },
+      {
+        "timestamp_ms": 1790462518000,
+        "mem_mb": 32.29,
+        "cpu_pct": 3.36,
+        "reason": "warmup",
+        "repetition": "normal-baseline-rep5"
+      },
+      {
+        "timestamp_ms": 1790462585000,
+        "mem_mb": 67.23,
+        "cpu_pct": 0.0,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790462592000,
+        "mem_mb": 0.0,
+        "cpu_pct": 0.0,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790462598000,
+        "mem_mb": 226.7,
+        "cpu_pct": 175.31,
+        "reason": "warmup",
+        "repetition": "normal-active-rep1"
+      },
+      {
+        "timestamp_ms": 1790462605000,
+        "mem_mb": 252.1,
+        "cpu_pct": 181.53,
+        "reason": "warmup",
+        "repetition": "normal-active-rep1"
+      },
+      {
+        "timestamp_ms": 1790462612000,
+        "mem_mb": 269.0,
+        "cpu_pct": 29.5,
+        "reason": "warmup",
+        "repetition": "normal-active-rep1"
+      },
+      {
+        "timestamp_ms": 1790462673000,
+        "mem_mb": 391.6,
+        "cpu_pct": 1.03,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790462680000,
+        "mem_mb": 372.2,
+        "cpu_pct": 19.89,
+        "reason": "warmup",
+        "repetition": "normal-active-rep2"
+      },
+      {
+        "timestamp_ms": 1790462686000,
+        "mem_mb": 382.6,
+        "cpu_pct": 21.3,
+        "reason": "warmup",
+        "repetition": "normal-active-rep2"
+      },
+      {
+        "timestamp_ms": 1790462754000,
+        "mem_mb": 394.8,
+        "cpu_pct": 0.63,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790462761000,
+        "mem_mb": 394.9,
+        "cpu_pct": 19.9,
+        "reason": "warmup",
+        "repetition": "normal-active-rep3"
+      },
+      {
+        "timestamp_ms": 1790462767000,
+        "mem_mb": 381.6,
+        "cpu_pct": 21.45,
+        "reason": "warmup",
+        "repetition": "normal-active-rep3"
+      },
+      {
+        "timestamp_ms": 1790462835000,
+        "mem_mb": 400.7,
+        "cpu_pct": 0.01,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790462842000,
+        "mem_mb": 389.0,
+        "cpu_pct": 19.6,
+        "reason": "warmup",
+        "repetition": "normal-active-rep4"
+      },
+      {
+        "timestamp_ms": 1790462849000,
+        "mem_mb": 379.4,
+        "cpu_pct": 20.28,
+        "reason": "warmup",
+        "repetition": "normal-active-rep4"
+      },
+      {
+        "timestamp_ms": 1790462917000,
+        "mem_mb": 412.0,
+        "cpu_pct": 0.02,
+        "reason": "warmup",
+        "repetition": "normal-active-rep5"
+      },
+      {
+        "timestamp_ms": 1790462923000,
+        "mem_mb": 411.2,
+        "cpu_pct": 22.3,
+        "reason": "warmup",
+        "repetition": "normal-active-rep5"
+      },
+      {
+        "timestamp_ms": 1790462930000,
+        "mem_mb": 411.0,
+        "cpu_pct": 19.84,
+        "reason": "warmup",
+        "repetition": "normal-active-rep5"
+      },
+      {
+        "timestamp_ms": 1790462998000,
+        "mem_mb": 404.2,
+        "cpu_pct": 0.01,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790463004000,
+        "mem_mb": 0.0,
+        "cpu_pct": 0.0,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790463011000,
+        "mem_mb": 28.57,
+        "cpu_pct": 5.51,
+        "reason": "warmup",
+        "repetition": "attack-baseline-rep1"
+      },
+      {
+        "timestamp_ms": 1790463018000,
+        "mem_mb": 22.68,
+        "cpu_pct": 7.34,
+        "reason": "warmup",
+        "repetition": "attack-baseline-rep1"
+      },
+      {
+        "timestamp_ms": 1790463085000,
+        "mem_mb": 67.22,
+        "cpu_pct": 0.54,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790463091000,
+        "mem_mb": 67.36,
+        "cpu_pct": 4.48,
+        "reason": "warmup",
+        "repetition": "attack-baseline-rep2"
+      },
+      {
+        "timestamp_ms": 1790463098000,
+        "mem_mb": 67.5,
+        "cpu_pct": 2.57,
+        "reason": "warmup",
+        "repetition": "attack-baseline-rep2"
+      },
+      {
+        "timestamp_ms": 1790463165000,
+        "mem_mb": 66.5,
+        "cpu_pct": 0.53,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790463171000,
+        "mem_mb": 66.03,
+        "cpu_pct": 2.24,
+        "reason": "warmup",
+        "repetition": "attack-baseline-rep3"
+      },
+      {
+        "timestamp_ms": 1790463178000,
+        "mem_mb": 30.98,
+        "cpu_pct": 6.38,
+        "reason": "warmup",
+        "repetition": "attack-baseline-rep3"
+      },
+      {
+        "timestamp_ms": 1790463245000,
+        "mem_mb": 66.44,
+        "cpu_pct": 0.55,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790463252000,
+        "mem_mb": 66.18,
+        "cpu_pct": 2.32,
+        "reason": "warmup",
+        "repetition": "attack-baseline-rep4"
+      },
+      {
+        "timestamp_ms": 1790463258000,
+        "mem_mb": 33.69,
+        "cpu_pct": 7.22,
+        "reason": "warmup",
+        "repetition": "attack-baseline-rep4"
+      },
+      {
+        "timestamp_ms": 1790463325000,
+        "mem_mb": 67.86,
+        "cpu_pct": 0.51,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790463332000,
+        "mem_mb": 67.93,
+        "cpu_pct": 2.3,
+        "reason": "warmup",
+        "repetition": "attack-baseline-rep5"
+      },
+      {
+        "timestamp_ms": 1790463338000,
+        "mem_mb": 68.11,
+        "cpu_pct": 2.4,
+        "reason": "warmup",
+        "repetition": "attack-baseline-rep5"
+      },
+      {
+        "timestamp_ms": 1790463405000,
+        "mem_mb": 68.98,
+        "cpu_pct": 0.5,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790463412000,
+        "mem_mb": 68.55,
+        "cpu_pct": 0.0,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790463419000,
+        "mem_mb": 216.8,
+        "cpu_pct": 102.92,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790463425000,
+        "mem_mb": 225.3,
+        "cpu_pct": 175.09,
+        "reason": "warmup",
+        "repetition": "attack-active-rep1"
+      },
+      {
+        "timestamp_ms": 1790463432000,
+        "mem_mb": 247.8,
+        "cpu_pct": 177.54,
+        "reason": "warmup",
+        "repetition": "attack-active-rep1"
+      },
+      {
+        "timestamp_ms": 1790463500000,
+        "mem_mb": 389.7,
+        "cpu_pct": 0.0,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790463507000,
+        "mem_mb": 368.9,
+        "cpu_pct": 20.89,
+        "reason": "warmup",
+        "repetition": "attack-active-rep2"
+      },
+      {
+        "timestamp_ms": 1790463514000,
+        "mem_mb": 378.8,
+        "cpu_pct": 19.16,
+        "reason": "warmup",
+        "repetition": "attack-active-rep2"
+      },
+      {
+        "timestamp_ms": 1790463582000,
+        "mem_mb": 379.7,
+        "cpu_pct": 12.64,
+        "reason": "warmup",
+        "repetition": "attack-active-rep3"
+      },
+      {
+        "timestamp_ms": 1790463588000,
+        "mem_mb": 388.5,
+        "cpu_pct": 17.8,
+        "reason": "warmup",
+        "repetition": "attack-active-rep3"
+      },
+      {
+        "timestamp_ms": 1790463595000,
+        "mem_mb": 369.3,
+        "cpu_pct": 20.24,
+        "reason": "warmup",
+        "repetition": "attack-active-rep3"
+      },
+      {
+        "timestamp_ms": 1790463656000,
+        "mem_mb": 402.7,
+        "cpu_pct": 53.78,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790463663000,
+        "mem_mb": 402.4,
+        "cpu_pct": 14.69,
+        "reason": "warmup",
+        "repetition": "attack-active-rep4"
+      },
+      {
+        "timestamp_ms": 1790463670000,
+        "mem_mb": 375.3,
+        "cpu_pct": 20.52,
+        "reason": "warmup",
+        "repetition": "attack-active-rep4"
+      },
+      {
+        "timestamp_ms": 1790463676000,
+        "mem_mb": 380.0,
+        "cpu_pct": 38.35,
+        "reason": "warmup",
+        "repetition": "attack-active-rep4"
+      },
+      {
+        "timestamp_ms": 1790463737000,
+        "mem_mb": 403.1,
+        "cpu_pct": 0.51,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790463744000,
+        "mem_mb": 403.7,
+        "cpu_pct": 22.04,
+        "reason": "warmup",
+        "repetition": "attack-active-rep5"
+      },
+      {
+        "timestamp_ms": 1790463751000,
+        "mem_mb": 392.5,
+        "cpu_pct": 19.37,
+        "reason": "warmup",
+        "repetition": "attack-active-rep5"
+      },
+      {
+        "timestamp_ms": 1790463818000,
+        "mem_mb": 406.0,
+        "cpu_pct": 0.81,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790463825000,
+        "mem_mb": 405.8,
+        "cpu_pct": 0.06,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790463832000,
+        "mem_mb": 20.53,
+        "cpu_pct": 0.05,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790463838000,
+        "mem_mb": 61.65,
+        "cpu_pct": 14.82,
+        "reason": "warmup",
+        "repetition": "volume-baseline-rep1"
+      },
+      {
+        "timestamp_ms": 1790463845000,
+        "mem_mb": 64.15,
+        "cpu_pct": 13.77,
+        "reason": "warmup",
+        "repetition": "volume-baseline-rep1"
+      },
+      {
+        "timestamp_ms": 1790463913000,
+        "mem_mb": 108.4,
+        "cpu_pct": 0.01,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790463919000,
+        "mem_mb": 109.0,
+        "cpu_pct": 11.58,
+        "reason": "warmup",
+        "repetition": "volume-baseline-rep2"
+      },
+      {
+        "timestamp_ms": 1790463926000,
+        "mem_mb": 109.6,
+        "cpu_pct": 11.59,
+        "reason": "warmup",
+        "repetition": "volume-baseline-rep2"
+      },
+      {
+        "timestamp_ms": 1790463993000,
+        "mem_mb": 75.36,
+        "cpu_pct": 4.28,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790464000000,
+        "mem_mb": 74.1,
+        "cpu_pct": 14.26,
+        "reason": "warmup",
+        "repetition": "volume-baseline-rep3"
+      },
+      {
+        "timestamp_ms": 1790464007000,
+        "mem_mb": 75.82,
+        "cpu_pct": 12.29,
+        "reason": "warmup",
+        "repetition": "volume-baseline-rep3"
+      },
+      {
+        "timestamp_ms": 1790464074000,
+        "mem_mb": 79.55,
+        "cpu_pct": 11.47,
+        "reason": "warmup",
+        "repetition": "volume-baseline-rep4"
+      },
+      {
+        "timestamp_ms": 1790464081000,
+        "mem_mb": 78.14,
+        "cpu_pct": 12.4,
+        "reason": "warmup",
+        "repetition": "volume-baseline-rep4"
+      },
+      {
+        "timestamp_ms": 1790464087000,
+        "mem_mb": 78.53,
+        "cpu_pct": 11.45,
+        "reason": "warmup",
+        "repetition": "volume-baseline-rep4"
+      },
+      {
+        "timestamp_ms": 1790464148000,
+        "mem_mb": 80.38,
+        "cpu_pct": 65.23,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790464155000,
+        "mem_mb": 79.46,
+        "cpu_pct": 12.18,
+        "reason": "warmup",
+        "repetition": "volume-baseline-rep5"
+      },
+      {
+        "timestamp_ms": 1790464161000,
+        "mem_mb": 80.81,
+        "cpu_pct": 11.52,
+        "reason": "warmup",
+        "repetition": "volume-baseline-rep5"
+      },
+      {
+        "timestamp_ms": 1790464168000,
+        "mem_mb": 80.14,
+        "cpu_pct": 22.55,
+        "reason": "warmup",
+        "repetition": "volume-baseline-rep5"
+      },
+      {
+        "timestamp_ms": 1790464229000,
+        "mem_mb": 81.52,
+        "cpu_pct": 0.42,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790464236000,
+        "mem_mb": 80.77,
+        "cpu_pct": 0.06,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790464242000,
+        "mem_mb": 216.2,
+        "cpu_pct": 152.71,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790464249000,
+        "mem_mb": 255.1,
+        "cpu_pct": 168.6,
+        "reason": "warmup",
+        "repetition": "volume-active-rep1"
+      },
+      {
+        "timestamp_ms": 1790464256000,
+        "mem_mb": 276.2,
+        "cpu_pct": 177.09,
+        "reason": "warmup",
+        "repetition": "volume-active-rep1"
+      },
+      {
+        "timestamp_ms": 1790464330000,
+        "mem_mb": 483.8,
+        "cpu_pct": 1.24,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790464337000,
+        "mem_mb": 484.1,
+        "cpu_pct": 32.82,
+        "reason": "warmup",
+        "repetition": "volume-active-rep2"
+      },
+      {
+        "timestamp_ms": 1790464344000,
+        "mem_mb": 483.6,
+        "cpu_pct": 29.86,
+        "reason": "warmup",
+        "repetition": "volume-active-rep2"
+      },
+      {
+        "timestamp_ms": 1790464418000,
+        "mem_mb": 474.2,
+        "cpu_pct": 0.01,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790464425000,
+        "mem_mb": 475.2,
+        "cpu_pct": 29.79,
+        "reason": "warmup",
+        "repetition": "volume-active-rep3"
+      },
+      {
+        "timestamp_ms": 1790464432000,
+        "mem_mb": 403.6,
+        "cpu_pct": 32.21,
+        "reason": "warmup",
+        "repetition": "volume-active-rep3"
+      },
+      {
+        "timestamp_ms": 1790464506000,
+        "mem_mb": 485.7,
+        "cpu_pct": 66.48,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790464513000,
+        "mem_mb": 463.3,
+        "cpu_pct": 30.77,
+        "reason": "warmup",
+        "repetition": "volume-active-rep4"
+      },
+      {
+        "timestamp_ms": 1790464520000,
+        "mem_mb": 477.3,
+        "cpu_pct": 30.41,
+        "reason": "warmup",
+        "repetition": "volume-active-rep4"
+      },
+      {
+        "timestamp_ms": 1790464594000,
+        "mem_mb": 487.7,
+        "cpu_pct": 60.27,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790464601000,
+        "mem_mb": 491.3,
+        "cpu_pct": 30.7,
+        "reason": "warmup",
+        "repetition": "volume-active-rep5"
+      },
+      {
+        "timestamp_ms": 1790464608000,
+        "mem_mb": 492.4,
+        "cpu_pct": 29.78,
+        "reason": "warmup",
+        "repetition": "volume-active-rep5"
+      },
+      {
+        "timestamp_ms": 1790464682000,
+        "mem_mb": 493.5,
+        "cpu_pct": 0.01,
+        "reason": "outside_run",
+        "repetition": null
+      }
+    ],
+    "B": [
+      {
+        "timestamp_ms": 1790462171000,
+        "mem_mb": 219.2,
+        "cpu_pct": 184.7,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790462178000,
+        "mem_mb": 216.5,
+        "cpu_pct": 198.6,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790462184000,
+        "mem_mb": 24.86,
+        "cpu_pct": 9.06,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790462585000,
+        "mem_mb": 67.23,
+        "cpu_pct": 0.0,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790462592000,
+        "mem_mb": 0.0,
+        "cpu_pct": 0.0,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790462673000,
+        "mem_mb": 391.6,
+        "cpu_pct": 1.03,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790462754000,
+        "mem_mb": 394.8,
+        "cpu_pct": 0.63,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790462835000,
+        "mem_mb": 400.7,
+        "cpu_pct": 0.01,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790462998000,
+        "mem_mb": 404.2,
+        "cpu_pct": 0.01,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790463004000,
+        "mem_mb": 0.0,
+        "cpu_pct": 0.0,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790463085000,
+        "mem_mb": 67.22,
+        "cpu_pct": 0.54,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790463165000,
+        "mem_mb": 66.5,
+        "cpu_pct": 0.53,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790463245000,
+        "mem_mb": 66.44,
+        "cpu_pct": 0.55,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790463325000,
+        "mem_mb": 67.86,
+        "cpu_pct": 0.51,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790463405000,
+        "mem_mb": 68.98,
+        "cpu_pct": 0.5,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790463412000,
+        "mem_mb": 68.55,
+        "cpu_pct": 0.0,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790463419000,
+        "mem_mb": 216.8,
+        "cpu_pct": 102.92,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790463500000,
+        "mem_mb": 389.7,
+        "cpu_pct": 0.0,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790463656000,
+        "mem_mb": 402.7,
+        "cpu_pct": 53.78,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790463737000,
+        "mem_mb": 403.1,
+        "cpu_pct": 0.51,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790463818000,
+        "mem_mb": 406.0,
+        "cpu_pct": 0.81,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790463825000,
+        "mem_mb": 405.8,
+        "cpu_pct": 0.06,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790463832000,
+        "mem_mb": 20.53,
+        "cpu_pct": 0.05,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790463913000,
+        "mem_mb": 108.4,
+        "cpu_pct": 0.01,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790463993000,
+        "mem_mb": 75.36,
+        "cpu_pct": 4.28,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790464148000,
+        "mem_mb": 80.38,
+        "cpu_pct": 65.23,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790464229000,
+        "mem_mb": 81.52,
+        "cpu_pct": 0.42,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790464236000,
+        "mem_mb": 80.77,
+        "cpu_pct": 0.06,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790464242000,
+        "mem_mb": 216.2,
+        "cpu_pct": 152.71,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790464330000,
+        "mem_mb": 483.8,
+        "cpu_pct": 1.24,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790464418000,
+        "mem_mb": 474.2,
+        "cpu_pct": 0.01,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790464506000,
+        "mem_mb": 485.7,
+        "cpu_pct": 66.48,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790464594000,
+        "mem_mb": 487.7,
+        "cpu_pct": 60.27,
+        "reason": "outside_run",
+        "repetition": null
+      },
+      {
+        "timestamp_ms": 1790464682000,
+        "mem_mb": 493.5,
+        "cpu_pct": 0.01,
+        "reason": "outside_run",
+        "repetition": null
+      }
+    ]
+  },
+  "flags": [
+    "attack/active: mean CPU A vs B differs by 11.94 pp",
+    "normal/active: mean CPU A vs B differs by 12.30 pp",
+    "volume/baseline: mean CPU A vs B differs by 15.06 pp",
+    "volume/active: mean CPU A vs B differs by 9.35 pp",
+    "attack: paired CPU increment A vs B differs by 9.73 pp",
+    "normal: paired CPU increment A vs B differs by 9.53 pp",
+    "volume: paired CPU increment A vs B differs by 5.67 pp"
+  ],
+  "cpu_flag_threshold_pp": 5.0
+}

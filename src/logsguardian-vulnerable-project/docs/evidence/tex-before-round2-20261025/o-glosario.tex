@@ -1,0 +1,237 @@
+\newglossaryentry{rasp}
+{
+    name={RASP},
+    description={Autoprotección de aplicaciones en tiempo de ejecución (\textit{Runtime Application Self-Protection}): mecanismo de seguridad que se ejecuta dentro de la propia aplicación y analiza sus peticiones para detectar y bloquear ataques.}
+}
+
+\newglossaryentry{waf}
+{
+    name={WAF},
+    description={Cortafuegos de aplicaciones web (\textit{Web Application Firewall}): dispositivo o servicio perimetral que filtra el tráfico HTTP antes de que llegue a la aplicación.}
+}
+
+\newglossaryentry{modsecurity}
+{
+    name={ModSecurity},
+    description={Motor de WAF de código abierto que se usa con reglas externas; en este trabajo se configuró con OWASP CRS.}
+}
+
+\newglossaryentry{crs}
+{
+    name={OWASP CRS},
+    description={Conjunto de reglas genéricas de OWASP (\textit{Core Rule Set}) para ModSecurity, con niveles de paranoia que controlan qué tan estrictas son.}
+}
+
+\newglossaryentry{owasp}
+{
+    name={OWASP Top 10},
+    description={Lista de las diez categorías de riesgo más críticas para aplicaciones web, publicada por OWASP; este trabajo usa la edición 2021.}
+}
+
+\newglossaryentry{mitre}
+{
+    name={MITRE ATT\&CK},
+    sort={MITRE ATT&CK},
+    description={Base de conocimiento de tácticas y técnicas de atacantes, usada aquí para asociar cada vector de ataque a una técnica.}
+}
+
+\newglossaryentry{cwe}
+{
+    name={CWE},
+    description={Enumeración común de debilidades de software (\textit{Common Weakness Enumeration}): catálogo de tipos de defectos que originan vulnerabilidades.}
+}
+
+\newglossaryentry{sqli}
+{
+    name={SQL Injection},
+    description={Ataque que inserta sentencias SQL en una entrada de la aplicación para alterar las consultas que ejecuta la base de datos.}
+}
+
+\newglossaryentry{xss}
+{
+    name={XSS},
+    description={\textit{Cross-Site Scripting}: ataque que inyecta código ejecutable en una página que otros usuarios verán.}
+}
+
+\newglossaryentry{pathtraversal}
+{
+    name={Path Traversal},
+    description={Ataque que manipula rutas de archivo (por ejemplo con \texttt{../}) para leer archivos fuera del directorio previsto; incluye la inclusión local de archivos (LFI).}
+}
+
+\newglossaryentry{cmdi}
+{
+    name={Command Injection},
+    description={Ataque que logra ejecutar comandos del sistema operativo a través de una entrada de la aplicación.}
+}
+
+\newglossaryentry{middleware}
+{
+    name={\textit{middleware}},
+    sort={middleware},
+    description={Función que se ejecuta entre la recepción de una petición y la lógica de negocio de la aplicación; en Express se registra con \texttt{app.use}.}
+}
+
+\newglossaryentry{rf}
+{
+    name={Random Forest},
+    description={Algoritmo supervisado que combina muchos árboles de decisión; en la librería es el único modelo con autoridad para bloquear una petición.}
+}
+
+\newglossaryentry{iforest}
+{
+    name={Isolation Forest},
+    description={Algoritmo no supervisado de detección de anomalías que aísla las observaciones atípicas con particiones aleatorias; en la librería solo registra anomalías y nunca bloquea.}
+}
+
+\newglossaryentry{onnx}
+{
+    name={ONNX},
+    description={Formato abierto para serializar modelos de aprendizaje automático, que permite ejecutarlos fuera de Python.}
+}
+
+\newglossaryentry{workerthreads}
+{
+    name={\texttt{worker\_threads}},
+    sort={worker_threads},
+    description={Módulo de Node.js que ejecuta código en hilos independientes del hilo principal; la inferencia de los modelos se ejecuta ahí.}
+}
+
+\newglossaryentry{eventloop}
+{
+    name={\textit{Event Loop}},
+    sort={Event Loop},
+    description={Bucle de eventos de Node.js que atiende las peticiones en un único hilo; bloquearlo degrada a toda la aplicación.}
+}
+
+\newglossaryentry{failopen}
+{
+    name={\textit{fail-open}},
+    sort={fail-open},
+    description={Política por la cual, ante un error o un tiempo de espera del módulo de detección, la petición se deja pasar en lugar de bloquearse.}
+}
+
+\newglossaryentry{monitor}
+{
+    name={Modo \texttt{monitor}},
+    sort={Modo monitor},
+    description={Modo de operación en el que la librería registra las peticiones que bloquearía, pero no las bloquea.}
+}
+
+\newglossaryentry{block}
+{
+    name={Modo \texttt{block}},
+    sort={Modo block},
+    description={Modo de operación en el que la librería responde HTTP 403 a las peticiones que clasifica como ataque.}
+}
+
+\newglossaryentry{pesp}
+{
+    name={p95},
+    description={Percentil 95 del tiempo de respuesta: el valor por debajo del cual queda el 95~\% de las peticiones.}
+}
+
+\newglossaryentry{deltap95}
+{
+    name={$\Delta p95$},
+    sort={Delta p95},
+    description={Diferencia entre el p95 con el middleware activo y el p95 de la línea base sin él; en este trabajo se mide en milisegundos.}
+}
+
+\newglossaryentry{funo}
+{
+    name={F1},
+    description={Media armónica de la precisión y el recall; es la métrica principal de clasificación del trabajo.}
+}
+
+\newglossaryentry{auc}
+{
+    name={AUC-ROC},
+    description={Área bajo la curva ROC; mide qué tan bien separa un modelo dos clases sin depender de un umbral.}
+}
+
+\newglossaryentry{wilson}
+{
+    name={Intervalo de Wilson},
+    description={Intervalo de confianza para una proporción, adecuado para muestras pequeñas o proporciones cercanas a 0 o 1.}
+}
+
+\newglossaryentry{casidup}
+{
+    name={Casi-duplicado},
+    description={Registro muy parecido a otro pero no idéntico; si queda repartido entre entrenamiento y prueba, puede inflar las métricas.}
+}
+
+\newglossaryentry{minhash}
+{
+    name={MinHash},
+    description={Técnica para estimar rápidamente la similitud entre conjuntos, usada para detectar casi-duplicados.}
+}
+
+\newglossaryentry{fuga}
+{
+    name={Fuga de datos},
+    description={Presencia en el conjunto de evaluación de información disponible durante el entrenamiento, lo que sobreestima el desempeño.}
+}
+
+\newglossaryentry{corpuslimpio}
+{
+    name={Corpus limpio},
+    description={Conjunto de payloads de evaluación filtrado para excluir los que coinciden con el entrenamiento; en este trabajo es el de la Ronda~5.}
+}
+
+\newglossaryentry{useragent}
+{
+    name={\texttt{User-Agent}},
+    sort={User-Agent},
+    description={Cabecera HTTP con la que el cliente se identifica (navegador, cURL, entre otros); su representación en el corpus sesgó al modelo.}
+}
+
+\newglossaryentry{falsopositivo}
+{
+    name={Falso positivo},
+    description={Petición legítima que el sistema clasifica o bloquea como ataque.}
+}
+
+\newglossaryentry{parmodelos}
+{
+    name={Par de modelos},
+    description={Combinación de un archivo \texttt{rf.onnx} y uno \texttt{if.onnx} identificada por su suma SHA-256 (pares A, B y C).}
+}
+
+\newglossaryentry{tarball}
+{
+    name={\textit{tarball}},
+    sort={tarball},
+    description={Archivo comprimido \texttt{.tgz} de un paquete de npm, publicado o construido localmente.}
+}
+
+\newglossaryentry{kanban}
+{
+    name={Kanban},
+    description={Metodología de gestión basada en un tablero de columnas que representan el estado de las tareas.}
+}
+
+\newglossaryentry{artillery}
+{
+    name={Artillery},
+    description={Herramienta de pruebas de carga usada para medir la latencia con y sin el middleware.}
+}
+
+\newglossaryentry{sqlmap}
+{
+    name={sqlmap},
+    description={Herramienta de código abierto que automatiza la detección y la explotación de inyecciones SQL; generó los payloads de SQL Injection del corpus limpio.}
+}
+
+\newglossaryentry{zap}
+{
+    name={OWASP ZAP},
+    description={Herramienta de OWASP para pruebas de seguridad de aplicaciones web; se usó para confirmar el payload de XSS.}
+}
+
+\newglossaryentry{mcp}
+{
+    name={MCP},
+    description={Protocolo de Contexto de Modelo (\textit{Model Context Protocol}): estándar para que un asistente de inteligencia artificial use herramientas externas.}
+}

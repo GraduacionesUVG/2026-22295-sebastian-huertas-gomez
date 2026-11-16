@@ -1,0 +1,45 @@
+% ==============================================================================
+% PORTADA (cubierta verde)
+% ==============================================================================
+% Extraído del bloque \ifdefined\CAPportada de main.tex para tenerlo como
+% archivo independiente, según la convención de un .tex por sección.
+%
+% \imagenportada se sobreescribe aquí a plantilla/fondologo_grande.png (verde
+% liso, sin fotografía) para reproducir el estilo de portada sin foto de
+% fondo. Si más adelante se cuenta con una fotografía propia del proyecto,
+% basta con redefinir \imagenportada en 0-datos_estudiante.tex antes de este
+% \input, o cambiar la ruta directamente abajo.
+\ifdefined\modoensamble
+\else
+	\input{0-preambulo_standalone}
+\fi
+
+\renewcommand{\imagenportada}{plantilla/fondologo_grande.png}
+
+\cleardoublepage\phantomsection
+\newgeometry{left=3cm, bottom=0in, top=1in, right=3cm}
+\pagecolor{uvg-green}
+\thispagestyle{empty}
+
+\color{white}
+\noindent \hrulefill \par
+\vspace{0.1in}
+\noindent \Huge \nohyphens{\titulotesis} \par
+\noindent \hrulefill \par
+\noindent
+\LARGE \nombreestudiante
+
+\begin{figure}[b!]
+	\makebox[\textwidth]{
+		\begin{overpic}[height=13.25cm]{\imagenportada}
+			\put(63,0){\includegraphics[height=1.15in]{plantilla/fondologo_grande.png}}
+			\put(64.5,2){\includegraphics[height=0.55in]{plantilla/logoUVGblanco.eps}}
+		\end{overpic}
+	}
+\end{figure}
+\restoregeometry
+
+\ifdefined\modoensamble
+\else
+	\end{document}
+\fi

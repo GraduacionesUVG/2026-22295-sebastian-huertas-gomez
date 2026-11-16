@@ -1,0 +1,3085 @@
+{
+ "corpus": "large_corpus_requests.json.leaked.bak",
+ "por_categoria": {
+  "sqli": {
+   "n": 77,
+   "regla_normalizacion": "generic_template",
+   "por_particion": {
+    "train": {
+     "filas_clase": 159154,
+     "sin_texto_en_unified": 16,
+     "subcadena_exacta": 0,
+     "subcadena_normalizada": 21,
+     "igualdad_normalizada_campo_completo": 0
+    },
+    "val": {
+     "filas_clase": 34107,
+     "sin_texto_en_unified": 4,
+     "subcadena_exacta": 0,
+     "subcadena_normalizada": 7,
+     "igualdad_normalizada_campo_completo": 0
+    },
+    "test": {
+     "filas_clase": 34107,
+     "sin_texto_en_unified": 4,
+     "subcadena_exacta": 0,
+     "subcadena_normalizada": 11,
+     "igualdad_normalizada_campo_completo": 0
+    }
+   },
+   "union_particiones": {
+    "subcadena_exacta": 0,
+    "subcadena_normalizada": 26,
+    "igualdad_normalizada_campo_completo": 0
+   }
+  },
+  "path_traversal": {
+   "n": 200,
+   "regla_normalizacion": "generic_template",
+   "por_particion": {
+    "train": {
+     "filas_clase": 11799,
+     "sin_texto_en_unified": 12,
+     "subcadena_exacta": 0,
+     "subcadena_normalizada": 0,
+     "igualdad_normalizada_campo_completo": 0
+    },
+    "val": {
+     "filas_clase": 2528,
+     "sin_texto_en_unified": 2,
+     "subcadena_exacta": 0,
+     "subcadena_normalizada": 0,
+     "igualdad_normalizada_campo_completo": 0
+    },
+    "test": {
+     "filas_clase": 2529,
+     "sin_texto_en_unified": 3,
+     "subcadena_exacta": 0,
+     "subcadena_normalizada": 0,
+     "igualdad_normalizada_campo_completo": 0
+    }
+   },
+   "union_particiones": {
+    "subcadena_exacta": 0,
+    "subcadena_normalizada": 0,
+    "igualdad_normalizada_campo_completo": 0
+   }
+  },
+  "cmdi": {
+   "n": 200,
+   "regla_normalizacion": "template_shape",
+   "por_particion": {
+    "train": {
+     "filas_clase": 6853,
+     "sin_texto_en_unified": 21,
+     "subcadena_exacta": 46,
+     "subcadena_normalizada": 182,
+     "igualdad_normalizada_campo_completo": 144
+    },
+    "val": {
+     "filas_clase": 1468,
+     "sin_texto_en_unified": 5,
+     "subcadena_exacta": 8,
+     "subcadena_normalizada": 79,
+     "igualdad_normalizada_campo_completo": 32
+    },
+    "test": {
+     "filas_clase": 1468,
+     "sin_texto_en_unified": 5,
+     "subcadena_exacta": 9,
+     "subcadena_normalizada": 85,
+     "igualdad_normalizada_campo_completo": 24
+    }
+   },
+   "union_particiones": {
+    "subcadena_exacta": 63,
+    "subcadena_normalizada": 200,
+    "igualdad_normalizada_campo_completo": 200
+   }
+  },
+  "xss": {
+   "n": 113,
+   "regla_normalizacion": "generic_template",
+   "por_particion": {
+    "train": {
+     "filas_clase": 20962,
+     "sin_texto_en_unified": 33,
+     "subcadena_exacta": 10,
+     "subcadena_normalizada": 11,
+     "igualdad_normalizada_campo_completo": 5
+    },
+    "val": {
+     "filas_clase": 4491,
+     "sin_texto_en_unified": 7,
+     "subcadena_exacta": 3,
+     "subcadena_normalizada": 5,
+     "igualdad_normalizada_campo_completo": 2
+    },
+    "test": {
+     "filas_clase": 4491,
+     "sin_texto_en_unified": 7,
+     "subcadena_exacta": 2,
+     "subcadena_normalizada": 4,
+     "igualdad_normalizada_campo_completo": 1
+    }
+   },
+   "union_particiones": {
+    "subcadena_exacta": 12,
+    "subcadena_normalizada": 13,
+    "igualdad_normalizada_campo_completo": 7
+   }
+  }
+ },
+ "por_payload": {
+  "sqli_0": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_1": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_2": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_3": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_4": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_5": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_6": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_7": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_8": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_9": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_10": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_11": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_12": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_13": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_14": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_15": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_16": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_17": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_18": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_19": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_20": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_21": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_22": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_23": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_24": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_25": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_26": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_27": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_28": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_29": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_30": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_31": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_32": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_33": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_34": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_35": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_36": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_37": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_38": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_39": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_40": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_41": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_42": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_43": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_44": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_45": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_46": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_47": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_48": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_49": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_50": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_51": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_52": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_53": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_54": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_55": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_56": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_57": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_58": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_59": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_60": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_61": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_62": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_63": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_64": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_65": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_66": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_67": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_68": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_69": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_70": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_71": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_72": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_73": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_74": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_75": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "sqli_76": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_0": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_1": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_2": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_3": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_4": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_5": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_6": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_7": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_8": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_9": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_10": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_11": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_12": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_13": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_14": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_15": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_16": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_17": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_18": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_19": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_20": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_21": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_22": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_23": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_24": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_25": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_26": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_27": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_28": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_29": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_30": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_31": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_32": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_33": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_34": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_35": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_36": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_37": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_38": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_39": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_40": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_41": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_42": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_43": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_44": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_45": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_46": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_47": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_48": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_49": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_50": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_51": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_52": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_53": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_54": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_55": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_56": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_57": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_58": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_59": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_60": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_61": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_62": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_63": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_64": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_65": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_66": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_67": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_68": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_69": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_70": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_71": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_72": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_73": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_74": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_75": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_76": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_77": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_78": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_79": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_80": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_81": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_82": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_83": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_84": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_85": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_86": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_87": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_88": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_89": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_90": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_91": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_92": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_93": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_94": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_95": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_96": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_97": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_98": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_99": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_100": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_101": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_102": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_103": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_104": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_105": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_106": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_107": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_108": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_109": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_110": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_111": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_112": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_113": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_114": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_115": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_116": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_117": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_118": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_119": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_120": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_121": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_122": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_123": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_124": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_125": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_126": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_127": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_128": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_129": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_130": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_131": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_132": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_133": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_134": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_135": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_136": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_137": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_138": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_139": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_140": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_141": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_142": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_143": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_144": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_145": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_146": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_147": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_148": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_149": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_150": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_151": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_152": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_153": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_154": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_155": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_156": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_157": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_158": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_159": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_160": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_161": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_162": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_163": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_164": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_165": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_166": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_167": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_168": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_169": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_170": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_171": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_172": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_173": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_174": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_175": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_176": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_177": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_178": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_179": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_180": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_181": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_182": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_183": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_184": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_185": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_186": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_187": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_188": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_189": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_190": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_191": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_192": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_193": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_194": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_195": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_196": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_197": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_198": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "path_traversal_199": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "cmdi_0": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_1": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_2": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_3": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_4": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_5": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_6": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_7": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_8": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_9": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_10": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_11": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_12": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_13": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_14": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_15": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_16": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_17": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_18": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_19": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_20": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_21": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_22": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_23": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_24": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_25": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_26": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_27": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_28": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_29": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_30": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_31": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_32": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_33": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_34": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_35": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_36": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_37": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_38": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_39": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_40": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_41": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_42": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_43": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_44": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_45": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_46": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_47": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_48": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_49": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_50": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_51": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_52": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_53": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_54": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_55": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_56": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_57": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_58": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_59": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_60": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_61": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_62": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_63": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_64": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_65": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_66": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_67": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_68": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_69": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_70": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_71": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_72": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_73": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_74": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_75": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_76": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_77": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_78": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_79": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_80": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_81": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_82": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_83": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_84": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_85": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_86": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_87": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_88": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_89": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_90": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_91": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_92": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_93": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_94": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_95": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_96": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_97": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_98": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_99": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_100": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_101": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_102": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_103": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_104": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_105": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_106": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_107": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_108": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_109": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_110": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_111": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_112": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_113": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_114": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_115": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_116": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_117": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_118": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_119": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_120": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_121": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_122": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_123": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_124": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_125": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_126": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_127": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_128": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_129": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_130": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_131": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_132": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_133": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_134": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_135": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_136": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_137": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_138": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_139": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_140": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_141": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_142": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_143": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_144": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_145": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_146": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_147": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_148": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_149": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_150": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_151": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_152": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_153": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_154": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_155": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_156": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_157": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_158": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_159": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_160": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_161": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_162": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_163": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_164": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_165": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_166": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_167": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_168": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_169": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_170": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_171": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_172": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_173": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_174": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_175": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_176": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_177": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_178": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_179": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_180": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_181": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_182": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_183": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_184": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_185": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_186": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_187": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_188": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_189": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_190": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_191": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_192": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_193": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_194": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_195": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_196": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_197": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_198": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "cmdi_199": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "xss_0": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_1": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_2": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_3": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_4": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_5": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_6": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_7": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_8": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "xss_9": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_10": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_11": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_12": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_13": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_14": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_15": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_16": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_17": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_18": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_19": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_20": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_21": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_22": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "xss_23": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_24": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_25": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_26": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_27": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_28": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_29": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_30": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_31": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_32": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_33": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_34": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_35": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_36": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_37": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_38": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_39": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_40": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "xss_41": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_42": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_43": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_44": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_45": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_46": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_47": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_48": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_49": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_50": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_51": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_52": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "xss_53": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_54": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_55": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_56": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_57": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_58": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_59": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_60": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_61": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_62": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_63": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_64": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_65": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_66": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_67": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "xss_68": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_69": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_70": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "xss_71": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_72": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_73": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_74": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_75": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": true
+  },
+  "xss_76": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_77": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_78": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_79": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_80": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_81": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_82": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_83": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_84": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_85": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_86": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_87": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_88": {
+   "subcadena_exacta": true,
+   "subcadena_normalizada": true,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_89": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_90": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_91": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_92": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_93": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_94": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_95": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_96": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_97": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_98": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_99": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_100": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_101": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_102": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_103": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_104": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_105": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_106": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_107": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_108": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_109": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_110": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_111": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  },
+  "xss_112": {
+   "subcadena_exacta": false,
+   "subcadena_normalizada": false,
+   "igualdad_normalizada_campo_completo": false
+  }
+ }
+}
