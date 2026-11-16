@@ -1,0 +1,48 @@
+% ==============================================================================
+% PREFACIO: DECLARACIÓN SOBRE EL USO DE INTELIGENCIA ARTIFICIAL
+% ==============================================================================
+% Adaptado (2026-10-12) de la estructura de la declaración del otro integrante:
+% rol del autor, herramientas empleadas, y cierre de responsabilidad.
+%
+% Este tomo todavía no tiene agradecimientos. Cuando existan, van antes de la
+% declaración (esta es el último bloque del prefacio).
+%
+% En main.tex, el \chapter*{Prefacio} lo pone el documento principal; en modo
+% independiente se agrega aquí.
+\ifdefined\modoensamble
+\else
+	\input{0-preambulo_standalone}
+	\chapter*{Prefacio}
+\fi
+
+\subsection*{Declaración sobre el uso de inteligencia artificial}
+
+El autor definió el enfoque técnico de su componente, seleccionó los vectores de ataque y su
+mapeo a OWASP Top 10 y MITRE ATT\&CK, auditó y etiquetó los datos, construyó el entorno de
+evaluación, diseñó la capa de captura y respuesta (respuesta HTTP 403, registro de eventos,
+\textit{webhooks} e interfaz de línea de comandos), calibró el umbral de bloqueo, elaboró el
+corpus de evaluación, ejecutó las pruebas de penetración, las mediciones de latencia, memoria y CPU
+y la validación en DVNA, node-api-goat y dvws-node, e implementó el extractor inicial de 72
+características y el paso a \textit{worker\_threads}. Decidió además el alcance y los
+resultados que se reportan.
+
+Para la búsqueda bibliográfica empleó Gemini (Google) como herramienta de apoyo para identificar
+fuentes y temas potencialmente relevantes; leyó las fuentes originales y conservó únicamente las que
+respaldaban lo que se afirma en el texto. Para la documentación técnica, la redacción y la
+verificación de coherencia de cifras, criterios y atribución de roles entre este trabajo y el del
+componente de Inteligencia Artificial empleó a Claude, de Anthropic, mediante conversación, y a
+Claude Code, mediante un agente de código, que además se usó para refactorizar código y como
+revisor adicional de \textit{pull requests}; esa revisión complementó, y no sustituyó, la revisión
+cruzada obligatoria entre los integrantes del proyecto descrita en la
+Sección~\ref{subsec:met-flujo}. Ninguna de estas herramientas se utilizó para generar datos,
+mediciones ni resultados: las cifras provienen de los archivos y las ejecuciones de los
+repositorios del proyecto, y las derivadas de ellos (medianas, intervalos de confianza) se
+calcularon a partir de esos archivos. El uso de estas herramientas se declara conforme a la \textit{Guía para el uso ético y responsable de la inteligencia artificial} de la Universidad del Valle de Guatemala. El autor dirigió ese trabajo, contrastó las cifras con sus
+fuentes, revisó las referencias bibliográficas contra las fuentes originales, salvo las señaladas
+en la bibliografía como no accesibles, puede explicar el contenido y asume la responsabilidad del
+documento.
+
+\ifdefined\modoensamble
+\else
+	\end{document}
+\fi

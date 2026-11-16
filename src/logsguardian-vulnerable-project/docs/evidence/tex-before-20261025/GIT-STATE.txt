@@ -1,0 +1,10 @@
+=== git status -sb (vulnerable-project) ===
+## exp/ronda5-20261025
+?? attack-sim/capture_server.py
+?? attack-sim/capture_server_output.jsonl
+?? attack-sim/combined_corpus_round5_20261025.jsonl
+?? attack-sim/events-config3b-run1-20261025.db
+HEAD: 07e80ead6a64db5db086216322624bc5bfa4edb0
+branch: exp/ronda5-20261025
+=== tex folder ===
+fatal: not a git repository (or any of the parent directories): .git

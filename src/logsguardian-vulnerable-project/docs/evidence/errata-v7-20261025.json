@@ -1,0 +1,18 @@
+{
+ "n_original": 600,
+ "n_combinado": 600,
+ "ids_solo_original": [],
+ "ids_solo_combinado": [],
+ "peticiones_con_hash_distinto": [],
+ "hash_global_original": "e3729614601db7999961b1c5c9bb4bc6a347f2207b0f621414c5d937d9c1aea7",
+ "hash_global_combinado": "e3729614601db7999961b1c5c9bb4bc6a347f2207b0f621414c5d937d9c1aea7",
+ "orden_igual": true,
+ "categorias_original": {
+  "cmdi": 200,
+  "path_traversal": 200,
+  "sqli": 200,
+  "xss_placeholder": 1
+ },
+ "sha256_large_corpus_requests": "68af7d2b071393c594f9a7587d925adad6dd9430e52b651122f2368cf5aaa3f5",
+ "sha256_combined_corpus": "f1fb0b0a2c552636358785ec323aa10c76519638d0da1cb62ce131be2330263d"
+}

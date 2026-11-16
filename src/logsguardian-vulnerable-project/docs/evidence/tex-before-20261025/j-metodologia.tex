@@ -1,0 +1,1143 @@
+% ==============================================================================
+% METODOLOGÍA
+% ==============================================================================
+% Evolución del Marco Metodológico de protocolo_sebastian_v1 (3).pdf
+% (sección 7), actualizada al estado real del proyecto al 2026-10-02.
+%
+% Fuentes de cada cifra y procedimiento (repositorio logSguarDian y
+% logSguarDian-vulnerable-project):
+%   - Dataset y partición: training/split.py, training/DEDUP_METHODOLOGY.md,
+%     docs/dataset-audit.md, training/results/v11_test_results.json.
+%   - Umbral RF: docs/decision-policy.md secciones 2.2.1 y 2.2.2.
+%   - Corpus limpio (Ronda 5): attack-sim/build_corpus.py,
+%     attack-sim/exclusion_filter.py, docs/config3b-results.md.
+%   - Fuga: training/leakage_check.py, training/results/leakage_report.json.
+%   - Latencia/memoria/CPU: .github/workflows/latency-benchmark.yml,
+%     attack-sim/run_latency_suite.sh, artillery-*.yml, monitor-memory.sh.
+%   - Apps de terceros: docs/vulnerable-projects-tests/,
+%     docs/findings-evidence/juice-shop-ua-bias/.
+%
+% Decisiones del estudiante incorporadas (conversación 2026-10-02):
+%   - Criterio de latencia absoluto de 15 ms (ya fijado en h-alcance.tex),
+%     justificado porque una cifra en milisegundos es más representativa
+%     que un porcentaje sobre una línea base de pocos milisegundos.
+%   - Umbral RF calibrado con rf_v3.
+%   - Tablero Kanban de cuatro columnas.
+%   - Kanban en Notion + flujo main <- develop <- rama con aprobación
+%     restringida a los dos integrantes + GitHub Actions.
+%   - La validación con startups no se realizó; se sustituye por la
+%     validación en aplicaciones de terceros.
+%   - [Actualizado 2026-10-10: ZAP/XSS y Config 1/3a/3b ya se ejecutaron sobre el corpus limpio.]
+%     Antes pendientes: (ZAP/XSS, Config 1/3a/3b con corpus
+%     limpio, latencia con el modelo sincronizado, memoria en escenario
+%     único) no se ejecutarán; se declaran como restricciones.
+%   - El paquete mlops se incorpora por recomendación del asesor, del lado
+%     del componente de IA; aquí solo se describe como interfaz.
+%
+% Fechas de la Tabla de fases: reconstruidas del historial de git de ambos
+% repositorios (primer y último commit relacionado). Pendientes de
+% confirmación por el estudiante.
+\ifdefined\modoensamble
+\else
+	\input{0-preambulo_standalone}
+\fi
+
+\chapter{Metodología}
+\label{cap:metodologia}
+
+Este capítulo describe cómo se ejecutó el componente de ciberseguridad de \textit{logSguarDian} y
+cómo se obtuvieron, procesaron y validaron los datos que sustentan el capítulo de Resultados.
+Constituye una evolución del Marco Metodológico del Protocolo de Graduación: conserva el
+enfoque, la metodología de gestión, las seis fases y las métricas allí definidas, e incorpora los
+cambios que el avance real del proyecto hizo necesarios. Cada cambio se declara de forma
+explícita en la Sección~\ref{sec:met-cambios}, junto con su causa; ninguna cifra o criterio del
+protocolo se sustituye en silencio.
+
+El proyecto integrador se compone de dos componentes desarrollados en paralelo. Este documento
+cubre el componente de ciberseguridad; el diseño, entrenamiento y serialización de los modelos
+de aprendizaje automático pertenecen al componente de Inteligencia Artificial y aquí se tratan
+únicamente como entradas, con su contrato de interfaz (Sección~\ref{subsec:met-f2}).
+
+% ------------------------------------------------------------------------------
+\section{Enfoque y tipo de investigación}
+\label{sec:met-enfoque}
+
+El trabajo adopta un enfoque cuantitativo, de tipo aplicado y con diseño experimental. Es
+cuantitativo porque todas las preguntas que plantean los objetivos se responden mediante
+mediciones numéricas sobre conjuntos de datos y condiciones de carga definidos de antemano,
+contrastadas con criterios de aceptación fijados antes de la medición
+\cite{hernandez2014}. Es aplicado porque su producto, una librería npm publicada, responde a un
+problema operativo concreto: la ausencia de protección a nivel de aplicación en servicios
+Node.js de organizaciones sin equipo de seguridad dedicado.
+
+El diseño es experimental en el sentido de que el investigador manipula de forma deliberada la
+variable independiente y mide su efecto sobre variables dependientes en un entorno controlado
+\cite{hernandez2014}. La variable independiente es la configuración de defensa del servidor
+anfitrión, con cuatro niveles: sin protección (Configuración~1, grupo de control), con
+\textit{logSguarDian} (Configuración~2), con un WAF ModSecurity con OWASP CRS (Configuración~3a)
+y con ambas capas superpuestas (Configuración~3b). Las variables dependientes son la tasa de
+detección por categoría de ataque, la tasa de falsos positivos sobre tráfico legítimo, la
+latencia p95 de respuesta y el consumo de memoria y CPU. La línea base sin middleware y el
+servidor anfitrión idéntico entre condiciones (misma imagen Docker, misma base de datos
+sembrada) controlan las variables extrañas que podrían explicar las diferencias observadas.
+
+La unidad de análisis es la petición HTTP individual dirigida a un endpoint de una aplicación
+Express, caracterizada por su método, ruta, cadena de consulta, cuerpo y cabeceras. No participan
+personas como sujetos de estudio; por esa razón no aplica un muestreo de población humana, y la
+Sección~\ref{sec:met-unidad} define las poblaciones y muestras de peticiones utilizadas.
+
+% ------------------------------------------------------------------------------
+\section{Metodología de trabajo}
+\label{sec:met-trabajo}
+
+\subsection{Kanban como metodología de gestión}
+La gestión del trabajo se realizó con Kanban \cite{anderson2010}, sobre un tablero en Notion
+compartido por los dos integrantes del proyecto. La selección, justificada en el protocolo, se
+mantuvo por tres razones que el desarrollo confirmó en la práctica:
+
+\begin{itemize}
+    \item \textbf{Ausencia de un receptor externo de incrementos.} No existe un Product Owner
+    ni un cliente que valide entregas periódicas; las ceremonias de Scrum habrían carecido de
+    propósito metodológico real.
+    \item \textbf{Dependencias técnicas secuenciales.} El corpus es prerrequisito del
+    entrenamiento, y el modelo serializado es prerrequisito de la integración en el middleware.
+    Kanban representa ese flujo con columnas de estado sin imponer iteraciones de duración fija
+    que obliguen a avanzar con una dependencia sin resolver.
+    \item \textbf{Respuesta continua a hallazgos experimentales.} Durante el proyecto aparecieron
+    hallazgos que obligaron a reabrir trabajo ya cerrado: la fuga de datos entre el corpus de
+    evaluación y el de entrenamiento, el sesgo del modelo hacia la cabecera \texttt{User-Agent} y
+    el colapso del servidor bajo volumen de datos realista. Kanban permitió repriorizarlos de
+    inmediato sin esperar al cierre de un sprint.
+\end{itemize}
+
+El tablero se organizó en cuatro columnas que representan los estados posibles de una tarea:
+No empezado, En proceso, En revisión y Completado. Respecto al protocolo, el tablero no incluyó
+una columna Bloqueado. El criterio de salida de la columna En revisión es la verificación del indicador
+cuantitativo asociado a la tarea (Sección~\ref{sec:met-metricas}), no una apreciación subjetiva
+de completitud.
+
+\subsection{Flujo de control de versiones e integración continua}
+\label{subsec:met-flujo}
+El tablero se complementó con un flujo de ramas en Git que convierte la revisión en un control
+obligatorio y no opcional:
+
+\begin{itemize}
+    \item \textbf{Ramas.} Todo cambio se desarrolla en una rama propia con prefijo por tipo
+    (\texttt{feat/}, \texttt{fix/}, \texttt{test/}, \texttt{docs/}, \texttt{perf/},
+    \texttt{chore/}) creada desde \texttt{develop}. La integración sigue la secuencia
+    \texttt{rama} $\rightarrow$ \texttt{develop} $\rightarrow$ \texttt{main}; un flujo de
+    GitHub Actions rechaza cualquier pull request hacia \texttt{main} cuyo origen no sea
+    \texttt{develop}.
+    \item \textbf{Aprobación restringida.} Las reglas de protección de rama del repositorio solo
+    permiten que los dos integrantes del proyecto aprueben y fusionen pull requests, de modo que
+    cada cambio de un integrante es revisado por el otro.
+    \item \textbf{Integración continua (CI).} Cada pull request ejecuta en GitHub Actions
+    (\texttt{ubuntu-latest}) los trabajos de análisis estático (ESLint), compilación
+    (\texttt{tsc}), pruebas del extractor de características (incluida la prueba de paridad
+    numérica contra la implementación de referencia en Python), pruebas del paquete
+    \texttt{core} (middleware, almacenamiento, webhooks y la interfaz de línea de comandos, CLI) y pruebas del paquete
+    \texttt{mlops}. La fusión de \texttt{develop} a \texttt{main} publica automáticamente el
+    paquete en el registro npm si la versión no ha sido publicada antes.
+    \item \textbf{Trazabilidad de decisiones.} Las decisiones técnicas y su justificación se
+    registran en una bitácora versionada, con una entrada por tarea cerrada, y cada
+    reentrenamiento del modelo va precedido de un commit que fija el hash del conjunto de prueba
+    (Sección~\ref{subsec:met-f1}), con una excepción: el rebloqueo del 23 de septiembre se hizo
+    después de restaurar los datos de la generación vigente.
+\end{itemize}
+
+Este flujo tiene una finalidad metodológica, no solo de organización: cada cifra reportada en
+Resultados queda asociada a un commit, a un script versionado y, cuando aplica, a una ejecución
+de GitHub Actions cuyo registro puede consultarse posteriormente.
+
+\subsection{Distribución de roles}
+El Cuadro~\ref{tab:met-roles} distribuye las responsabilidades. Las responsabilidades del
+componente de IA se listan solo para delimitar la frontera entre componentes.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|L{2.6cm}|L{4.9cm}|L{5.3cm}|}
+\hline
+\textbf{Integrante} & \textbf{Rol principal} & \textbf{Responsabilidades clave} \\ \hline
+Sebastián Huertas & Componente de ciberseguridad & Extractor inicial de 72 características y el
+paso a \texttt{worker\_threads}; selección y mapeo de vectores de ataque;
+auditoría de fuentes y etiquetado; entorno Docker de evaluación; capa de captura y respuesta
+(HTTP 403, registro, webhooks, CLI); calibración del umbral de bloqueo; corpus de evaluación
+limpio; pruebas de penetración controlada; benchmarks de latencia, memoria y CPU; validación en
+aplicaciones de terceros. \\ \hline
+Diego Valenzuela & Componente de IA & Análisis y justificación de las características, definición de
+las no disponibles en inferencia y del contrato de entrada; cuatro características adicionales y
+correcciones del extractor; diseño de la arquitectura de inferencia en hilos (hilo dedicado de Random
+Forest, grupo de Isolation Forest y lectura asíncrona de su resultado); entrenamiento, selección y
+serialización ONNX de los modelos; pipeline de reentrenamiento offline (\texttt{mlops}). \\ \hline
+Ambos & Integración y documentación & Arquitectura de la librería; pruebas de integración
+extremo a extremo; revisión cruzada de pull requests; publicación en npm; documentación técnica
+final. \\ \hline
+\end{tabular}
+\caption[Distribución de roles y responsabilidades]{Distribución de roles y responsabilidades del equipo}
+\label{tab:met-roles}
+\end{table}
+{\footnotesize Nota. Elaboración propia.}
+
+La frontera entre componentes en el pipeline de características es la siguiente. El extractor
+inicial de 72 características y el paso a \texttt{worker\_threads} los
+implementó Sebastián Huertas. Diego Valenzuela diseñó la arquitectura de inferencia en hilos (hilo
+dedicado de Random Forest, grupo de Isolation Forest y lectura asíncrona de su resultado), analizó
+y justificó cada característica, definió cuáles no existen en inferencia y fijó el contrato de
+entrada, añadió cuatro características y las correcciones del extractor surgidas del análisis del
+modelo, y desarrolló el entrenamiento, la serialización ONNX y el pipeline de reentrenamiento.
+
+% ------------------------------------------------------------------------------
+\section{Unidad de estudio, población y muestras}
+\label{sec:met-unidad}
+
+La población de interés es el conjunto de peticiones HTTP que puede recibir un endpoint de una
+aplicación Node.js/Express, legítimas o pertenecientes a alguna de las cuatro categorías de
+ataque del Objetivo Específico~1. Como esa población no es enumerable, el estudio emplea cinco
+muestras, cada una construida para responder una pregunta distinta. El Cuadro~\ref{tab:met-muestras}
+las resume.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|L{2.8cm}|L{3.6cm}|L{2.4cm}|L{3.9cm}|}
+\hline
+\textbf{Muestra} & \textbf{Composición} & \textbf{Tipo de muestreo} & \textbf{Pregunta que responde} \\ \hline
+M1. Corpus etiquetado & 383{,}202 peticiones de siete fuentes públicas auditadas, dos listas públicas de payloads, conjuntos sintéticos y telemetría curada:
+268{,}240 de entrenamiento, 57{,}481 de validación y 57{,}481 de prueba & Estratificado por
+clase y fuente (70/15/15) & ¿El modelo clasifica correctamente las cuatro categorías? (OE2, OE3) \\ \hline
+M2. Corpus limpio de evaluación (Ronda~5) & 200 SQLi (sqlmap), 200 Path Traversal y 200 Command
+Injection (generadores propios); 1 payload de XSS confirmado con OWASP ZAP & Intencional, con filtro de exclusión contra el entrenamiento &
+¿Qué proporción de payloads nunca vistos detecta el sistema desplegado? (OE3) \\ \hline
+M3. Tráfico de carga & Navegación legítima y tráfico mixto generados con Artillery a
+$\approx$100 peticiones/s & Generado, cinco repeticiones por condición & ¿Cuánto degrada el
+middleware el rendimiento del servidor? (Objetivo general) \\ \hline
+M4. Tráfico de navegador & Rutas sin parámetros (\texttt{/login}, \texttt{/posts},
+\texttt{/profile}) con cadenas \texttt{User-Agent} de navegadores reales & Intencional & ¿El
+modelo bloquea tráfico legítimo de navegadores reales? (OE3) \\ \hline
+M5. Aplicaciones de terceros & DVNA \cite{appsecco2026dvna}, node-api-goat \cite{layro012026nodeapigoat}, dvws-node \cite{snoopysecurity2026dvwsnode} y OWASP Juice Shop \cite{kimminich2026juiceshop} & Intencional,
+por diversidad de arquitectura & ¿La calibración generaliza fuera de la aplicación de
+referencia? (Objetivo general) \\ \hline
+\end{tabular}
+\caption[Muestras de peticiones utilizadas en el estudio]{Muestras de peticiones HTTP utilizadas en el estudio}
+\label{tab:met-muestras}
+\end{table}
+{\footnotesize Nota. Elaboración propia con datos de los repositorios del proyecto.}
+
+La muestra M1 es un insumo compartido con el componente de IA; su tamaño satisface el mínimo de
+100{,}000 muestras del OE2. La muestra M2 reemplaza al corpus de evaluación inicial (Ronda~4),
+descartado por fuga de datos (Sección~\ref{subsec:met-fuga}). La categoría XSS de M2 se reduce a un único payload confirmado con OWASP ZAP (n=1); la restricción
+correspondiente se declara en la Sección~\ref{sec:met-restricciones}.
+
+% ------------------------------------------------------------------------------
+\section{Fases, actividades y procedimientos}
+\label{sec:met-fases}
+
+El proyecto conserva las seis fases del protocolo. El Cuadro~\ref{tab:met-fases} compara el
+período planificado con el período real, reconstruido a partir del historial de commits de los
+repositorios del proyecto. Las fases se solaparon más de lo previsto: la detección de problemas
+durante las pruebas obligó a reabrir las fases de construcción del dataset y de entrenamiento,
+lo que corresponde al ciclo iterativo descrito en el protocolo.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|L{2.6cm}|L{1.9cm}|L{2.1cm}|L{1.2cm}|L{4.6cm}|}
+\hline
+\textbf{Fase} & \textbf{Protocolo} & \textbf{Real} & \textbf{OE} & \textbf{Entregable verificable} \\ \hline
+F1. Construcción del dataset & 1--31 may & 11 may -- 20 jun & OE1, OE2 & Corpus $\geq$100{,}000
+muestras etiquetadas; auditoría de fuentes y licencias; taxonomía de cinco clases \\ \hline
+F2. Entrenamiento del modelo (IA) & 1--19 jun & 11 jun -- 26 sep & OE3 & Modelos ONNX con paridad
+$<$0.1~\%; lectura del conjunto de prueba \\ \hline
+F3. Desarrollo de la librería & 20 jun -- 1 ago & 30 jun -- 30 ago & OE3 & Paquete
+\texttt{logsguardian@0.1.0} publicado en npm, con cuatro grupos de comandos CLI probados con
+Jest \\ \hline
+F4. Pruebas & 2 ago -- 30 sep & 23 jul -- 10 oct & OE3 & Resultados de las configuraciones 1, 2,
+3a y 3b; corpus limpio; benchmark de rendimiento; validación en aplicaciones de terceros \\ \hline
+F5. Aplicación de feedback & 15 ago -- 30 sep & 24 jul -- 11 oct & OE3 & Registro de iteraciones
+con métricas antes y después de cada corrección; versión 0.1.1 publicada en npm \\ \hline
+F6. Documentación & octubre & 16 ago -- oct & Todos & Informe final; README publicado en npm;
+documentación técnica \\ \hline
+\end{tabular}
+\caption[Fases del proyecto: período planificado y real]{Fases del proyecto: período planificado en el protocolo, período real de ejecución y entregables verificables}
+\label{tab:met-fases}
+\end{table}
+{\footnotesize Nota. Elaboración propia. El período real corresponde al primer y último commit
+relacionado con cada fase en los repositorios \texttt{logSguarDian} y
+\texttt{logSguarDian-vulnerable-project}; las fechas de publicación en npm son las del registro
+(UTC). Todas las fechas son de 2026.}
+
+Las subsecciones siguientes describen los procedimientos de cada fase. Para cada uno se indica
+su finalidad y el objetivo al que contribuye.
+
+\subsection{Fase 1: análisis de vectores y construcción del dataset}
+\label{subsec:met-f1}
+
+\textbf{Procedimiento 1.1. Mapeo de vectores a marcos de referencia (OE1).} Cada uno de los
+cuatro vectores se asoció a su categoría del OWASP Top 10 2021, a su debilidad CWE y a su
+técnica MITRE ATT\&CK, verificando cada correspondencia contra la página oficial del marco
+\cite{owasp2021, owaspa01_2021, owaspa03_2021, mitret1190, mitret1189}. El mapeo distingue
+SQL Injection, XSS y Command Injection (A03:2021, Injection) de Path Traversal/LFI (A01:2021,
+Broken Access Control). Finalidad: fijar las cinco clases canónicas del dataset (\texttt{sqli},
+\texttt{xss}, \texttt{path\_traversal}, \texttt{cmdi}, \texttt{benign}) y las categorías sobre
+las que se calculan las métricas del OE3.
+
+\textbf{Procedimiento 1.2. Auditoría de fuentes (OE2).} Se auditaron nueve fuentes públicas
+candidatas, registrando para cada una su licencia (verificada contra la API o la página del
+repositorio de origen), su DOI cuando existe, su formato, su número de registros y las
+categorías que cubre. Se aprobaron ocho y se excluyó el dataset AIT-LDSv2 \cite{landauer2022ait,landauer2023maintainable} porque sus etiquetas
+describen el rol del atacante y no el tipo de payload, lo que habría exigido un reetiquetado manual
+con riesgo de error superior a su aporte de 3{,}435 filas. De las ocho aprobadas, siete aportan
+filas al corpus; la lista de payloads de Path Traversal de omurugur \cite{ugur2019traversal} se aprobó, pero no tiene
+analizador y no aporta filas. El corpus final incluye además dos listas públicas de payloads de Command Injection (SecLists y PayloadsAllTheThings
+\cite{miessler2026seclists,swisskyrepo2026payloads}), incorporadas después de la auditoría y cuya
+licencia (MIT, consultada en sus repositorios el 10 de octubre de 2026) no consta en ella, siete
+conjuntos sintéticos propios y 119 filas de telemetría curada del pipeline de reentrenamiento
+(Cuadro~\ref{tab:met-origenes}). El dataset de peticiones bloqueadas por OWASP ModSecurity
+publicado en Zenodo \cite{lucz2025,lucz2025data}, que el protocolo designaba como base, aporta el 1.0~\% de las
+filas; el volumen proviene principalmente de la colección CAPEC
+\cite{sureda2022srbh,sureda2022newmultilabel} (55.7~\%) y de modsec-learn
+\cite{pralab2024modseclearn,scano2024modseclearn} (26.0~\%). Las fuentes de licencia no especificada por su origen (XSS\_dataset.csv y command
+injection.csv, dos de las siete auditadas presentes en el corpus, 3.4~\% de las filas) no se
+redistribuyen: sus archivos de trabajo no se versionan en el repositorio y el proyecto entrega
+únicamente los scripts de procesamiento y los vectores de características derivados.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|L{4.3cm}|L{1.8cm}|L{1.3cm}|L{5.3cm}|}
+\hline
+\textbf{Origen} & \textbf{Filas} & \textbf{\%} & \textbf{Licencia} \\ \hline
+Colección CAPEC (SR-BH 2020) \cite{sureda2022srbh,sureda2022newmultilabel} & 213{,}514 & 55.72 & CC0-1.0, auditada \\ \hline
+modsec-learn \cite{pralab2024modseclearn,scano2024modseclearn} & 99{,}645 & 26.00 & MIT, auditada \\ \hline
+payload\_full.csv \cite{thakur2025payloads} & 29{,}719 & 7.76 & MIT, auditada \\ \hline
+Payloads.csv \cite{shahane2021xss} & 18{,}411 & 4.80 & CC BY 4.0, auditada \\ \hline
+XSS\_dataset.csv \cite{shah2020xss} & 10{,}854 & 2.83 & No especificada por el origen, auditada \\ \hline
+OWASP ModSecurity (Zenodo) \cite{lucz2025} & 3{,}860 & 1.01 & CC BY 4.0, auditada \\ \hline
+command injection.csv \cite{pawase2024cmdi} & 2{,}053 & 0.54 & No especificada por el origen, auditada \\ \hline
+SecLists y PayloadsAllTheThings \cite{miessler2026seclists,swisskyrepo2026payloads} (Command Injection) & 2{,}470 & 0.64 & MIT; no consta en la auditoría \\ \hline
+Conjuntos sintéticos propios (siete) & 2{,}557 & 0.67 & Propios \\ \hline
+Telemetría curada del pipeline de reentrenamiento & 119 & 0.03 & Propia \\ \hline
+\textbf{Total} & \textbf{383{,}202} & \textbf{100.00} & \\ \hline
+\end{tabular}
+\caption[Orígenes de las filas del corpus]{Orígenes de las filas del corpus etiquetado y estado de su licencia}
+\label{tab:met-origenes}
+\end{table}
+{\footnotesize Nota. Elaboración propia con el conteo de la columna \texttt{\_source} del archivo de
+vectores de características (repositorio \texttt{logSguarDian}, 10 de octubre de 2026) y con
+\texttt{docs/dataset-audit.md}.}
+
+\textbf{Procedimiento 1.3. Normalización y etiquetado determinista (OE2).} Un analizador por
+fuente transforma cada registro crudo a un esquema canónico común (\texttt{CanonicalRequest}:
+método, ruta, consulta, cuerpo y cabeceras), y un archivo de mapeo versionado
+(\texttt{label\_map.yaml}) asigna la clase canónica a partir de la etiqueta original de cada
+fuente. El etiquetado no involucra juicio manual por muestra: la misma entrada produce siempre la
+misma etiqueta. Las decisiones de mapeo que no son equivalencias conceptuales se declaran como
+tales; por ejemplo, la asignación de CAPEC-242 (Code Injection) a la clase \texttt{xss}.
+
+\textbf{Procedimiento 1.4. Deduplicación.} Se eliminan los registros idénticos mediante un hash
+SHA-256 de la concatenación \texttt{ruta|consulta|cuerpo|etiqueta}. Los casi-duplicados
+se detectan de dos formas y se reportan, pero no se eliminan: por distancia de Levenshtein \cite{levenshtein1966binary} menor
+que 3 sobre la consulta, dentro de la misma clase, y por MinHash \cite{broder1997resemblance} con LSH \cite{indyk1998approximate} (128 permutaciones y
+bandas de 8 por 16), que se aplicó a las cinco clases. La decisión de marcar sin eliminar se
+declara como amenaza a la validez (Sección~\ref{sec:met-validez}).
+
+\textbf{Procedimiento 1.5. Partición y bloqueo del conjunto de prueba (OE2, OE3).} El corpus
+unificado se divide 70/15/15 en entrenamiento, validación y prueba, con estratificación conjunta
+por clase y fuente y semilla fija. Antes de escribir las particiones, el script verifica tres
+condiciones: cero solapamiento de hashes entre particiones, distribución de clases por partición
+dentro de $\pm$2~\% de la global y distribución de fuentes dentro de $\pm$5~\%. Si se cumplen,
+calcula un hash SHA-256 sobre los hashes ordenados de las filas de prueba y lo versiona
+(\texttt{test.lock.sha256}) antes de cualquier entrenamiento. Finalidad: que cualquier lectura
+posterior del conjunto de prueba pueda demostrar que la partición leída es la que se bloqueó.
+
+\subsection{Fase 2: entrenamiento del modelo (entrada del componente de IA)}
+\label{subsec:met-f2}
+
+El entrenamiento de un Random Forest como clasificador supervisado y de un Isolation Forest como
+detector de anomalías, ambos con scikit-learn \cite{pedregosa2011}, corresponde al componente de
+IA. Para este componente se fijó el siguiente contrato de interfaz, que es lo que el middleware
+consume:
+
+\begin{itemize}
+    \item Vector de características calculado por una única implementación en TypeScript
+    (\texttt{packages/extractor}), consumida tanto por el pipeline de entrenamiento como por el
+    middleware, para eliminar la divergencia entre entrenamiento y producción. El vector tiene 76
+    características. En la generación vigente (\texttt{rf\_v11}/\texttt{if\_v10}), el Random Forest
+    consume 69 y el Isolation Forest 63; en la generación publicada (\texttt{rf\_v10}/\texttt{if\_v9}),
+    67 y 61. Se excluyen por nombre las que no están disponibles en el momento de inspeccionar la
+    petición (código de estado y cinco características temporales) y
+    \texttt{non\_json\_quote\_count}, agregada al extractor después del entrenamiento de los
+    modelos vigentes. El Isolation Forest excluye además seis características con varianza nula o
+    casi nula en tráfico legítimo.
+    \item Modelos serializados en ONNX y ejecutados con \texttt{onnxruntime-node}
+    \cite{onnxruntimedocs}, con una prueba de paridad obligatoria (diferencia máxima entre las
+    predicciones de Python y de Node.js menor que 0.1~\%) antes de incorporarlos al paquete.
+    \item Cada evaluación se ata a un par concreto de binarios ONNX, identificado por su hash
+    SHA-256. Durante el proyecto se usaron tres pares, descritos en el
+    Cuadro~\ref{tab:pares-modelos}.
+\end{itemize}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|L{0.9cm}|L{2.6cm}|L{1.4cm}|L{2.6cm}|L{5.2cm}|}
+\hline
+\textbf{Par} & \textbf{Versión} & \textbf{Caract. (RF/IF)} & \textbf{Hash (\texttt{rf.onnx} / \texttt{if.onnx})} & \textbf{Evaluaciones en que se usó} \\ \hline
+A & \texttt{rf\_v10} / \texttt{if\_v9} (2 de agosto de 2026) & 67 / 61 & \texttt{18083725...} / \texttt{5de374a7...} & Paquete \texttt{logsguardian@0.1.0} (commit \texttt{c3d591a}); Ronda~4 (Configuraciones 2, 3a y 3b sobre los 590 payloads)\textsuperscript{c}; medición principal de la Ronda~5; estudio de \texttt{User-Agent}\textsuperscript{a}; DVNA, node-api-goat y dvws-node (atribución probable)\textsuperscript{b} \\ \hline
+B & \texttt{rf\_v11} / \texttt{if\_v10}, primer build (30 de agosto de 2026) & 69 / 63 & \texttt{a7c015f5...} / \texttt{3cf8e45c...} & Repetición de la Configuración~2 sobre los 590 payloads de la Ronda~4 (9 de septiembre de 2026); benchmark de latencia, memoria y CPU en Linux nativo \\ \hline
+C & \texttt{rf\_v11} / \texttt{if\_v10}, reentrenamiento (26 de septiembre de 2026) & 69 / 63 & \texttt{25b407e6...} / \texttt{5be28ee8...} & Paquete \texttt{logsguardian@0.1.1} (publicado el 11 de octubre de 2026)\textsuperscript{d}, con el que se verificó la cobertura de Path Traversal y de Command Injection de la Ronda~5 con el ejecutor corregido; lectura del conjunto de prueba, paridad ONNX y análisis SHAP; repetición de la Ronda~5 con el tarball de validación 22550ea; OWASP Juice Shop (copia local) \\ \hline
+\end{tabular}
+\caption[Pares de modelos ONNX y su uso]{Pares de modelos ONNX utilizados y evaluaciones asociadas a cada uno}
+\label{tab:pares-modelos}
+\end{table}
+{\footnotesize Nota. Elaboración propia con datos de \texttt{docs/model-provenance.md} (repositorio
+\texttt{logSguarDian}), verificados por hash contra el historial de git y contra el paquete
+descargado del registro de npm. \textsuperscript{a}El archivo de resultados no registra el modelo; la
+atribución se apoya en el contenido de \texttt{models/} en el commit del estudio (\texttt{5966712}),
+que contiene el par~A (hash verificado). \textsuperscript{b}Los tres proyectos declaran la dependencia
+\texttt{\^{}0.1.0} del registro de npm, cuyo único contenido publicado en la fecha de las mediciones
+(30 de septiembre de 2026) era el par~A, pero el paquete y el modelo exactos de cada medición no
+constan en el repositorio. \textsuperscript{c}En las Rondas 1 a 3,
+con un corpus pequeño, el modelo no consta en los resultados. \textsuperscript{d}Contenido verificado
+descargando el paquete del registro: modelos con los hashes del par~C, extractor de 76
+características, corrección de la recodificación de la consulta y umbral del Isolation Forest leído del archivo \texttt{parity\_report.json} del modelo (0.004206). No se agrega un par~D: el paquete 0.1.1 y el tarball
+de validación contienen los mismos modelos, y los pares se identifican por el hash de sus archivos
+ONNX; difieren en el middleware, no en el modelo.}
+
+El paquete \texttt{logsguardian@0.1.0} se publicó en npm el 30 de agosto de 2026 desde el commit
+\texttt{c3d591a} y contiene el par~A; el primer build de \texttt{rf\_v11}/\texttt{if\_v10} (par~B) se
+generó ese mismo día y no se incluyó en él. La versión \texttt{0.1.1}, publicada el 11 de octubre de
+2026 (SHA-256 del archivo \texttt{abf8d5c4...}), contiene el par~C, el extractor de 76
+características, la corrección del defecto de recodificación de la consulta y el umbral del Isolation Forest leído del archivo \texttt{parity\_report.json} del modelo. En este
+documento, \textit{paquete 0.1.0}
+designa a la primera y \textit{paquete 0.1.1} a la segunda. Con la 0.1.1 solo se midió la cobertura de la Configuración~2 de la Ronda~5, con el ejecutor
+original y con el corregido; las aplicaciones de terceros y el rendimiento no se midieron con ella,
+que es posterior a esas pruebas. Las mediciones de la Ronda~5 designadas como del paquete 0.1.0
+se hicieron con un tarball construido en el commit \texttt{a3aada0} (SHA-256 \texttt{e09120006dd1...}),
+que contiene el par~A pero no es el archivo publicado en el registro (SHA-256
+\texttt{c5c1a1da57cf...}); se les llama paquete 0.1.0 por contener el mismo par de modelos.
+Para medir la cobertura del modelo vigente antes de que existiera la 0.1.1, se construyó un
+paquete a partir del commit \texttt{22550ea} de la rama \texttt{develop}, con el par~C y sin la
+corrección, denominado \textit{tarball de validación 22550ea} (SHA-256 \texttt{cf1238de...}). Ese
+paquete no se publicó y no debe confundirse con la 0.1.0 ni con la 0.1.1. La evaluación de
+cobertura sobre el corpus limpio se ejecutó con el paquete 0.1.0 y con el tarball de validación,
+de modo que esa métrica existe para los pares A y C, y para la versión 0.1.1 publicada solo en la Configuración~2.
+
+El pipeline de reentrenamiento offline con compuertas automáticas (\texttt{packages/mlops}) se
+incorporó por recomendación del asesor como parte del componente de IA. No modifica el
+comportamiento de la librería publicada: los modelos se entrenan fuera de línea y se distribuyen
+fijos con cada versión, sin aprendizaje a partir del tráfico del usuario.
+
+\textbf{Procedimiento 2.1. Calibración del umbral de bloqueo (OE3, ciberseguridad).} La
+política de decisión otorga al Random Forest la autoridad exclusiva de bloqueo: una petición se
+bloquea cuando la probabilidad de la clase de ataque más probable es igual o mayor que el umbral
+\texttt{RF\_THRESHOLD}. El Isolation Forest nunca bloquea; solo marca la petición como anómala
+en el registro (\texttt{pass\_anomaly}), porque una política disyuntiva (bloquear si cualquiera
+de los dos modelos alerta) habría bloqueado cerca del 10~\% del tráfico legítimo. El umbral se
+calibró con el modelo \texttt{rf\_v3} mediante un barrido entre 0.10 y 0.70 sobre la partición
+de validación, nunca sobre la de prueba, registrando para cada valor la precisión, el recall, los
+falsos positivos y la detección por clase. Se seleccionó 0.35, el extremo conservador de la
+meseta en que recall y falsos positivos permanecen constantes. El repositorio registra una
+confirmación de ese umbral sobre el conjunto de prueba de \texttt{rf\_v3}, pero no conserva el
+artefacto de esa lectura, por lo que esa confirmación no es verificable. Para \texttt{rf\_v11} el
+umbral se mantuvo sin recalibrar. El umbral del Isolation Forest se seleccionó también sobre
+validación y se fija en los metadatos de cada modelo; sin embargo, en dos generaciones previas
+(\texttt{if\_v2} e \texttt{if\_v5}) el objetivo interno de calibración (falsos positivos de 8~\% y
+luego de 6~\%) se definió después de observar un resultado de prueba que no lo cumplía.
+
+\textbf{Procedimiento 2.2. Lectura del conjunto de prueba (OE3).} La evaluación final de los
+modelos publicados ejecuta un script versionado (\texttt{evaluate\_test.py}) que: (1) recalcula el
+hash del conjunto de prueba y aborta si no coincide con el bloqueado; (2) carga los binarios ONNX
+del repositorio (par C), no los modelos de Python; (3) calcula el reporte de clasificación y el AUC-ROC
+por clase en esquema uno contra el resto, asignando a cada petición la clase de mayor
+probabilidad (sin aplicar \texttt{RF\_THRESHOLD}); (4) evalúa el Isolation Forest con el umbral de
+sus metadatos; y (5) guarda un manifiesto de sumas de verificación del conjunto de prueba y de
+ambos binarios junto al resultado. Finalidad: que cada cifra del OE3 quede atada al contenido
+exacto, byte a byte, del modelo y de los datos que la produjeron.
+
+Para la generación \texttt{rf\_v11} el conjunto de prueba se leyó tres veces: el 24 de septiembre
+de 2026, con un modelo entrenado antes del rebloqueo del 23 de septiembre y un umbral del
+Isolation Forest de 0.00807; y el 25 y el 26 de septiembre, con modelos reentrenados sobre la
+partición vigente y un umbral de 0.00421. Las cifras reportadas en Resultados corresponden a la
+lectura del 26 de septiembre (par C).
+
+\subsection{Fase 3: desarrollo de la librería}
+\label{subsec:met-f3}
+
+\textbf{Procedimiento 3.1. Captura y respuesta.} El middleware transforma el objeto
+\texttt{req} de Express al esquema canónico, extrae el vector de características y envía la
+inferencia a \texttt{worker\_threads}, para no bloquear el Event Loop. La arquitectura de esa
+inferencia en hilos (un hilo dedicado al Random Forest, un grupo rotativo de dos hilos para el
+Isolation Forest, y una respuesta que se resuelve con el veredicto del Random Forest sin esperar
+al Isolation Forest, cuya respuesta tardía actualiza el registro de forma asíncrona) es una
+decisión de diseño del componente de Inteligencia Artificial, justificada en el trabajo de
+graduación de Diego Valenzuela \cite{valenzuela2026ia}; aquí se describe solo como la interfaz que el middleware consume.
+Ante una petición bloqueada, el middleware responde HTTP 403 en
+modo \texttt{block}; en modo \texttt{monitor} solo registra. Todo evento se persiste en SQLite y
+los eventos accionables (\texttt{block}, \texttt{pass\_anomaly}) se notifican a los webhooks
+registrados. Ante un error o un tiempo de espera excedido del hilo de inferencia (50~ms por
+defecto), el middleware deja pasar la petición (\textit{fail-open}), para que un fallo interno
+no convierta la librería en un vector de denegación de servicio contra la aplicación anfitriona.
+
+\textbf{Procedimiento 3.2. Verificación funcional.} Cada módulo se valida con pruebas
+automatizadas en Jest \cite{jestdocs} y Supertest \cite{supertestdocs} que se ejecutan en
+integración continua. Las correcciones de defectos se acompañan de una prueba de regresión y se
+verifican mediante sabotaje y reversión: se reintroduce el defecto de forma temporal, se
+confirma que la prueba nueva falla y se revierte. Antes de la publicación, el paquete empaquetado
+(\texttt{pnpm pack}) se instaló en un directorio limpio fuera del monorepo y se probó contra una
+aplicación Express real con una petición SQLi (respuesta 403) y una legítima (respuesta 200).
+
+\subsection{Fase 4: pruebas}
+\label{subsec:met-f4}
+
+Las pruebas se ejecutan sobre una aplicación de referencia deliberadamente vulnerable
+(\texttt{logSguarDian-vulnerable-project}), construida con Express, PostgreSQL y plantillas EJS,
+y desplegada con Docker Compose \cite{dockerdocs, moreau2023}. La aplicación expone endpoints
+vulnerables a cada vector: \texttt{GET /posts/search?q=} y \texttt{POST /login} (SQLi),
+\texttt{POST /posts} y \texttt{POST /profile} (XSS), \texttt{GET /posts/:id/attachment?file=}
+(Path Traversal/LFI) y \texttt{POST /admin/ping} (Command Injection).
+
+\textbf{Procedimiento 4.1. Configuraciones experimentales (OE3).} La misma aplicación se evalúa
+en cuatro configuraciones que solo difieren en la capa de defensa:
+
+\begin{itemize}
+    \item \textbf{Configuración 1 (control):} aplicación sin protección, para confirmar que cada
+    payload es explotable y establecer la línea base.
+    \item \textbf{Configuración 2:} aplicación con \textit{logSguarDian} en modo \texttt{block}.
+    \item \textbf{Configuración 3a:} aplicación detrás de Nginx con ModSecurity v3 \cite{owasp2026modsecurity} y OWASP CRS
+    \cite{owaspcrs} en nivel de paranoia 1 y modo de bloqueo, sin \textit{logSguarDian}.
+    \item \textbf{Configuración 3b:} ambas capas superpuestas. El registro de auditoría de
+    ModSecurity y el registro de eventos de \textit{logSguarDian} se cruzan para atribuir cada
+    bloqueo a la capa que lo produjo, dado que ambas responden con un código de bloqueo.
+\end{itemize}
+
+Se eligió el nivel de paranoia 1 porque es la configuración realista para la población
+objetivo: organizaciones sin equipo de seguridad que pueda ajustar los falsos positivos de los
+niveles superiores.
+
+\textbf{Procedimiento 4.2. Auditoría de fuga entre evaluación y entrenamiento.}
+\label{subsec:met-fuga}
+La fuga de datos, es decir, la presencia en el conjunto de evaluación de información disponible
+durante el entrenamiento, es una causa frecuente de sobreestimación del desempeño en estudios
+basados en aprendizaje automático \cite{kapoor2023}. Un script versionado
+(\texttt{leakage\_check.py}) cruza cada corpus de evaluación contra cada partición en dos
+niveles: coincidencia exacta (hash del payload) y coincidencia de plantilla. La plantilla
+normaliza la decodificación URL, las mayúsculas y los dígitos; para Command Injection reemplaza
+además el marcador aleatorio de SecLists por un símbolo fijo. La auditoría confirmó que el corpus
+de la Ronda~4 tenía fuga en Command Injection (los 200 payloads coinciden por plantilla con la
+fuente SecLists usada en entrenamiento) y que el conjunto de 500 payloads de la suite E2E se
+había muestreado del corpus completo (entre 70 y 75 coincidencias exactas con entrenamiento por
+cada 100 payloads de cada clase). En consecuencia, la detección de payloads no vistos se mide
+exclusivamente con el corpus limpio M2; el conjunto E2E se usa para verificar el funcionamiento
+extremo a extremo de la librería.
+
+\textbf{Procedimiento 4.3. Construcción del corpus limpio (OE3).} El corpus M2 se genera con un
+script versionado (\texttt{build\_corpus.py}) y semilla fija (20260923), de modo que dos
+ejecuciones sobre las mismas entradas producen el mismo corpus:
+
+\begin{itemize}
+    \item \textbf{SQLi:} sqlmap \cite{sqlmap} v1.10.9, con los parámetros \texttt{--batch
+    --level=3 --risk=2 --technique=BEUSTQ}, contra los dos endpoints SQLi. Se registra cada
+    petición enviada mediante su archivo de tráfico; se usan las formas de payload que sqlmap
+    intentó, no su veredicto de explotabilidad, porque los bloqueos 403 del middleware alteran
+    sus heurísticas.
+    \item \textbf{Path Traversal/LFI:} generador propio que combina profundidades de 2 a 12
+    niveles, ocho estilos de codificación (crudo, barra invertida, codificación URL simple, doble
+    y de mayúsculas mixtas, UTF-8 sobrelargo, evasión \texttt{....//} y sufijo de byte nulo) y 28
+    archivos objetivo de Linux, \texttt{/proc}, la propia aplicación y Windows.
+    \item \textbf{Command Injection:} generador propio, deliberadamente no derivado de SecLists,
+    que combina 12 separadores de shell y 4 envolturas de sustitución con 20 comandos de
+    post-explotación sobre el sumidero \texttt{ping -c 3 \$\{host\}}.
+    \item \textbf{XSS:} OWASP ZAP \cite{owaspzap}, con un \textit{Active Scan} dirigido por su API REST
+    contra \texttt{POST /posts} (campos \texttt{content} y \texttt{title}) y \texttt{POST /profile}
+    (campo \texttt{bio}), con sesión autenticada. ZAP reporta una alerta por cada combinación de
+    parámetro y técnica confirmada como vulnerable, no cada payload probado; por eso el corpus de
+    XSS contiene un solo payload, el confirmado, y no se completó con variantes escritas a mano.
+\end{itemize}
+
+Todo candidato pasa por un filtro de exclusión antes de entrar al corpus: se descarta si su hash
+(o el de su forma codificada o decodificada) coincide con algún payload de entrenamiento de la
+misma clase o, en Command Injection, si su plantilla coincide con alguna plantilla de la fuente
+SecLists o de la clase \texttt{cmdi} de entrenamiento. Los payloads coincidentes se descartan, no
+se marcan, y cada descarte queda registrado con su motivo y la fuente coincidente. De cada
+categoría de SQLi, Path Traversal y Command Injection se seleccionan 200 payloads finales; el corpus
+resultante tiene 601 peticiones.
+
+\textbf{Procedimiento 4.4. Medición de cobertura (OE3).} Un ejecutor (\texttt{run\_large\_corpus.py})
+envía cada payload del corpus a su endpoint objetivo con la sesión correspondiente y registra, por
+petición, el código de respuesta y, cuando aplica, la clase y la confianza del evento almacenado.
+Una petición cuenta como detectada solo si el middleware la bloquea con HTTP 403. Las que el
+Isolation Forest marca como anómalas sin bloquearlas (\texttt{pass\_anomaly}), las que terminan por
+tiempo de espera y las que devuelven HTTP 500 cuentan como no detectadas. La medición principal usa
+el paquete 0.1.0 (par~A), con el ejecutor en la versión anterior a la corrección del 10 de octubre
+de 2026; esa corrección evita volver a codificar los payloads de Path Traversal y de Command
+Injection que ya llegan codificados, y desde entonces el ejecutor envía sus bytes tal cual. Como
+referencia, se repitió sobre el mismo corpus con el tarball de
+validación 22550ea (par~C), verificando dentro del contenedor el hash de los modelos cargados. Las
+cuatro configuraciones del Procedimiento~4.1 se ejecutaron sobre el corpus limpio; la
+Configuración~3a, que no incorpora la librería, se ejecutó en una rama distinta de la aplicación
+mediante un árbol de trabajo de git, y de las Configuraciones 3a y 3b no consta el paquete exacto: el directorio de dependencias
+de su commit contiene el archivo de la 0.1.0 del registro, pero los resultados no registran cuál
+se ejecutó. La Configuración~2 se repitió además con el paquete 0.1.1, instalado desde el registro de npm, y con
+el ejecutor corregido.
+
+\textbf{Procedimiento 4.5. Benchmark de rendimiento (objetivo general).} El benchmark se ejecuta
+en Linux nativo mediante un flujo de GitHub Actions (\texttt{latency-benchmark.yml}) en un
+ejecutor \texttt{ubuntu-latest}, que documenta el hardware del ejecutor en cada corrida. La
+aplicación de referencia se levanta con Docker Compose, y la condición se alterna entre línea
+base y middleware activo mediante la variable \texttt{LOGSGUARDIAN\_DISABLED}, recreando el
+contenedor, sin modificar ningún otro parámetro. Se usa Artillery 2.0.34 \cite{artillerydocs}
+con tres escenarios:
+
+\begin{itemize}
+    \item \textbf{Normal:} navegación legítima (inicio de sesión, listado, detalle y perfil) a
+    25 usuarios virtuales por segundo, que con cuatro peticiones por usuario produce
+    $\approx$100 peticiones/s.
+    \item \textbf{Ataque:} tráfico mixto concurrente, 70~\% de navegación legítima y 30~\% de
+    escenarios con payloads de las cuatro categorías, a 30 usuarios virtuales por segundo
+    ($\approx$100 peticiones/s).
+    \item \textbf{Volumen:} el escenario normal sobre una base de datos sembrada con 2{,}010
+    registros, para representar una aplicación con datos reales. Este escenario no estaba en el
+    protocolo; se agregó para contrastar la hipótesis de que una línea base más lenta reduce el
+    impacto relativo del middleware, y sus resultados se comparan con el mismo criterio de 15~ms.
+\end{itemize}
+
+Cada corrida tiene una fase de calentamiento de 15~s a 5 usuarios/s, descartada del análisis
+porque los hilos del Isolation Forest tardan cerca de 5~s en quedar listos, y una fase medida de
+60~s. Cada combinación de escenario y condición se repite cinco veces. Durante toda la ejecución,
+un proceso paralelo muestrea cada 5~s la memoria y el uso de CPU del contenedor de la aplicación
+mediante \texttt{docker stats}. Un script posterior (\texttt{analyze\_resources.py}) asigna cada
+muestra a su repetición con las marcas de tiempo de inicio y fin de cada reporte de Artillery,
+descarta los primeros 15~s de cada repetición y calcula, para cada par de repeticiones
+equivalentes, la diferencia entre la condición con middleware y la línea base. La evidencia
+cruda de la corrida (reportes de Artillery, muestras de recursos y hashes de los modelos) está
+archivada en el repositorio de la aplicación de referencia. El procedimiento de agregación se
+detalla en la Sección~\ref{sec:met-datos}.
+
+\textbf{Procedimiento 4.6. Estudio de falsos positivos con navegadores reales (OE3).} El
+procedimiento surgió de un falso positivo reportado al navegar con un navegador real hacia
+\texttt{GET /login}. Las corridas de Artillery usan una única cadena \texttt{User-Agent} fija y no
+cubren ese caso. Un script (\texttt{ua\_fp\_study.py}) envía peticiones sin consulta ni cuerpo a
+\texttt{/login}, \texttt{/posts} y \texttt{/profile} con cadenas \texttt{User-Agent} de Chrome,
+Firefox y Safari en macOS y Windows, con y sin sesión, y registra el código de respuesta de cada
+combinación.
+
+\textbf{Procedimiento 4.7. Validación de generalización en aplicaciones de terceros (objetivo
+general).} Sustituye a la validación con startups guatemaltecas prevista en el protocolo y se
+realizó por recomendación del asesor. Se evaluaron cuatro aplicaciones Node.js deliberadamente vulnerables que no participaron en la
+calibración ni en el entrenamiento: DVNA, node-api-goat, dvws-node y OWASP Juice Shop. En las tres
+primeras se integró el paquete publicado en npm (\texttt{npm install logsguardian}, entonces 0.1.0);
+OWASP Juice Shop la evaluó el componente de IA con una copia local del paquete que contiene el
+par~C. Las cuatro difieren en arquitectura (renderizado de
+plantillas, API pura sin base de datos, SOAP/GraphQL y aplicación de página única). En las tres primeras se confirma primero la explotabilidad sin protección y luego se mide, con el
+middleware en modo \texttt{block} y configuración por defecto, la tasa de bloqueo sobre ataques y la tasa de bloqueo
+sobre tráfico legítimo representativo de la aplicación. En Juice Shop, en modo \texttt{monitor},
+se aisló el efecto de la cabecera \texttt{User-Agent} variando solo esa cabecera (cURL frente a
+una cadena de navegador) sobre el mismo conjunto de peticiones.
+
+\subsection{Fase 5: aplicación de feedback}
+\label{subsec:met-f5}
+Cada hallazgo de la Fase~4 que afecta a una métrica se convierte en una tarea del tablero, con
+su propia rama y pull request, y sigue un ciclo fijo: reproducción con evidencia antes de
+cualquier cambio; corrección; nueva medición de la métrica afectada; y registro del valor antes
+y después en la bitácora de decisiones. Si una corrección requiere reentrenar el modelo, el
+conjunto de prueba se bloquea de nuevo antes del reentrenamiento (Procedimiento~1.5). Una
+corrección no puede justificarse con la misma lectura de prueba que la motivó.
+
+\subsection{Fase 6: documentación}
+\label{subsec:met-f6}
+Se consolida un documento de cumplimiento por objetivo, en el que cada afirmación remite al
+artefacto que la respalda (script, archivo de resultados, ejecución de CI o captura) y cada
+cifra histórica superada se marca como tal. El informe final, el README publicado en npm y la
+documentación técnica se derivan de ese documento.
+
+% ------------------------------------------------------------------------------
+\section{Técnicas e instrumentos}
+\label{sec:met-instrumentos}
+
+El Cuadro~\ref{tab:met-instrumentos} relaciona cada técnica de obtención de datos con el
+instrumento que la implementa y con el dato que produce.
+
+\begin{longtable}{|L{2.7cm}|L{3.7cm}|L{3.6cm}|L{2.6cm}|}
+\hline
+\textbf{Técnica} & \textbf{Instrumento} & \textbf{Dato producido} & \textbf{Procedimiento} \\ \hline
+\endfirsthead
+\multicolumn{4}{l}{\footnotesize\textit{(continuación)}} \\ \hline
+\textbf{Técnica} & \textbf{Instrumento} & \textbf{Dato producido} & \textbf{Procedimiento} \\ \hline
+\endhead
+\multicolumn{4}{r}{\footnotesize\textit{Continúa en la página siguiente}} \\
+\endfoot
+\endlastfoot
+Análisis documental & Páginas oficiales OWASP, CWE y MITRE ATT\&CK; registros de licencia
+de cada fuente & Mapeo de vectores; tabla de auditoría de fuentes & 1.1, 1.2 \\ \hline
+Transformación determinista & Analizadores por fuente, \texttt{label\_map.yaml},
+\texttt{unify.py}, \texttt{split.py} & Corpus etiquetado, particiones y hash de bloqueo & 1.3--1.5 \\ \hline
+Extracción de características & CLI de \texttt{packages/extractor} (TypeScript) & Matriz de
+características por petición & 1.3, F2 \\ \hline
+Evaluación sobre conjunto bloqueado & \texttt{evaluate\_test.py}, scikit-learn
+\cite{pedregosa2011}, \texttt{onnxruntime} & Precisión, recall, F1, AUC-ROC; métricas del
+Isolation Forest; manifiesto de sumas & 2.2 \\ \hline
+Barrido de umbral & Notebooks de calibración sobre validación & Curvas precisión/recall/FP por
+umbral & 2.1 \\ \hline
+Pruebas automatizadas & Jest, Supertest, GitHub Actions & Resultado de pruebas por commit & 3.2 \\ \hline
+Auditoría de fuga & \texttt{leakage\_check.py} & Coincidencias exactas y por plantilla por
+clase y partición & 4.2 \\ \hline
+Pruebas de penetración controlada & sqlmap \cite{sqlmap}, generadores propios, filtro de
+exclusión y ejecutor del corpus & Corpus limpio; veredicto por
+payload y configuración & 4.3, 4.4 \\ \hline
+WAF de comparación & ModSecurity v3 + OWASP CRS PL1 \cite{owaspcrs} & Registro de auditoría
+del WAF & 4.1 \\ \hline
+Prueba de carga & Artillery 2.0.34, script de orquestación de la suite y flujo de CI del
+benchmark & Latencia p95 por repetición; errores y tiempos de espera
+excedidos & 4.5 \\ \hline
+Monitoreo de recursos & \texttt{docker stats} y script de análisis de memoria & Serie temporal de memoria y CPU del contenedor & 4.5 \\ \hline
+Experimento de cabecera & Script de estudio de \texttt{User-Agent}; corridas cURL frente a
+navegador en Juice Shop & Veredicto por cadena \texttt{User-Agent} y ruta & 4.6, 4.7 \\ \hline
+Registro de eventos & SQLite del middleware; CLI \texttt{attacks} y \texttt{endpoints} & Clase,
+confianza y veredicto por petición & 4.4, 4.7 \\ \hline
+\caption[Técnicas e instrumentos de obtención de datos]{Técnicas e instrumentos de obtención de datos, dato producido y procedimiento asociado}
+\label{tab:met-instrumentos}
+\end{longtable}
+{\footnotesize Nota. Elaboración propia.}
+
+OWASP ZAP \cite{owaspzap}, previsto en el protocolo para generar payloads XSS, está instalado como
+aplicación gráfica; no se automatizó mediante el navegador, sino a través de la API REST que expone
+su proxy, que permitió crear el contexto, autenticar al usuario y lanzar el \textit{Active Scan}
+sin intervención manual. Su resultado es un único payload confirmado, por lo que la cobertura de
+XSS tiene n=1 (Sección~\ref{sec:met-restricciones}). La herramienta
+clinic.js, prevista para medir CPU, se sustituyó por \texttt{docker stats}: mide el contenedor
+completo, puede ejecutarse sin intervención dentro del flujo de CI y produce una serie temporal
+alineada con las corridas de Artillery.
+
+% ------------------------------------------------------------------------------
+\section{Recursos}
+\label{sec:met-recursos}
+
+\subsection{Recursos humanos}
+El componente de ciberseguridad estuvo a cargo de un único integrante, con dedicación estimada
+de 20 horas semanales en las Fases 1 a 3 y de 15 horas semanales en las Fases 4 a 6. El
+componente de IA estuvo a cargo del segundo integrante, que además actuó como revisor obligatorio
+de los pull requests. La asesoría académica estuvo a cargo del asesor asignado, cuyas revisiones
+del documento de cumplimiento motivaron varias de las correcciones descritas en la
+Sección~\ref{sec:met-cambios}. No participó personal externo.
+
+\subsection{Recursos tecnológicos}
+El Cuadro~\ref{tab:met-recursos} actualiza los recursos tecnológicos del protocolo con las
+herramientas que se usaron en la práctica.
+
+\begin{longtable}{|L{3.0cm}|L{4.5cm}|L{5.3cm}|}
+\hline
+\textbf{Categoría} & \textbf{Herramienta} & \textbf{Función en el proyecto} \\ \hline
+\endfirsthead
+\multicolumn{3}{l}{\footnotesize\textit{(continuación)}} \\ \hline
+\textbf{Categoría} & \textbf{Herramienta} & \textbf{Función en el proyecto} \\ \hline
+\endhead
+\multicolumn{3}{r}{\footnotesize\textit{Continúa en la página siguiente}} \\
+\endfoot
+\endlastfoot
+Runtime y framework & Node.js, Express & Plataforma de la librería y de las aplicaciones de prueba \\ \hline
+Monorepo & pnpm workspaces, TypeScript & Paquetes \texttt{extractor}, \texttt{core} y \texttt{mlops} \\ \hline
+Inferencia & \texttt{onnxruntime-node}, \texttt{worker\_threads} & Ejecución de los modelos sin bloquear el Event Loop \\ \hline
+Persistencia & SQLite (\texttt{better-sqlite3}) & Registro de eventos y de webhooks \\ \hline
+Entorno de prueba & Docker Compose, PostgreSQL & Aplicación de referencia reproducible \\ \hline
+Generación de tráfico & Artillery 2.0.34 & Carga legítima y mixta \\ \hline
+Simulación de ataques & sqlmap 1.10.9; generadores propios en Python & Payloads de SQLi, Path Traversal y Command Injection \\ \hline
+WAF de comparación & Nginx + ModSecurity v3 + OWASP CRS & Configuraciones 3a y 3b \\ \hline
+Análisis de datos y ML & Python, pandas, scikit-learn, Jupyter & Partición, evaluación, calibración y auditoría de fuga \\ \hline
+Pruebas & Jest, Supertest & Pruebas unitarias, de integración y E2E \\ \hline
+Integración continua & GitHub Actions (\texttt{ubuntu-latest}) & Pruebas por pull request, publicación en npm y benchmark de rendimiento en Linux nativo \\ \hline
+Gestión & Notion (tablero Kanban), Git, GitHub & Gestión de tareas, versionado y revisión cruzada \\ \hline
+Distribución & Registro público de npm & Publicación de \texttt{logsguardian} \\ \hline
+\caption[Recursos tecnológicos utilizados]{Recursos tecnológicos utilizados en el proyecto}
+\label{tab:met-recursos}
+\end{longtable}
+{\footnotesize Nota. Elaboración propia. Todas las herramientas son de código abierto o de uso
+gratuito para el proyecto.}
+
+\subsection{Recursos externos y financieros}
+Los recursos externos son las fuentes públicas del corpus, las cuatro aplicaciones vulnerables
+de terceros, el registro de npm y los ejecutores de GitHub Actions. El componente de
+ciberseguridad no requirió licencias de pago. La infraestructura en la nube contemplada en el
+protocolo para la validación con startups no se utilizó, porque esa validación no se realizó.
+
+% ------------------------------------------------------------------------------
+\section{Recolección, procesamiento y validación de datos}
+\label{sec:met-datos}
+
+El Cuadro~\ref{tab:met-datos} describe, para cada flujo de datos, cómo se recolecta, cómo se
+procesa y qué verificación debe superar antes de considerarse evidencia válida para el capítulo
+de Resultados.
+
+\begin{longtable}{|L{2.3cm}|L{3.4cm}|L{3.4cm}|L{3.7cm}|}
+\hline
+\textbf{Flujo} & \textbf{Recolección} & \textbf{Procesamiento} & \textbf{Validación} \\ \hline
+\endfirsthead
+\multicolumn{4}{l}{\footnotesize\textit{(continuación)}} \\ \hline
+\textbf{Flujo} & \textbf{Recolección} & \textbf{Procesamiento} & \textbf{Validación} \\ \hline
+\endhead
+\multicolumn{4}{r}{\footnotesize\textit{Continúa en la página siguiente}} \\
+\endfoot
+\endlastfoot
+Corpus etiquetado (M1) & Descarga de las fuentes públicas (Cuadro~\ref{tab:met-origenes}) & Esquema canónico,
+etiquetado por mapeo, deduplicación exacta, extracción de características, partición
+estratificada & Cero solapamiento entre particiones; tolerancias de clase ($\pm$2~\%) y fuente
+($\pm$5~\%); hash de prueba versionado antes de entrenar \\ \hline
+Métricas de clasificación & Lectura del conjunto de prueba con los binarios ONNX publicados
+& Reporte de clasificación y AUC-ROC uno contra el resto & Hash de prueba coincidente;
+manifiesto de sumas de \texttt{test.parquet}, \texttt{rf.onnx} e \texttt{if.onnx}; umbrales
+tomados de los metadatos del modelo \\ \hline
+Paridad ONNX & Predicciones de Python y de Node.js sobre el mismo conjunto & Diferencia máxima
+absoluta por salida & Prueba automatizada en CI; diferencia $<$0.1~\% \\ \hline
+Corpus limpio (M2) & sqlmap y generadores propios con semilla fija & Filtro de exclusión
+exacto y por plantilla; selección de 200 por categoría & Reporte de exclusión con cero
+coincidencias en el corpus final; reproducibilidad (dos ejecuciones con igual resultado) \\ \hline
+Cobertura & Envío por HTTP real del corpus a la aplicación en cada configuración & Conteo de
+bloqueos (HTTP 403) por categoría; anomalías sin bloqueo, tiempos de espera y errores 500 cuentan
+como no detectados & Explotabilidad confirmada en Configuración~1; atribución por
+capa en 3b mediante el registro de auditoría del WAF \\ \hline
+Latencia & Reportes JSON de Artillery por repetición & p95 por repetición sobre la fase medida;
+mediana de las cinco repeticiones; $\Delta$p95 absoluto y relativo & Exclusión del
+calentamiento; tasa real de peticiones $\approx$100/s verificada en el reporte; conteo de
+tiempos de espera excedidos a partir del resumen final de cada repetición \\ \hline
+Memoria y CPU & Muestreo cada 5~s de \texttt{docker stats} & Asignación de muestras a cada
+repetición por marca de tiempo; media por condición (MiB); incremento pareado con middleware menos línea
+base & Ventana total $\geq$30~min; se excluyen calentamiento y muestras fuera de una repetición;
+contraste entre la ventana medida y la repetición completa \\ \hline
+Falsos positivos con navegador (M4) & Script con cadenas \texttt{User-Agent} reales &
+Proporción de combinaciones bloqueadas & Sesión y ruta controladas; una sola variable manipulada \\ \hline
+Aplicaciones de terceros (M5) & Integración del paquete publicado y scripts de ataque y de
+tráfico legítimo por aplicación & Tasa de bloqueo en ataques y en tráfico legítimo, reportadas
+siempre juntas & Explotabilidad previa confirmada; evidencia cruda (scripts y JSON) copiada al
+repositorio \\ \hline
+\caption[Recolección, procesamiento y validación de datos]{Recolección, procesamiento y validación de cada flujo de datos}
+\label{tab:met-datos}
+\end{longtable}
+{\footnotesize Nota. Elaboración propia.}
+
+Tres decisiones de procesamiento requieren justificación explícita, porque afectan la
+interpretación de los resultados:
+
+\begin{itemize}
+    \item \textbf{Agregación de las repeticiones de latencia.} De las cinco repeticiones de cada condición se reporta la mediana. Se usa la mediana porque es menos sensible que la media a una repetición atípica
+    causada por el entorno de ejecución.
+    \item \textbf{Cálculo del p95 por repetición.} Artillery reporta percentiles por intervalos
+    de aproximadamente 10~s. El analizador calcula el p95 de cada repetición como el promedio,
+    ponderado por número de peticiones, de los p95 de cada intervalo posterior al calentamiento,
+    no como el percentil exacto sobre todas las muestras. Es una aproximación y se declara como
+    tal; su efecto es mayor en el escenario de volumen, donde la latencia crece durante la corrida.
+    \item \textbf{Lectura conjunta de detección y falsos positivos.} En las aplicaciones de
+    terceros, una tasa de bloqueo alta en ataques no se reporta sin la tasa de bloqueo en tráfico
+    legítimo. Un sistema que bloquea casi todo obtiene un recall alto sin discriminar.
+\end{itemize}
+
+% ------------------------------------------------------------------------------
+\section{Métricas e indicadores}
+\label{sec:met-metricas}
+
+Las métricas de clasificación se calculan por clase. Sean $TP_c$, $FP_c$ y $FN_c$ los
+verdaderos positivos, falsos positivos y falsos negativos de la clase $c$ (Ecuación~\eqref{eq:met-clasificacion}):
+
+\begin{equation}
+P_c = \frac{TP_c}{TP_c + FP_c}, \qquad
+R_c = \frac{TP_c}{TP_c + FN_c}, \qquad
+F1_c = \frac{2\,P_c\,R_c}{P_c + R_c}
+\label{eq:met-clasificacion}
+\end{equation}
+
+El F1 es la métrica primaria de aceptación porque el corpus está desbalanceado: la exactitud
+global premiaría a un clasificador que favoreciera a la clase mayoritaria, mientras que el F1
+penaliza tanto los ataques no detectados como los bloqueos de tráfico legítimo. El AUC-ROC uno
+contra el resto se reporta como medida de discriminación independiente del umbral
+\cite{fawcett2006}. Para el rendimiento (Ecuación~\eqref{eq:met-latencia}):
+
+\begin{equation}
+\Delta p95_{\mathrm{abs}} = \tilde{p}95_{\mathrm{activo}} - \tilde{p}95_{\mathrm{base}}, \qquad
+\Delta p95_{\mathrm{rel}} = \frac{\Delta p95_{\mathrm{abs}}}{\tilde{p}95_{\mathrm{base}}} \times 100\,\%
+\label{eq:met-latencia}
+\end{equation}
+
+\noindent donde $\tilde{p}95$ es la mediana de las cinco repeticiones de una condición.
+
+Para las proporciones observadas (tasas de bloqueo y de detección) se reportan intervalos de confianza de Wilson al 95~\% \cite{wilson1927probable}, preferidos al intervalo normal (Wald) porque mantienen una cobertura cercana a la nominal con muestras pequeñas o proporciones cercanas a 0 o 1 \cite{brown2001interval}.
+
+El criterio de aceptación de latencia es el de la Sección~\ref{subsec:alcance-tecnico}: un
+$\Delta p95_{\mathrm{abs}}$ de 15~ms como máximo, tanto bajo carga normal como bajo carga de
+ataque. Se expresa en milisegundos y no como porcentaje de la línea base porque un porcentaje
+depende por completo de la latencia propia de la aplicación anfitriona. Con una línea base de 2 a
+5~ms, como la de la aplicación de referencia, un margen de 5~\% equivale a una fracción de
+milisegundo, menor que la variación entre repeticiones del entorno de medición, de modo que el
+criterio dejaría de distinguir un middleware costoso de uno ligero. Además, el mismo middleware
+obtendría veredictos opuestos según la aplicación en que se instale: en una aplicación más lenta,
+el mismo costo se diluye y el porcentaje baja. Una cifra absoluta mide directamente el costo que
+el middleware agrega a cada petición, que es la magnitud que percibe el usuario final y la que un
+equipo sin especialista en seguridad puede comparar con su propio presupuesto de latencia.
+$\Delta p95_{\mathrm{rel}}$ se reporta como indicador complementario.
+
+El Cuadro~\ref{tab:met-metricas} define todas las métricas, su criterio y el objetivo al que se
+vinculan.
+
+\begin{longtable}{|L{2.8cm}|L{4.0cm}|L{2.7cm}|L{2.0cm}|L{1.0cm}|}
+\hline
+\textbf{Indicador} & \textbf{Definición operacional} & \textbf{Criterio} & \textbf{Instrumento} & \textbf{Obj.} \\ \hline
+\endfirsthead
+\multicolumn{5}{l}{\footnotesize\textit{(continuación)}} \\ \hline
+\textbf{Indicador} & \textbf{Definición operacional} & \textbf{Criterio} & \textbf{Instrumento} & \textbf{Obj.} \\ \hline
+\endhead
+\multicolumn{5}{r}{\footnotesize\textit{Continúa en la página siguiente}} \\
+\endfoot
+\endlastfoot
+Tamaño del corpus & Filas totales en las tres particiones & $\geq$100{,}000 & Partición (1.5) & OE2 \\ \hline
+Representación de clases & Clases con muestras en cada partición & 5/5 en cada partición & Partición (1.5) & OE1, OE2 \\ \hline
+Integridad de la partición & Hashes compartidos entre particiones & 0 & Partición (1.5) & OE2 \\ \hline
+F1 por categoría & $F1_c$ sobre el conjunto de prueba bloqueado & $\geq$0.80 en al menos 3 de 4 categorías & Lectura de prueba (2.2) & OE3 \\ \hline
+Precisión y recall por categoría & $P_c$, $R_c$ sobre el conjunto de prueba & Reportados, subordinados al F1 & Lectura de prueba (2.2) & OE3 \\ \hline
+AUC-ROC por categoría & Área bajo la curva ROC uno contra el resto & Referencia, sin umbral & Lectura de prueba (2.2) & OE3 \\ \hline
+Detección de anomalías del IF & $TP/(TP+FN)$ sobre ataques de prueba, umbral de los metadatos & $\geq$50~\% & Lectura de prueba (2.2) & OE3 \\ \hline
+Falsos positivos del IF & $FP/(FP+TN)$ sobre legítimos de prueba & $\leq$10~\% & Lectura de prueba (2.2) & OE3 \\ \hline
+Paridad ONNX & Diferencia máxima entre predicciones Python y Node.js & $<$0.1~\% & Prueba de paridad & OG \\ \hline
+Cobertura por categoría & Payloads del corpus limpio bloqueados con HTTP 403 / payloads enviados & $\geq$80~\% por categoría & Ejecutor del corpus (4.4) & OE3 \\ \hline
+Contribución en defensa en profundidad & Ataques no bloqueados por el WAF que bloquea \textit{logSguarDian} / ataques no bloqueados por el WAF & Descriptivo & Configuraciones 3a/3b & OG \\ \hline
+Falsos positivos con navegador & Combinaciones ruta--\texttt{User-Agent} legítimas bloqueadas / combinaciones probadas & Descriptivo; se reporta junto al F1 & Estudio UA (4.6) & OE3 \\ \hline
+Generalización a terceros & Tasa de bloqueo en ataques y en tráfico legítimo por aplicación & Descriptivo; siempre en pareja & Scripts por aplicación & OG \\ \hline
+Extracción de características & Tiempo por petición, aislado en su hilo & $\leq$5~ms & Benchmark del extractor & OG \\ \hline
+Latencia adicional & $\Delta p95_{\mathrm{abs}}$, escenarios normal y de ataque (criterio) y de volumen (referencia) & $\leq$15~ms; $\Delta p95_{\mathrm{rel}}$ complementario & Artillery, CI & OG \\ \hline
+Tiempos de espera excedidos & Peticiones con \texttt{ERR\_SOCKET\_TIMEOUT} / peticiones enviadas & Descriptivo (escenario de volumen) & Artillery, CI & OG \\ \hline
+Memoria adicional & Incremento pareado de memoria del contenedor con middleware respecto de la línea base (MiB) & $\leq$150~MB (143.1~MiB) & \texttt{docker stats} & OG \\ \hline
+Incremento de CPU & Uso de CPU con middleware frente a la línea base & $\leq$15~\% relativo & \texttt{docker stats} & OG \\ \hline
+\caption[Métricas e indicadores de evaluación]{Métricas e indicadores: definición operacional, criterio de aceptación, instrumento y objetivo vinculado}
+\label{tab:met-metricas}
+\end{longtable}
+{\footnotesize Nota. Elaboración propia con base en el protocolo de graduación y en
+\cite{fawcett2006}. OG: objetivo general.}
+
+% ------------------------------------------------------------------------------
+\section{Matriz de trazabilidad}
+\label{sec:met-trazabilidad}
+
+El Cuadro~\ref{tab:met-trazabilidad} relaciona cada objetivo con las actividades que lo
+abordan, los datos que estas producen, las métricas que se calculan sobre esos datos y el
+resultado esperado, que es lo que el capítulo de Resultados contrasta.
+
+\begin{longtable}{|L{1.5cm}|L{2.6cm}|L{2.7cm}|L{2.6cm}|L{3.3cm}|}
+\hline
+\textbf{Objetivo} & \textbf{Actividades} & \textbf{Datos} & \textbf{Métricas} & \textbf{Resultado esperado} \\ \hline
+\endfirsthead
+\multicolumn{5}{l}{\footnotesize\textit{(continuación)}} \\ \hline
+\textbf{Objetivo} & \textbf{Actividades} & \textbf{Datos} & \textbf{Métricas} & \textbf{Resultado esperado} \\ \hline
+\endhead
+\multicolumn{5}{r}{\footnotesize\textit{Continúa en la página siguiente}} \\
+\endfoot
+\endlastfoot
+OE1 & 1.1 Mapeo a OWASP, CWE y MITRE & Cuadro de correspondencia verificado & Vectores mapeados con fuente oficial & Cuatro vectores justificados; cinco clases canónicas que estructuran OE2 y OE3 \\ \hline
+OE2 & 1.2--1.5 Auditoría, etiquetado, deduplicación y partición & Corpus M1; reporte de auditoría; hash de bloqueo & Tamaño; representación de clases; integridad de partición & $\geq$100{,}000 muestras etiquetadas con etiquetado determinista y documentado \\ \hline
+OE3 (modelo) & 2.1 Calibración; 2.2 Lectura de prueba & Conjunto de prueba bloqueado; manifiesto de sumas & F1, precisión, recall y AUC-ROC por clase; detección y FP del IF & F1 $\geq$0.80 en al menos 3 de 4 categorías; IF $\geq$50~\% de detección con $\leq$10~\% de FP \\ \hline
+OE3 (sistema) & 4.1--4.4 Configuraciones, auditoría de fuga, corpus limpio y cobertura & Corpus M2; veredictos por payload y configuración & Cobertura por categoría; contribución en defensa en profundidad & Cobertura $\geq$80~\% por categoría sobre payloads no vistos en entrenamiento \\ \hline
+OE3 (falsos positivos) & 4.6 Estudio con navegadores & Muestra M4 & Falsos positivos con navegador & Cuantificación del bloqueo de tráfico legítimo no cubierto por Artillery \\ \hline
+OG (rendimiento) & 3.1 Arquitectura en hilos; 4.5 Benchmark & Muestra M3; series de memoria y CPU & $\Delta p95$; tiempos de espera; memoria; CPU; extracción & $\Delta p95_{\mathrm{abs}}\leq$15~ms (normal y ataque; volumen como referencia); $\Delta$ memoria $\leq$150~MB (143.1~MiB); CPU $\leq$15~\% \\ \hline
+OG (generalización) & 4.7 Integración en terceros & Muestra M5 & Bloqueo en ataques y en legítimos por aplicación & Evidencia de si la calibración transfiere fuera de la aplicación de referencia \\ \hline
+OG (librería) & 3.1--3.2 Desarrollo y verificación; publicación & Pruebas en CI; paquete publicado & Pruebas aprobadas; paridad ONNX & Paquete funcional publicado en npm \\ \hline
+\caption[Matriz de trazabilidad metodológica]{Matriz de trazabilidad entre objetivos, actividades, datos, métricas y resultados esperados}
+\label{tab:met-trazabilidad}
+\end{longtable}
+{\footnotesize Nota. Elaboración propia. Los números de actividad remiten a los procedimientos
+de la Sección~\ref{sec:met-fases}.}
+
+% ------------------------------------------------------------------------------
+\section{Cambios respecto al Marco Metodológico del protocolo}
+\label{sec:met-cambios}
+
+El Cuadro~\ref{tab:met-cambios} enumera los cambios respecto al protocolo y la causa de cada
+uno.
+
+\begin{longtable}{|L{3.4cm}|L{4.3cm}|L{5.1cm}|}
+\hline
+\textbf{Elemento} & \textbf{Cambio} & \textbf{Causa} \\ \hline
+\endfirsthead
+\multicolumn{3}{l}{\footnotesize\textit{(continuación)}} \\ \hline
+\textbf{Elemento} & \textbf{Cambio} & \textbf{Causa} \\ \hline
+\endhead
+\multicolumn{3}{r}{\footnotesize\textit{Continúa en la página siguiente}} \\
+\endfoot
+\endlastfoot
+Criterio de latencia & De $\Delta p95$ relativo (5~\%/10~\%) a absoluto ($\leq$15~ms) & Una cifra en milisegundos mide el costo real por petición; un porcentaje sobre una línea base de 2--5~ms es menor que la variación de medición y cambia según la aplicación anfitriona \\ \hline
+Agregación de repeticiones & De media de las tres centrales a mediana & Menor sensibilidad a repeticiones atípicas \\ \hline
+Entorno de medición & De Docker Desktop en macOS a Linux nativo en GitHub Actions & La capa de virtualización de Docker Desktop alteraba la latencia medida \\ \hline
+Escenario de volumen & Agregado & Contrastar el efecto de una línea base realista sobre el impacto del middleware \\ \hline
+Origen del dataset (OE2) & De generado en el entorno Docker a construido con fuentes públicas auditadas, listas públicas de payloads y conjuntos propios; el entorno se usa para evaluar & Las fuentes públicas aportan volumen y diversidad de ataques que el entorno controlado no podía generar en el tiempo disponible \\ \hline
+Corpus de evaluación & Corpus de SecLists (Ronda~4) reemplazado por corpus limpio (Ronda~5) & Fuga confirmada en Command Injection respecto al entrenamiento \\ \hline
+Política de decisión & El Isolation Forest no bloquea; solo registra anomalías & Una política disyuntiva bloqueaba $\approx$10~\% del tráfico legítimo \\ \hline
+Validación externa & Startups guatemaltecas sustituidas por cuatro aplicaciones vulnerables de terceros & No se concretó un acuerdo con una startup en el período de pruebas \\ \hline
+Estudio de falsos positivos con navegador & Agregado & Falso positivo observado con un navegador real, no cubierto por Artillery \\ \hline
+Instrumento de CPU & clinic.js sustituido por \texttt{docker stats} & Ejecución sin intervención en CI y serie temporal alineada con la carga \\ \hline
+Gestión & Kanban en Notion con cuatro columnas, sin la columna Bloqueado; complementado con protección de ramas e integración continua & Simplificar el tablero; convertir la revisión cruzada y las pruebas en controles obligatorios \\ \hline
+Reentrenamiento offline (\texttt{mlops}) & Agregado, en el componente de IA & Recomendación del asesor \\ \hline
+\caption[Cambios respecto al Marco Metodológico del protocolo]{Cambios respecto al Marco Metodológico del protocolo y su causa}
+\label{tab:met-cambios}
+\end{longtable}
+{\footnotesize Nota. Elaboración propia.}
+
+% ------------------------------------------------------------------------------
+\section{Amenazas a la validez}
+\label{sec:met-validez}
+
+Las condiciones siguientes limitan lo que los datos pueden demostrar. Se declaran aquí para que
+el capítulo de Resultados las tenga en cuenta al interpretar cada cifra:
+
+\begin{itemize}
+    \item \textbf{Rebloqueos y lecturas repetidas del conjunto de prueba.} El conjunto de prueba
+    se volvió a bloquear en cada generación de modelo (el valor del bloqueo cambió nueve veces, entre
+    el 11 de junio y el 23 de septiembre de 2026), y en la generación
+    \texttt{rf\_v11} se leyó tres veces, con un cambio del umbral del Isolation Forest entre la
+    primera y la última lectura. En \texttt{if\_v2} e \texttt{if\_v5}, los objetivos internos de
+    calibración del Isolation Forest se fijaron después de observar resultados de prueba. Ver
+    resultados de prueba antes de decidir filtra información hacia el diseño. El manifiesto de
+    sumas de verificación solo protege las lecturas desde \texttt{rf\_v11}.
+    \item \textbf{Procedencia de los datos restaurados.} Los datos de entrenamiento se
+    restauraron desde una copia de respaldo el 23 de septiembre de 2026 sin que el repositorio
+    registre su origen. La partición vigente suma 383{,}202 filas, 119 más que el archivo
+    unificado (383{,}083); la diferencia coincide con las 119 filas de telemetría curada del
+    pipeline de reentrenamiento, que el script de unificación excluye y el pipeline incorpora por
+    separado (Cuadro~\ref{tab:met-origenes}), por lo que no queda sin explicar. El 17.8~\%
+    de las filas de Command Injection del conjunto de prueba (261 de 1{,}468) proviene de
+    conjuntos sintéticos cuyo script generador no está en el repositorio; esa porción del corpus no
+    es reproducible con los scripts versionados.
+    \item \textbf{Métricas sin umbral de bloqueo.} Las métricas del Random Forest sobre el
+    conjunto de prueba asignan la clase de mayor probabilidad, mientras que el middleware bloquea
+    solo si esa probabilidad alcanza 0.35. Ambas decisiones coinciden en la mayoría de los casos,
+    pero no son idénticas.
+    \item \textbf{Calibración en una sola aplicación.} El umbral se calibró sobre la partición
+    de validación y se confirmó en la aplicación de referencia. Las aplicaciones de terceros son
+    la única evidencia de cómo transfiere a otras formas de tráfico.
+    \item \textbf{Corpus de ataque de las aplicaciones de terceros.} Las integraciones en DVNA,
+    node-api-goat y dvws-node, realizadas por recomendación del asesor para probar la librería
+    fuera de la aplicación de referencia, usaron el conjunto de 500 payloads de la suite E2E, que
+    comparte payloads con el entrenamiento (Procedimiento~4.2). Su tasa de bloqueo en ataques
+    confirma que la librería instalada desde npm funciona en aplicaciones ajenas al proyecto, pero
+    no mide la detección de payloads nuevos; esa medición corresponde al corpus limpio (M2). Sus
+    tasas de bloqueo sobre tráfico legítimo no dependen de ese corpus y son la evidencia principal
+    de generalización.
+    \item \textbf{Sesgo de representación de la cabecera \texttt{User-Agent}.} Solo el 0.4~\%
+    de las filas legítimas del corpus tiene un \texttt{User-Agent} de más de 40 caracteres,
+    frente al 33.3--97.7~\% de las clases de ataque. Las métricas sobre el conjunto de prueba
+    heredan ese sesgo y no reflejan el tráfico de navegadores reales.
+    \item \textbf{Generaciones de modelo distintas entre evaluaciones.} Las métricas sobre el
+    conjunto de prueba corresponden al par~C, que es el contenido del paquete 0.1.1; el paquete 0.1.0, la
+    medición principal de cobertura y el estudio de \texttt{User-Agent}, al par~A; las aplicaciones DVNA, node-api-goat y
+    dvws-node, con atribución probable al par~A, porque el paquete y el modelo exactos de cada
+    medición no constan en el repositorio; el benchmark de rendimiento y la repetición de la
+    Configuración~2 del 9 de septiembre, al par~B; y la evaluación en OWASP Juice Shop, al par~C
+    (Cuadro~\ref{tab:pares-modelos}). Los pares no tienen la misma entrada: el par~A consume 67 y 61
+    características, y los pares B y C, 69 y 63. Comparten, en cambio, la arquitectura de ejecución
+    (un hilo de Random Forest, dos de Isolation Forest, comunicación entre hilos y escritura en
+    SQLite), por lo que los resultados de rendimiento describen principalmente esa arquitectura y no
+    los pesos de un modelo en particular, aunque no se midieron con el paquete 0.1.1. El paquete 0.1.0
+    usa el umbral del Isolation Forest calibrado para \texttt{if\_v9} (0.002486), fijado como
+    constante en el código; el 0.1.1 lo lee del archivo \texttt{parity\_report.json} del modelo (0.004206).
+    \item \textbf{Evaluación no ciega del par~C en la Ronda~5.} Los resultados de la Ronda~5 con el
+    par~A se conocieron el 24 de septiembre de 2026 y el par~C se reconstruyó el 26 de septiembre.
+    El historial no vincula ambos hechos, pero tampoco permite descartar que esos resultados
+    influyeran en el reentrenamiento, por lo que la cobertura del par~C no constituye una
+    evaluación estrictamente ciega; el paquete 0.1.1 contiene el mismo par.
+    \item \textbf{Dos defectos de recodificación en la cadena de medición.} Hubo dos defectos
+    independientes. El primero, en el middleware, que reconstruía la cadena de consulta a partir de
+    \texttt{req.query}, ya decodificada una vez por Express, y le añadía una capa de codificación;
+    se corrigió el 10 de octubre de 2026 y la corrección está en el paquete 0.1.1. El segundo, en el
+    ejecutor de pruebas (\texttt{run\_large\_corpus.py}), que volvía a codificar los payloads de
+    Path Traversal y de Command Injection que los generadores ya entregaban codificados (por
+    ejemplo \texttt{\%252e\%252e\%252f} o un separador \texttt{\%0a}), de modo que el payload enviado
+    no era el que el generador pretendía; se corrigió el 10 de octubre, limitado a esas dos
+    categorías. Ninguna corrección bastó por sí sola (Cuadro~\ref{tab:res-pt-causas}). Todas las
+    mediciones de Path Traversal y de Command Injection de la Ronda~5, y las de la Ronda~4 que usaron
+    el mismo ejecutor, se hicieron con el ejecutor anterior, salvo la Configuración~2 con el paquete
+    0.1.1. No se midió el paquete 0.1.0 con el ejecutor corregido, por lo que no puede separarse
+    cuánto de la mejora de 85.0~\% a 100.0~\% se debe al modelo, al middleware y al ejecutor; y las
+    Configuraciones 3a y 3b, que incluyen un WAF, tampoco se repitieron, así que su comparación en
+    esas dos categorías es provisional.
+    \item \textbf{La medición con el paquete 0.1.1 no es independiente.} Los defectos se
+    encontraron analizando los fallos de este mismo corpus de la Ronda~5, y la medición que los da
+    por corregidos (200 de 200 en Path Traversal) se hizo sobre ese corpus. Un resultado obtenido
+    sobre los datos que motivaron la corrección es optimista por construcción; confirmarlo exige un
+    corpus nuevo, generado con otra semilla y filtrado de la misma manera.
+    \item \textbf{Saturación de casi-duplicados.} El corpus no se deduplicó más allá de los
+    registros idénticos. La detección por MinHash, descrita en la sección VII.4 del trabajo de
+    graduación de Diego Valenzuela \cite{valenzuela2026ia}, encontró saturación en las cinco clases: SQLi tiene
+    aproximadamente 395 veces más pares casi duplicados que filas (dominada por la generación por
+    plantillas de sqlmap y CAPEC) y la clase legítima, aproximadamente 9.5 veces. SQLi es el
+    59.3~\% del conjunto de prueba. Con una partición aleatoria estratificada, variantes casi
+    idénticas pueden quedar en entrenamiento y en prueba, lo que puede inflar las métricas, sobre
+    todo las de SQLi; este trabajo no cuantificó ese efecto. El análisis por distancia de
+    Levenshtein (211 pares, todos de la fuente CAPEC) lo subestimó, porque solo compara consultas de
+    1 a 100 caracteres y hasta 10{,}000 comparaciones por clase.
+    \item \textbf{Alcance de la evidencia sobre variantes desconocidas.} La detección de
+    variantes no vistas de los vectores cubiertos se mide a nivel del sistema con el corpus limpio
+    M2. El recall del Isolation Forest se mide sobre las mismas cuatro categorías que ve el Random
+    Forest, por lo que no aísla la contribución del detector de anomalías a esa capacidad.
+    \item \textbf{Validez externa del entorno simulado.} El entorno controlado no reproduce el
+    tráfico de una startup en producción. La validación en aplicaciones de terceros reduce ese
+    riesgo, pero no lo elimina.
+\end{itemize}
+
+% ------------------------------------------------------------------------------
+\section{Restricciones y condiciones de ejecución}
+\label{sec:met-restricciones}
+
+El proyecto se ejecutó bajo las restricciones de tiempo (mayo a octubre de 2026), presupuesto y
+recursos humanos descritas en el capítulo de Alcance. Además, las siguientes condiciones afectan
+el alcance de la evidencia disponible para el capítulo de Resultados y se ejecutarán solo como
+trabajo futuro:
+
+\begin{itemize}
+    \item \textbf{Cobertura de XSS con n=1.} ZAP confirmó una única vulnerabilidad de XSS en la
+    aplicación de referencia (\texttt{POST /profile}, campo \texttt{bio}); la cobertura de esa
+    categoría descansa en ese caso y no tiene el peso estadístico de las otras tres (n=200 cada
+    una). Que ZAP reporte un solo caso refleja la aplicación evaluada, no un límite de la
+    herramienta.
+    \item \textbf{Benchmark no repetido con el modelo sincronizado.} Ver la amenaza a la validez
+    correspondiente en la Sección~\ref{sec:met-validez}.
+    \item \textbf{Sin un escenario sostenido de condición única.} Cada repetición del benchmark
+    dura 75~s. Se ejecutó además una corrida de monitoreo continuo de 41.9~minutos (374 muestras,
+    con un pico de 494.8~MiB en el contenedor), pero esa serie mezcla condiciones distintas, y el
+    indicador heurístico \texttt{possibleLeak}, que compara las dos mitades de la serie, no es
+    concluyente por esa razón. No se ejecutó un escenario de 30~minutos o más con una sola condición
+    estable, que es el que permitiría descartar una fuga de memoria.
+    \item \textbf{Validación con startups no realizada.} No se concretó un acuerdo de
+    colaboración en el período de pruebas; la validación en entornos productivos queda fuera de
+    la evidencia del proyecto.
+\end{itemize}
+
+El Cuadro~\ref{tab:met-riesgos} actualiza los riesgos metodológicos del protocolo con su
+estado al cierre de la ejecución.
+
+\begin{longtable}{|L{3.6cm}|L{2.3cm}|L{6.9cm}|}
+\hline
+\textbf{Riesgo del protocolo} & \textbf{Estado} & \textbf{Mitigación aplicada} \\ \hline
+\endfirsthead
+\multicolumn{3}{l}{\footnotesize\textit{(continuación)}} \\ \hline
+\textbf{Riesgo del protocolo} & \textbf{Estado} & \textbf{Mitigación aplicada} \\ \hline
+\endhead
+\multicolumn{3}{r}{\footnotesize\textit{Continúa en la página siguiente}} \\
+\endfoot
+\endlastfoot
+Ningún modelo alcanza F1 $\geq$0.80 & No materializado & Datos reales adicionales en lugar de muestras sintéticas para Command Injection; lectura de prueba con verificación de hash \\ \hline
+Fuga de datos entre particiones & Materializado en el corpus de evaluación, no en las particiones & Auditoría exacta y por plantilla; corpus limpio con filtro de exclusión \\ \hline
+Diferencia de paridad ONNX $>$0.1~\% & No materializado & Prueba de paridad obligatoria en CI \\ \hline
+Falsos positivos ante tráfico real & Materializado & El Isolation Forest no bloquea; estudio con navegadores; modo \texttt{monitor} documentado para una primera instalación \\ \hline
+Imposibilidad de acuerdo con startups & Materializado & Sustitución por cuatro aplicaciones de terceros \\ \hline
+Extracción de características $>$5~ms & No materializado & Extractor único en TypeScript con benchmark propio \\ \hline
+\caption[Estado de los riesgos metodológicos]{Estado de los riesgos metodológicos del protocolo al cierre de la ejecución}
+\label{tab:met-riesgos}
+\end{longtable}
+{\footnotesize Nota. Elaboración propia.}
+
+La viabilidad del método descansa en que todos los procedimientos usan herramientas gratuitas
+y scripts versionados, se ejecutan en hardware local o en ejecutores públicos de integración
+continua y dejan sus datos crudos en los repositorios del proyecto. Esto permite que otro
+investigador los repita sin depender del entorno de los autores.
+
+\ifdefined\modoensamble
+\else
+	\section*{Referencias}
+	\printbibliography[heading=none]
+	\end{document}
+\fi

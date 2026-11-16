@@ -1,0 +1,211 @@
+{
+ "control_sin_cabeceras_frente_a_corrida1": {
+  "ids_con_veredicto_o_status_distinto": []
+ },
+ "por_categoria": {
+  "sqli": {
+   "n": 200,
+   "sin": [
+    199,
+    [
+     97.2,
+     99.9
+    ]
+   ],
+   "con": [
+    200,
+    [
+     98.1,
+     100.0
+    ]
+   ],
+   "pasan_a_bloqueado": 1,
+   "pasan_a_no_bloqueado": 0,
+   "diferencia": 1
+  },
+  "path_traversal": {
+   "n": 200,
+   "sin": [
+    200,
+    [
+     98.1,
+     100.0
+    ]
+   ],
+   "con": [
+    200,
+    [
+     98.1,
+     100.0
+    ]
+   ],
+   "pasan_a_bloqueado": 0,
+   "pasan_a_no_bloqueado": 0,
+   "diferencia": 0
+  },
+  "cmdi": {
+   "n": 200,
+   "sin": [
+    185,
+    [
+     88.0,
+     95.4
+    ]
+   ],
+   "con": [
+    194,
+    [
+     93.6,
+     98.6
+    ]
+   ],
+   "pasan_a_bloqueado": 11,
+   "pasan_a_no_bloqueado": 2,
+   "diferencia": 9
+  },
+  "xss": {
+   "n": 200,
+   "sin": [
+    200,
+    [
+     98.1,
+     100.0
+    ]
+   ],
+   "con": [
+    200,
+    [
+     98.1,
+     100.0
+    ]
+   ],
+   "pasan_a_bloqueado": 0,
+   "pasan_a_no_bloqueado": 0,
+   "diferencia": 0
+  }
+ },
+ "a_bloqueado": [
+  "cmdi_112",
+  "cmdi_120",
+  "cmdi_134",
+  "cmdi_155",
+  "cmdi_28",
+  "cmdi_31",
+  "cmdi_36",
+  "cmdi_38",
+  "cmdi_40",
+  "cmdi_66",
+  "cmdi_7",
+  "sqli_75"
+ ],
+ "a_no_bloqueado": [
+  "cmdi_51",
+  "cmdi_94"
+ ],
+ "status_de_los_que_cambian": {
+  "cmdi_112": [
+   200,
+   403
+  ],
+  "cmdi_120": [
+   200,
+   403
+  ],
+  "cmdi_134": [
+   200,
+   403
+  ],
+  "cmdi_155": [
+   200,
+   403
+  ],
+  "cmdi_28": [
+   200,
+   403
+  ],
+  "cmdi_31": [
+   200,
+   403
+  ],
+  "cmdi_36": [
+   200,
+   403
+  ],
+  "cmdi_38": [
+   200,
+   403
+  ],
+  "cmdi_40": [
+   200,
+   403
+  ],
+  "cmdi_51": [
+   403,
+   "error"
+  ],
+  "cmdi_66": [
+   200,
+   403
+  ],
+  "cmdi_7": [
+   "error",
+   403
+  ],
+  "cmdi_94": [
+   403,
+   "error"
+  ],
+  "sqli_75": [
+   500,
+   403
+  ]
+ },
+ "totales": {
+  "sin_cabeceras": 784,
+  "con_cabeceras": 794,
+  "wilson_sin": [
+   96.8,
+   98.8
+  ],
+  "wilson_con": [
+   98.4,
+   99.7
+  ],
+  "config3a": 749,
+  "config3b": 797
+ },
+ "cabeceras_y_waf": {
+  "union_config2_con_cabeceras_o_3a": 797,
+  "3b_menos_config2_con_cabeceras": [
+   "cmdi_51",
+   "cmdi_9",
+   "cmdi_94"
+  ],
+  "config2_con_cabeceras_menos_3b": [],
+  "de_los_13_que_la_3b_suma_a_la_config2_sin_cabeceras_los_que_la_config2_con_cabeceras_bloquea": [
+   "cmdi_112",
+   "cmdi_120",
+   "cmdi_134",
+   "cmdi_155",
+   "cmdi_28",
+   "cmdi_31",
+   "cmdi_36",
+   "cmdi_38",
+   "cmdi_40",
+   "cmdi_66",
+   "cmdi_7",
+   "sqli_75"
+  ],
+  "de_los_13_los_que_no": [
+   "cmdi_9"
+  ],
+  "de_los_51_que_la_3a_no_bloquea_la_config2_con_cabeceras_bloquea": 48
+ },
+ "mcnemar_exacto_bilateral": {
+  "discordantes": [
+   12,
+   2
+  ],
+  "p": 0.012939453125
+ }
+}

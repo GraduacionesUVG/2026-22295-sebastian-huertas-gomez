@@ -1,0 +1,73 @@
+Estado git - tarea XSS corpus limpio Ronda 5 - 2026-10-25
+Repositorio: logSguarDian-vulnerable-project
+
+== ESTADO INICIAL (antes de T1) ==
+
+Rama original antes de crear exp/ronda5-20261025: main
+SHA de main (HEAD) en este momento: 07e80ead6a64db5db086216322624bc5bfa4edb0
+git status --porcelain (sobre main, antes de crear la rama): (vacio, arbol limpio)
+Archivos sin seguimiento previos (ajenos a esta tarea): ninguno
+
+exp/ronda5-20261025 no existia (local ni remota, sin worktree) antes de esta tarea.
+Creada con: git switch -c exp/ronda5-20261025 (desde main, HEAD 07e80ead6a64db5db086216322624bc5bfa4edb0)
+
+Blocker reportado y resuelto por decision del usuario: la rama origin/feat/waf-modsecurity-crs
+que indicaban las instrucciones como base NO contiene docker-compose.direct.yml (Config 1/2);
+main SI lo contiene, pero no contiene la variante de Config 3a (WAF-only) que trae
+origin/feat/waf-modsecurity-crs. Ninguna rama existente tiene las 4 configuraciones a la vez.
+Decision del usuario: crear la rama desde main. Config 3a queda pendiente para quien la necesite,
+a resolver con un archivo nuevo (no modificar docker-compose.yml existente), ver nota en
+docs/freeze-xss-20261025.json.
+
+SHA de HEAD de exp/ronda5-20261025 tras crearla: 07e80ead6a64db5db086216322624bc5bfa4edb0
+(igual a main, rama recien creada sin commits propios - todo el trabajo de esta tarea
+queda como cambios sin confirmar, sin commits, por regla 6)
+
+docs/freeze-*.json / docs/thesis-delta-*.md de la otra tarea (0.1.1 en 4 configs): no existen
+todavia en el arbol de trabajo - la otra tarea no ha dejado artefactos aun.
+
+repositorio logSguarDian (solo lectura): rama develop, HEAD 64a11aa7a6bdea7b85dd97a0134aa87b8b6c7cd5,
+unico cambio sin seguimiento: demo/ (trabajo de otra tarea de esta misma sesion, no tocado).
+
+
+== ESTADO FINAL (tras T0-T10) ==
+
+Rama: exp/ronda5-20261025
+SHA de HEAD (sin cambios, sin commits por regla 6): 07e80ead6a64db5db086216322624bc5bfa4edb0
+
+Archivos nuevos de esta tarea (diferencia contra el estado inicial, todos sin seguimiento,
+ninguno de ellos existia antes de T0):
+  attack-sim/capture_server.py
+  attack-sim/capture_server_output.jsonl (artefacto de la prueba T2b, descartable)
+  attack-sim/exclusion_filter_xss.py
+  attack-sim/exclusion_report_xss_20261025.json
+  attack-sim/generate_xss.py
+  attack-sim/leakage_check_xss.py
+  attack-sim/leakage_report_xss_20261025.json
+  attack-sim/results_xss_config1_run1_20261025.json
+  attack-sim/results_xss_config1_run2_20261025.json
+  attack-sim/results_xss_config1_run3_20261025.json
+  attack-sim/results_xss_config2_run1_20261025.json
+  attack-sim/results_xss_config2_run2_20261025.json
+  attack-sim/results_xss_config2_run3_20261025.json
+  attack-sim/run_large_corpus_fixed.py
+  attack-sim/sample_xss.py
+  attack-sim/send_xss_corpus.py
+  attack-sim/test_harness_encoding.py
+  attack-sim/wilson_analysis_xss_20261025.json
+  attack-sim/xss_candidates_20261025.jsonl
+  attack-sim/xss_corpus_filtered_20261025.jsonl
+  attack-sim/xss_corpus_sample_20261025.jsonl
+  attack-sim/xss_sampling_report_20261025.json
+  docs/evidence/git-state-xss-20261025.txt (este archivo)
+  docs/evidence/t3-content-type-probe-20261025.txt
+  docs/freeze-xss-20261025.json
+  docs/protocol-xss.md
+  docs/thesis-delta-xss.md (entregable final)
+
+Ningun archivo con seguimiento de git fue modificado (regla 7 cumplida). Verificado con
+git diff (vacio para archivos trackeados) ademas de git status --porcelain (solo '??').
+
+Repositorio logSguarDian (solo lectura): sin cambios propios de esta tarea. Unico sin
+seguimiento: demo/ (trabajo ajeno de otra tarea de la misma sesion), no tocado, HEAD sin
+cambios: 64a11aa7a6bdea7b85dd97a0134aa87b8b6c7cd5.

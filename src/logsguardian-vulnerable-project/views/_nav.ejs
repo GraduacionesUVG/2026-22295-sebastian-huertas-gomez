@@ -1,0 +1,15 @@
+<nav>
+  <a href="/posts">Notes</a>
+  <% if (user) { %>
+    <a href="/profile">Profile</a>
+    <% if (user.role === 'admin') { %>
+      <a href="/admin">Admin</a>
+    <% } %>
+    <form action="/logout" method="POST" style="display:inline">
+      <button type="submit">Logout (<%= user.username %>)</button>
+    </form>
+  <% } else { %>
+    <a href="/login">Login</a>
+    <a href="/register">Register</a>
+  <% } %>
+</nav>

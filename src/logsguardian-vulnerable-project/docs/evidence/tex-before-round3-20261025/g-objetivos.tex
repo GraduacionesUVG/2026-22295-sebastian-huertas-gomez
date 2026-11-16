@@ -1,0 +1,67 @@
+% ==============================================================================
+% OBJETIVOS
+% ==============================================================================
+% Contenido provisto directamente por el estudiante. El Objetivo específico
+% 3 coincide verbatim con protocolo_sebastian_v1 (3).pdf, sección 4.1.
+%
+% Citas owasp2021 y mitreattack: el estudiante no adjuntó bibliografía esta
+% vez. Se verificaron directamente contra las páginas oficiales por WebFetch
+% antes de agregarlas al .bib (no se citaron de memoria):
+%   - owasp2021: confirmado el título "A03:2021 -- Injection" y la URL
+%     canónica en owasp.org.
+%   - mitreattack: confirmado el nombre del framework y la organización
+%     (MITRE); el sitio no expone un número de versión o fecha de
+%     publicación único, se cita como framework de actualización continua.
+%
+% Corrección 2026-10-02: el Objetivo específico 1 afirmaba que los cuatro
+% vectores caen bajo "OWASP Top 10 2021 (A03:2021)". Es incorrecto para
+% Path Traversal/LFI, que está mapeado en A01:2021 -- Broken Access Control,
+% no en A03:2021 -- Injection (verificado por WebFetch contra
+% top10.owasp.org; ver corrección completa documentada en
+% i-marco_teorico.tex). Se corrigió para distinguir ambas categorías en vez
+% de agrupar los cuatro vectores bajo una sola.
+\ifdefined\modoensamble
+\else
+	\input{0-preambulo_standalone}
+\fi
+
+\chapter{Objetivos}
+
+\section{Objetivo general}
+Diseñar e implementar una librería npm que integre un pipeline de ingeniería de características y
+un modelo híbrido de aprendizaje automático capaz de detectar y clasificar amenazas conocidas y
+anomalías estadísticas correspondientes a variantes desconocidas de los vectores cubiertos en
+endpoints Node.js en tiempo de ejecución, con el propósito de proveer a startups tecnológicas sin
+equipo de seguridad dedicado una herramienta accesible de protección a nivel de capa de
+aplicación que no comprometa el rendimiento del servidor anfitrión.
+
+\section{Objetivos específicos}
+\begin{enumerate}
+    \item Evaluar cuatro vectores de ataque intra-request dirigidos a endpoints Node.js — SQL
+    Injection, XSS, Path Traversal/LFI y Command Injection — conforme a su prevalencia en el
+    OWASP Top 10 2021 \cite{owasp2021} (SQL Injection, XSS y Command Injection bajo A03:2021 --
+    Injection; Path Traversal/LFI bajo A01:2021 -- Broken Access Control) y su cobertura en la
+    taxonomía MITRE ATT\&CK \cite{mitreattack}, para establecer las categorías de amenaza que
+    estructurarán el dataset de entrenamiento del OE2 y los criterios de evaluación del OE3.
+
+    \item Construir un entorno de prueba controlado y reproducible que genere un dataset
+    estructurado con un mínimo de 100{,}000 muestras de tráfico HTTP etiquetadas; balanceando
+    tráfico legítimo y ataques de las categorías seleccionadas, documentando los scripts de
+    generación y la metodología de etiquetado, a fin de disponer de una base de datos de
+    entrenamiento y validación que garantice la representatividad estadística necesaria para el
+    entrenamiento de los modelos de detección.
+
+    \item Evaluar la efectividad del sistema de detección implementado mediante precisión, recall
+    y F1-score por categoría de ataque, verificando como criterio mínimo de aceptación un
+    F1-score $\geq 0.80$ en al menos tres de las cuatro categorías seleccionadas bajo condiciones
+    de tráfico simulado, umbral establecido en función del balance operacionalmente tolerable
+    entre falsos negativos y falsos positivos en entornos de producción sin analista de seguridad
+    dedicado.
+\end{enumerate}
+
+\ifdefined\modoensamble
+\else
+	\section*{Referencias}
+	\printbibliography[heading=none]
+	\end{document}
+\fi

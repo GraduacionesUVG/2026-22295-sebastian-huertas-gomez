@@ -1,0 +1,66 @@
+{
+  "status": "APPROVED_FOR_CANARY",
+  "generated_at": "2026-08-30T02:26:15.877670+00:00",
+  "gates": [
+    {
+      "gate": "feature_contract",
+      "passed": true,
+      "details": {
+        "rf_expected": 67,
+        "rf_actual": 67,
+        "if_expected": 61,
+        "if_actual": 61
+      }
+    },
+    {
+      "gate": "metrics",
+      "passed": true,
+      "details": {
+        "rf_per_class_f1": {
+          "cmdi": 0.9413067552602437,
+          "path_traversal": 0.9859545004945598,
+          "sqli": 0.9965411109482633,
+          "xss": 0.9877843774515298
+        },
+        "rf_classes_passing": 4,
+        "rf_min_classes_required": 3,
+        "rf_passed": true,
+        "if_recall": 0.9122212016298076,
+        "if_recall_threshold": 0.5,
+        "if_fp_rate": 0.05502118786574292,
+        "if_fp_threshold": 0.06,
+        "if_passed": true
+      }
+    },
+    {
+      "gate": "parity",
+      "passed": true,
+      "details": {
+        "rf_max_diff": 0,
+        "if_max_diff": 0,
+        "tolerance": 1e-05,
+        "passed": true
+      }
+    },
+    {
+      "gate": "e2e",
+      "passed": true,
+      "details": {
+        "exit_code": -6,
+        "known_onnxruntime_teardown_crash_ignored": true,
+        "stdout_tail": "  console.log\n    -------------------------------------------------------\n\n      at Object.<anonymous> (e2e/detection.test.ts:158:13)\n\n  console.log\n    sqli            | 100      | 100   | 100.0   | PASS >=80% DR\n\n      at Object.<anonymous> (e2e/detection.test.ts:169:15)\n\n  console.log\n    xss             | 98       | 100   | 98.0    | PASS >=80% DR\n\n      at Object.<anonymous> (e2e/detection.test.ts:169:15)\n\n  console.log\n    path_traversal  | 99       | 100   | 99.0    | PASS >=80% DR\n\n      at Object.<anonymous> (e2e/detection.test.ts:169:15)\n\n  console.log\n    cmdi            | 95       | 100   | 95.0    | PASS >=80% DR\n\n      at Object.<anonymous> (e2e/detection.test.ts:169:15)\n\n  console.log\n    benign          | 2        | 100   | 2.0     | PASS <=20% FP\n\n      at Object.<anonymous> (e2e/detection.test.ts:169:15)\n\n  console.log\n    -------------------------------------------------------\n\n      at Object.<anonymous> (e2e/detection.test.ts:177:13)\n\n  console.log\n    Overall GATE: PASS\n\n      at Object.<anonymous> (e2e/detection.test.ts:179:13)\n",
+        "stderr_tail": "ts-jest[config] (WARN) \u001b[94mmessage\u001b[0m\u001b[90m TS151002: \u001b[0mUsing hybrid module kind (Node16/18/Next) is only supported in \"isolatedModules: true\". Please set \"isolatedModules: true\" in your tsconfig.json. To disable this message, you can set \"diagnostics.ignoreCodes\" to include 151002 in your ts-jest config. See more at https://kulshekhar.github.io/ts-jest/docs/getting-started/options/diagnostics\nPASS e2e/detection.test.ts (7.259 s)\n  E2E Detection Suite (PLAN.md F5.7 GATE)\n    \u2713 sqli: blocks >= 80% of representative payloads (177 ms)\n    \u2713 xss: blocks >= 80% of representative payloads (48 ms)\n    \u2713 path_traversal: blocks >= 80% of representative payloads (67 ms)\n    \u2713 cmdi: blocks >= 80% of representative payloads (48 ms)\n    \u2713 benign: false positive rate <= 20% (90 ms)\n    \u2713 benign POST /login with form body is not blocked (1 ms)\n    \u2713 benign multi-field post is not blocked (no threshold stopgap needed) (1 ms)\n    \u2713 GATE: detection rate summary (186 ms)\n\nTest Suites: 1 passed, 1 total\nTests:       8 passed, 8 total\nSnapshots:   0 total\nTime:        7.386 s, estimated 8 s\nRan all test suites.\nForce exiting Jest: Have you considered using `--detectOpenHandles` to detect async operations that kept running after all tests finished?\nlibc++abi: terminating due to uncaught exception of type Napi::Error: "
+      }
+    },
+    {
+      "gate": "memory",
+      "passed": true,
+      "details": {
+        "methodology": "real worker-pool (1 RF + 2 IF worker_threads, benchmarks/onnx-memory-pool.bench.js)",
+        "total_rss_mb": 186.59,
+        "gate_threshold_mb": 300.0,
+        "margin_mb": 113.41
+      }
+    }
+  ]
+}

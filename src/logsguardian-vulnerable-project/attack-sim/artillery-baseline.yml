@@ -1,0 +1,52 @@
+config:
+  target: "http://localhost:3000"
+  phases:
+    # Warmup only - NOT measured. The IF worker pool takes ~5s to reach
+    # session-ready (docs/vulnerable-app-evaluation/config2-latency-evaluation.md:236
+    # in the sibling repo); without this phase the first several seconds of
+    # the "measured" phase below would include cold-start latency spikes
+    # that have nothing to do with the steady-state number this harness is
+    # meant to produce. 15s at a modest rate is enough to get both the RF
+    # worker (~370ms to session-ready) and the 2-worker IF pool fully up.
+    - duration: 15
+      arrivalRate: 5
+      name: "warmup (discard from analysis)"
+    # Measured phase. Each VU runs the 4-request flow below (login + 3 GETs),
+    # so arrivalRate here is VUs/s, not req/s - arrivalRate 25 x 4 req/VU =
+    # 100 req/s real HTTP throughput, which is the target this harness is
+    # meant to hit. (arrivalRate 20 only reaches 80 req/s - that was the bug
+    # being fixed here.) When parsing the JSON report, only samples with a
+    # timestamp >= 15s after the run start (i.e. everything in this phase)
+    # should count toward p95/percentile calculations - see
+    # attack-sim/run_latency_suite.sh.
+    - duration: 60
+      arrivalRate: 25
+      name: "benign steady load (measured)"
+  variables:
+    postId:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      - 7
+      - 8
+      - 9
+      - 10
+
+scenarios:
+  - name: "normal navigation"
+    flow:
+      - post:
+          url: "/login"
+          followRedirect: false
+          form:
+            username: "alice"
+            password: "alice123"
+      - get:
+          url: "/posts"
+      - get:
+          url: "/posts/{{ postId }}"
+      - get:
+          url: "/profile"

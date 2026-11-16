@@ -1,0 +1,75 @@
+% ===============================================================================
+% El estudiante debe llenar sus datos en esta sección para que la plantilla los 
+% auto-importe y genere automáticamente las páginas de portada y de firmas 
+% autorizadas.
+% ===============================================================================
+% Datos del estudiante:
+% -------------------------------------------------------------------------------
+% Nombre completo
+\def \nombreestudiante {Sebastián Huertas Gómez}
+% Carné
+\def \uvgcarne {22295}
+% Facultad
+\def \uvgfacultad {Ingeniería}
+% Carrera
+\def \uvgcarrera {Ingeniería en Ciencia de la Computación y Tecnologías de la Información}
+
+% Datos del trabajo:
+% -------------------------------------------------------------------------------
+% Título completo (tomado literalmente de protocolo_sebastian_v1 (3).pdf, sección 1)
+\def \titulotesis {logSguarDian: Desarrollo de una librería para la detección de amenazas de seguridad en Endpoints de aplicaciones}
+% Mes y año de entrega (confirmado por el estudiante: noviembre 2026)
+\def \mesentrega {noviembre}
+\def \anoentrega {2026}
+% Asesor (según protocolo_sebastian_v1 (3).pdf, portada)
+\def \nombreasesor {Ing. Erick Francisco Marroquín Rodríguez}
+% El catedrático del curso (Ing. Bacilio Alexander Bolaños Lima) figura como
+% primer examinador en la hoja de firmas, definido más abajo.
+
+% Datos del tribunal examinador:
+% -------------------------------------------------------------------------------
+% Nombre del primer examinador (segunda línea de la hoja de firmas)
+\def \nombreprimerex {Ing. Ma. Bacilio Alexander Bolaños Lima}
+
+% Capítulos pre-definidos
+% -------------------------------------------------------------------------------
+% Comentar las líneas de las secciones que desean omitirse, por defecto se
+% se incluyen todas.
+% Se descomentan conforme se redacta cada capítulo (todavía sin archivo de
+% contenido: prefacio, alcance, anexos, glosario).
+\def \CAPprefacio {Prefacio}
+\def \CAPantecedentes {Antecedentes}
+\def \CAPalcance {Alcance}
+\def \CAPmetodologia {Metodología}
+\def \CAPresultados {Resultados}
+\def \CAPdiscusion {Análisis de resultados}
+\def \CAPanexos {Anexos}
+\def \CAPglosario {Glosario}
+
+% Formato y estilo de la plantilla
+% -------------------------------------------------------------------------------
+% Modo impresión: Puede des-comentar la siguiente línea para generar un documento pdf sin la portada, para cuando se desee imprimir el documento para encuadernación
+% NOTA: la plantilla original traía esta línea activa por defecto, lo cual
+% suprime la portada verde (main.tex hace \let\CAPportada\undefined cuando
+% \printver está definido). Se comenta para que la versión digital, con
+% portada, sea la que se genera por defecto.
+%\def \printver {Versión del documento para impresión}
+
+% Portada: Puede cambiarse la imagen en la portada al cambiar el nombre del 
+% archivo siguiente. NOTA: debe tener la suficiente resolución para cubrir el área
+% designada
+\def \imagenportada {plantilla/portadacit.jpg}
+
+% Referencias: Puede des-comentar la siguiente línea para utilizar el formato de referencias APA
+%\def \usarAPA {Usar formato APA}
+
+% Párrafo: Puede comentar la siguiente línea si desea emplear un formato de 
+% párrafo distinto al establecido por defecto
+\def \parpordefecto {Formato de párrafo por defecto}
+
+% Capítulos y secciones: Puede des-comentar la siguiente línea para establecer el
+% formato de los capítulos y secciones bajo el estándar original de UVG para
+% trabajos de graduación. Este incluye: capítulos con numeración romana, secciones
+% con letras mayúsculas, sub-secciones con números y sub-sub-secciones con letras
+% minúsculas
+%\def \capsecuvg {Formato UVG para capítulos y secciones}

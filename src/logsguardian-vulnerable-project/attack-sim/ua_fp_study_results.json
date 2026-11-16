@@ -1,0 +1,122 @@
+[
+  {
+    "ua_label": "chrome_macos",
+    "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
+    "route": "/login",
+    "session": false,
+    "http_status": 403,
+    "blocked": true
+  },
+  {
+    "ua_label": "chrome_macos",
+    "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
+    "route": "/posts",
+    "session": true,
+    "http_status": 403,
+    "blocked": true
+  },
+  {
+    "ua_label": "chrome_macos",
+    "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
+    "route": "/profile",
+    "session": true,
+    "http_status": 403,
+    "blocked": true
+  },
+  {
+    "ua_label": "firefox_macos",
+    "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:131.0) Gecko/20100101 Firefox/131.0",
+    "route": "/login",
+    "session": false,
+    "http_status": 200,
+    "blocked": false
+  },
+  {
+    "ua_label": "firefox_macos",
+    "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:131.0) Gecko/20100101 Firefox/131.0",
+    "route": "/posts",
+    "session": true,
+    "http_status": 200,
+    "blocked": false
+  },
+  {
+    "ua_label": "firefox_macos",
+    "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:131.0) Gecko/20100101 Firefox/131.0",
+    "route": "/profile",
+    "session": true,
+    "http_status": 403,
+    "blocked": true
+  },
+  {
+    "ua_label": "safari_macos",
+    "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.6 Safari/605.1.15",
+    "route": "/login",
+    "session": false,
+    "http_status": 403,
+    "blocked": true
+  },
+  {
+    "ua_label": "safari_macos",
+    "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.6 Safari/605.1.15",
+    "route": "/posts",
+    "session": true,
+    "http_status": 403,
+    "blocked": true
+  },
+  {
+    "ua_label": "safari_macos",
+    "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.6 Safari/605.1.15",
+    "route": "/profile",
+    "session": true,
+    "http_status": 403,
+    "blocked": true
+  },
+  {
+    "ua_label": "chrome_windows",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
+    "route": "/login",
+    "session": false,
+    "http_status": 403,
+    "blocked": true
+  },
+  {
+    "ua_label": "chrome_windows",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
+    "route": "/posts",
+    "session": true,
+    "http_status": 403,
+    "blocked": true
+  },
+  {
+    "ua_label": "chrome_windows",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
+    "route": "/profile",
+    "session": true,
+    "http_status": 403,
+    "blocked": true
+  },
+  {
+    "ua_label": "mobile_safari_ios",
+    "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.6 Mobile/15E148 Safari/604.1",
+    "route": "/login",
+    "session": false,
+    "http_status": 403,
+    "blocked": true
+  },
+  {
+    "ua_label": "mobile_safari_ios",
+    "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.6 Mobile/15E148 Safari/604.1",
+    "route": "/posts",
+    "session": true,
+    "http_status": 403,
+    "blocked": true
+  },
+  {
+    "ua_label": "mobile_safari_ios",
+    "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.6 Mobile/15E148 Safari/604.1",
+    "route": "/profile",
+    "session": true,
+    "http_status": 403,
+    "blocked": true
+  }
+]

@@ -1,0 +1,265 @@
+% ==============================================================================
+% RECOMENDACIONES
+% ==============================================================================
+% Solo componente de ciberseguridad. Cada recomendación responde a una
+% conclusión de m-conclusiones.tex o a una restricción declarada en
+% j-metodologia.tex. La recomendación de validación con una startup se
+% incorporó por pedido explícito del estudiante (2026-10-09).
+\ifdefined\modoensamble
+\else
+	\input{0-preambulo_standalone}
+\fi
+
+\chapter{Recomendaciones}
+\label{cap:recomendaciones}
+
+Las recomendaciones se derivan de las conclusiones (Capítulo~\ref{cap:conclusiones}), de las
+limitaciones (Sección~\ref{sec:dis-limitaciones}) y de las restricciones declaradas en la
+Metodología (Sección~\ref{sec:met-restricciones}). Formalizan las sugerencias del capítulo de
+Análisis de resultados, que se presentaron allí como indicios. Cada una indica la acción propuesta,
+su justificación en la evidencia del trabajo y el resultado que se espera obtener. Se agrupan por
+destinatario y por tipo de acción.
+
+\section{Para quienes adopten la librería}
+
+\begin{enumerate}
+    \item \textbf{Instalar primero en modo \texttt{monitor}.} \textit{Acción:} instalar la librería
+    en modo \texttt{monitor}, revisar durante un período de observación los eventos registrados con
+    la CLI (\texttt{attacks list} y \texttt{endpoints top}), ajustar el umbral con el tráfico propio
+    de la aplicación y solo después activar el modo \texttt{block}. \textit{Justificación:} con un
+    \texttt{User-Agent} de navegador, la librería bloqueó el 92.5~\% del tráfico legítimo de
+    dvws-node (Conclusión~\ref{conc:fp}). \textit{Resultado esperado:} conocer la tasa de bloqueos
+    indebidos de la propia aplicación antes de afectar a usuarios reales.
+
+    \item \textbf{Usar la librería como capa complementaria detrás de un WAF.}
+    \textit{Acción:} desplegarla detrás de un WAF y no como su sustituto. \textit{Justificación:}
+    bloqueó 37 de los 40 ataques que ModSecurity con OWASP CRS dejó pasar en la Ronda~4, y en la
+    Ronda~5 la combinación bloqueó 48 de los 51 ataques que el WAF solo no bloqueó, frente a 44 de la
+    librería sola; en Command Injection el WAF solo bloqueó el 82.0~\% frente al 92.5~\% de la
+    librería (Conclusión~\ref{conc:waf}). \textit{Resultado esperado:} mayor cobertura agregada que la
+    de cada capa por separado (797 de 800 payloads frente a 784 y 749); la combinación suma 13
+    payloads a la librería sola, 9 por el WAF y 4 por las cabeceras que agrega el proxy.
+
+    \item \textbf{Montar el middleware después de todos los analizadores de cuerpo.}
+    \textit{Acción:} registrar el middleware después de los analizadores de cuerpo de la aplicación,
+    incluidos los de \texttt{multipart/form-data}. \textit{Justificación:} en las Rondas 1 a 3, la
+    librería no inspeccionó 7 de 23 payloads de XSS enviados como \texttt{multipart/form-data}
+    mientras el analizador se montaba por ruta, y bloqueó los 23 al montarlo de forma global antes
+    del middleware. \textit{Resultado esperado:} que la librería inspeccione el contenido de todas
+    las peticiones.
+
+    \item \textbf{No desplegar la versión actual en rutas de alto volumen de datos.}
+    \textit{Acción:} excluir de la protección, o paginar, las rutas que devuelven grandes volúmenes
+    de datos por petición, hasta que se resuelva la saturación (recomendación~\ref{rec:cola}).
+    \textit{Justificación:} en el escenario de volumen, el $\Delta p95$ fue de 6{,}495.46~ms y el
+    7.00~\% de las peticiones agotó el tiempo de espera (Conclusión~\ref{conc:rendimiento}).
+    \textit{Resultado esperado:} evitar una degradación de la disponibilidad del servidor anfitrión.
+\end{enumerate}
+
+\section{Mejoras técnicas de la librería}
+
+\begin{enumerate}
+    \setcounter{enumi}{4}
+    \item \textbf{Usar el modo \texttt{monitor} por defecto.} \textit{Acción:} cambiar el modo por defecto del paquete, hoy \texttt{block}, a \texttt{monitor} en su próxima versión y documentar en el README cómo
+    activar el bloqueo. \textit{Justificación:} las pruebas en aplicaciones de terceros se hicieron
+    con la configuración por defecto y arrojaron bloqueos indebidos altos
+    (Conclusión~\ref{conc:fp}). \textit{Resultado esperado:} que una instalación sin configuración
+    no bloquee tráfico legítimo.
+
+    \item \textbf{Verificar y, si se confirma, corregir el sesgo de la cabecera
+    \texttt{User-Agent}.} \textit{Acción:} reunir tráfico legítimo de navegadores y clientes HTTP
+    diversos (incluidos cURL y los \texttt{User-Agent} por defecto de Node.js), evaluarlo con la
+    configuración vigente, recalibrar el umbral de bloqueo con tráfico de varias aplicaciones y
+    repetir las mediciones del Cuadro~\ref{tab:res-terceros-ua}. Si la hipótesis se confirma, la
+    ampliación del corpus de entrenamiento corresponde al componente de Inteligencia Artificial y
+    queda fuera de este documento. \textit{Justificación:} solo el 0.4~\% de las filas legítimas
+    tiene un \texttt{User-Agent} largo, frente al 33.3--97.7~\% de las clases de ataque, y esa
+    característica es la de mayor contribución del modelo (Conclusión~\ref{conc:fp}); la hipótesis
+    no se verificó con un corpus legítimo alternativo. \textit{Resultado esperado:} una reducción
+    medible de los bloqueos indebidos o, si no se produce, el descarte de esa hipótesis.
+
+    \item \label{rec:cola}\textbf{Proteger al servidor ante saturación.} \textit{Acción:}
+    instrumentar la cola de los hilos de inferencia durante el escenario de volumen y evaluar un
+    mecanismo que deje pasar las peticiones (\textit{fail-open}) cuando la cola supere un límite.
+    \textit{Justificación:} el 7.00~\% de tiempos de espera se concentró al final de cada
+    repetición, un patrón consistente con una cola que crece, aunque la hipótesis no se comprobó
+    (Conclusión~\ref{conc:rendimiento}). \textit{Resultado esperado:} confirmar o descartar la
+    saturación y reducir los tiempos de espera del escenario de volumen.
+
+    \item \textbf{Reducir el costo fijo de memoria y CPU.} \textit{Acción:} medir por separado el
+    costo de cada componente de la librería (solo el Random Forest, el Random Forest con un hilo
+    del Isolation Forest y la configuración actual) y evaluar \texttt{IF\_POOL\_SIZE=1} en lugar
+    del valor actual de 2, repitiendo el benchmark con el mismo análisis pareado por repetición.
+    \textit{Justificación:} el middleware agregó entre 331.9 y 375.9~MiB, más del doble del límite
+    de 143.1~MiB, y alrededor de un núcleo de CPU, y ese costo no se atribuyó a ningún componente
+    (Conclusión~\ref{conc:rendimiento}). \textit{Resultado esperado:} identificar el componente que
+    domina el costo y la reducción que se logra con cada cambio de configuración.
+
+    \item \textbf{Reducir la confusión entre categorías en los eventos registrados.}
+    \textit{Acción:} revisar cómo se asigna la clase que se guarda en el evento y comprobarla con
+    una matriz de confusión del registro. \textit{Justificación:} en la repetición de la
+    Configuración~2 con el par~B, los 200 payloads de Command Injection se registraron como SQLi, y
+    en DVNA, 27 de los 37 bloqueados de esa categoría se clasificaron como SQLi, aunque la decisión
+    de bloqueo no cambió. \textit{Resultado esperado:} que el catálogo de ataques de la CLI sea
+    confiable como herramienta de análisis.
+\end{enumerate}
+
+\section{Validaciones pendientes}
+
+\begin{enumerate}
+    \setcounter{enumi}{9}
+    \item \textbf{Validar la librería en el entorno productivo de una startup guatemalteca.}
+    \textit{Acción:} instalarla en modo \texttt{monitor} en una aplicación real y medir los
+    bloqueos indebidos y el $\Delta p95$ con tráfico de usuarios. \textit{Justificación:} esta
+    validación formaba parte del alcance complementario del protocolo y no se concretó por falta de
+    tiempo para contactar a una startup durante el período de pruebas (Conclusión~\ref{conc:fp}).
+    \textit{Resultado esperado:} medir los falsos positivos y el impacto en latencia con tráfico
+    real y no solo con aplicaciones vulnerables de terceros.
+
+    \item \textbf{Repetir las mediciones con el paquete vigente y con un corpus nuevo.}
+    \textit{Acción:} con el paquete 0.1.1 del registro y el ejecutor corregido, repetir la cobertura con
+    el paquete 0.1.0, las aplicaciones de terceros y el benchmark de rendimiento; repetir también
+    las cuatro configuraciones de la Ronda~5 con un corpus nuevo, generado con otra semilla y un
+    filtro de exclusión que incorpore, además de la igualdad exacta, la auditoría de subcadena
+    normalizada, y fijar el digest de la imagen del WAF. Registrar el SHA-256
+    del archivo publicado (el de la 0.1.1 es \texttt{abf8d5c4...}) y de sus modelos, y medir el
+    desajuste entre la cadena de consulta con la que se entrenó y la que el middleware entrega al
+    extractor. \textit{Justificación:} las cuatro configuraciones se midieron con la 0.1.1 sobre el corpus
+    que reveló los defectos (en Path Traversal y Command Injection) y sobre un corpus de XSS
+    construido después de conocer los resultados de la Ronda~5, y las aplicaciones de terceros y
+    el benchmark no se midieron con ella (Conclusión~\ref{conc:cobertura}). \textit{Resultado
+    esperado:} cifras independientes y atadas al archivo exacto evaluado, que confirmen o corrijan
+    el 100.0~\% en Path Traversal, el 92.5~\% en Command Injection y el 100.0~\% en XSS, y una
+    comparación con el WAF sobre un corpus independiente.
+
+        \item \textbf{Ampliar la explotabilidad confirmada de XSS más allá de un caso.}
+    \textit{Acción:} confirmar con OWASP ZAP u otras herramientas, sobre más endpoints o
+    aplicaciones, la explotabilidad de payloads del corpus propio, en particular los dirigidos a
+    \texttt{content} y \texttt{title}, cuya vulnerabilidad no se confirmó, y repetir el filtrado
+    contra el entrenamiento con el criterio de subcadena normalizada. \textit{Justificación:} la
+    cobertura de XSS se midió sobre 200 payloads (200 de 200), pero la explotabilidad confirmada
+    descansa en un único caso (1 de 1, ZAP) y 136 de los 200 payloads apuntan a campos sin
+    vulnerabilidad confirmada (Conclusión~\ref{conc:cobertura}). \textit{Resultado esperado:} una
+    medición de explotabilidad de XSS con más de un caso confirmado, que permita separar la
+    detección de la explotabilidad.
+
+    \item \textbf{Investigar los payloads de Command Injection que la combinación no bloquea.}
+    \textit{Acción:} analizar por qué \texttt{cmdi\_6}, \texttt{cmdi\_184} y \texttt{cmdi\_185} no
+    los bloquea ninguna configuración, y evaluar si el veredicto de la librería debe depender de
+    las cabeceras que agrega la infraestructura, repitiendo las mediciones con y sin ellas.
+    \textit{Justificación:} en la medición del 25 de octubre de 2026 esos tres son los únicos
+    payloads que la combinación no bloquea (el WAF no activa ninguna regla sobre ellos, y con las
+    cabeceras del proxy la probabilidad de la clase de ataque más probable del Random Forest queda
+    en 0.3333 o menos), y cuatro payloads de la misma categoría solo se bloquean cuando el proxy
+    agrega cuatro cabeceras \texttt{X-*} (Conclusión~\ref{conc:waf}). \textit{Resultado esperado:}
+    saber si los tres payloads son una evasión real de las dos capas y cuánto cambia el veredicto
+    de la librería según las cabeceras del despliegue.
+
+    \item \textbf{Monitorear la memoria en un escenario sostenido de condición única.}
+    \textit{Acción:} ejecutar un escenario de 30~minutos o más con una sola condición estable.
+    \textit{Justificación:} la corrida continua de 41.9~minutos mezcla condiciones y no permite
+    descartar una fuga de memoria dentro de un proceso estable (Sección~\ref{sec:met-restricciones}).
+    \textit{Resultado esperado:} confirmar o descartar una fuga de memoria.
+
+    \item \textbf{Medir la contribución del Isolation Forest con las pruebas de penetración.}
+    \textit{Acción:} registrar en cada ronda de pruebas el veredicto \texttt{pass\_anomaly} de cada
+    payload que el Random Forest no bloquea y de cada petición legítima, y reportar cuántos
+    ataques no bloqueados quedan marcados como anómalos y cuántas alertas generan las peticiones
+    legítimas. \textit{Justificación:} la contribución del detector de anomalías a la detección de
+    variantes solo tiene evidencia indirecta: en un conjunto de validación ajeno a este trabajo marca
+    19 de los 39 ataques que el Random Forest deja pasar, pero bloquear sus marcas agregaría 866
+    benignos bloqueados \cite{valenzuela2026ia} (Conclusión~\ref{conc:variantes}).
+    \textit{Resultado esperado:} estimar, con el tráfico de ataque de la evaluación del sistema,
+    cuánto aporta el detector y cuántas alertas adicionales genera.
+\end{enumerate}
+
+\section{Reproducibilidad y entrega de datos}
+
+\begin{enumerate}
+    \setcounter{enumi}{15}
+    \item \textbf{Publicar los vectores derivados y depurar el conjunto de pruebas extremo a
+    extremo.} \textit{Acción:} publicar los vectores de características derivados como recurso
+    descargable de una versión del repositorio, sin la columna \texttt{\_row\_hash} y después de
+    revisar que ninguna característica permita reconstruir el texto de la petición; y sustituir, en
+    el conjunto de pruebas extremo a extremo versionado, los payloads cuyo texto proviene de
+    fuentes sin licencia especificada. \textit{Justificación:} el Alcance entrega los scripts y los
+    vectores derivados, y las fuentes \texttt{XSS\_dataset.csv} y \texttt{command injection.csv}
+    (3.4~\% de las filas) no tienen licencia especificada por su origen
+    (Sección~\ref{subsec:met-f1}). \textit{Resultado esperado:} un repositorio público coherente
+    con lo que afirma la auditoría de fuentes.
+
+    \item \textbf{Versionar el generador de los conjuntos sintéticos de Command Injection.}
+    \textit{Acción:} incorporar al repositorio el script que los genera, o declarar esa porción del
+    corpus como no reproducible. \textit{Justificación:} el 17.8~\% de las filas de Command
+    Injection del conjunto de prueba (261 de 1{,}468) proviene de esos conjuntos y su generador no
+    está versionado (Conclusión~\ref{conc:trazabilidad}). \textit{Resultado esperado:}
+    reproducibilidad completa de la partición de prueba.
+\end{enumerate}
+
+\section{Ampliación del alcance}
+
+\begin{enumerate}
+    \setcounter{enumi}{17}
+    \item \textbf{Desacoplar la detección de Node.js y de npm.} \textit{Acción:} separar un
+    núcleo de detección reutilizable y escribir adaptadores para otros ecosistemas (por ejemplo,
+    \textit{frameworks} de Python o de Java, o un \textit{proxy} local), verificando en cada uno la
+    paridad de las predicciones con la de referencia, como se hizo entre Python y ONNX.
+    \textit{Justificación:} el Alcance excluyó otros entornos de ejecución, pero el extractor, los
+    modelos en ONNX y el umbral no dependen del lenguaje; lo que está atado a Node.js es el
+    adaptador de Express y la ejecución en hilos de trabajo (Sección~\ref{subsec:fuera-alcance}).
+    \textit{Resultado esperado:} ampliar la población de aplicaciones que pueden usar la detección
+    sin reescribir el modelo.
+
+    \item \textbf{Exponer la librería como servidor del Protocolo de Contexto de Modelo (MCP).}
+    \textit{Acción:} publicar un servidor MCP que permita a un asistente de programación consultar
+    el catálogo de ataques y los \textit{endpoints} más atacados que ya ofrece la CLI, definiendo
+    antes qué operaciones son de solo lectura y cuáles podrían cambiar el modo o el umbral.
+    \textit{Justificación:} la CLI ya expone esa información, y un asistente con acceso de
+    escritura ampliaría la superficie de ataque de la propia herramienta de protección.
+    \textit{Resultado esperado:} consulta asistida de los eventos sin ampliar esa superficie.
+\end{enumerate}
+
+\section{Para trabajos de investigación similares}
+
+\begin{enumerate}
+    \setcounter{enumi}{19}
+    \item \textbf{Definir un conjunto de evaluación externo desde el inicio.} \textit{Acción:}
+    reunir tráfico legítimo de varias aplicaciones y no limitarse a una partición de la misma
+    distribución que el entrenamiento. \textit{Justificación:} las métricas del corpus (F1 de
+    0.9239 a 0.9956) no predijeron los bloqueos con tráfico legítimo real (Conclusión~\ref{conc:fp}).
+    \textit{Resultado esperado:} métricas que reflejen el comportamiento en producción y no solo la
+    separación entre clases dentro del corpus.
+
+    \item \textbf{Medir y tratar los casi-duplicados antes de particionar.} \textit{Acción:}
+    medirlos (por ejemplo, con MinHash), agrupar por plantilla al dividir en entrenamiento,
+    validación y prueba, y repetir la evaluación con el corpus deduplicado. \textit{Justificación:}
+    SQLi tiene unas 395 veces más pares casi duplicados que filas y es el 59.3~\% del conjunto de
+    prueba, un efecto que este trabajo no cuantificó (Conclusión~\ref{conc:clasificacion}).
+    \textit{Resultado esperado:} cuantificar cuánto de las métricas actuales depende de esa
+    saturación.
+
+    \item \textbf{Bloquear el conjunto de prueba una sola vez y versionar cada medición.}
+    \textit{Acción:} bloquear el conjunto de prueba una vez para todo el proyecto, atar cada cifra
+    al hash de los datos y del modelo que la produjeron, y guardar cada medición de rendimiento
+    como un artefacto versionado con el commit, el hardware, la versión del entorno de ejecución y
+    las muestras crudas separadas por condición, como se hizo con el benchmark del extractor y con
+    la evidencia de la corrida de latencia. \textit{Justificación:} el valor del bloqueo cambió
+    nueve veces y el conjunto de prueba se leyó tres veces en la generación vigente
+    (Conclusión~\ref{conc:trazabilidad}). \textit{Resultado esperado:} cifras atables a un único
+    conjunto de datos y a un único modelo.
+
+    \item \textbf{Construir los corpus de evaluación con un generador versionado y un filtro de
+    exclusión.} \textit{Acción:} versionar el generador y aplicar el filtro contra el
+    entrenamiento desde la primera ronda, y reportar siempre la tasa de detección junto con la de
+    falsos positivos. \textit{Justificación:} la Ronda~4 tuvo fuga confirmada en Command Injection,
+    que redujo la cobertura atribuible de 100~\% a 91.5~\% al corregirse
+    (Conclusión~\ref{conc:trazabilidad}). \textit{Resultado esperado:} cifras de detección que no
+    estén infladas por solapamiento con el entrenamiento.
+\end{enumerate}
+
+\ifdefined\modoensamble
+\else
+	\section*{Referencias}
+	\printbibliography[heading=none]
+	\end{document}
+\fi

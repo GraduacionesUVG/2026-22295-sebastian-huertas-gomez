@@ -1,0 +1,4 @@
+services:
+  waf:
+    volumes:
+      - ./attack-sim/waf-audit-phase2a-20261025:/var/log/modsecurity

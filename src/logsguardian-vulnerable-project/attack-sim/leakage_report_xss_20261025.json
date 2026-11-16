@@ -1,0 +1,39 @@
+{
+  "n_corpus": 200,
+  "by_split": {
+    "train": {
+      "n_xss_rows_in_split": 20962,
+      "missing_unified_lookups": 33,
+      "exact_substring_hits": 0,
+      "exact_substring_hit_ids": [],
+      "normalized_substring_hits": 3,
+      "normalized_substring_hit_ids": [
+        "xss_118",
+        "xss_254",
+        "xss_342"
+      ]
+    },
+    "val": {
+      "n_xss_rows_in_split": 4491,
+      "missing_unified_lookups": 7,
+      "exact_substring_hits": 0,
+      "exact_substring_hit_ids": [],
+      "normalized_substring_hits": 0,
+      "normalized_substring_hit_ids": []
+    },
+    "test": {
+      "n_xss_rows_in_split": 4491,
+      "missing_unified_lookups": 7,
+      "exact_substring_hits": 0,
+      "exact_substring_hit_ids": [],
+      "normalized_substring_hits": 3,
+      "normalized_substring_hit_ids": [
+        "xss_118",
+        "xss_254",
+        "xss_342"
+      ]
+    }
+  },
+  "t6_filter_failure": true,
+  "t6_filter_failure_note": "Quedo al menos una coincidencia por igualdad normalizada contra train/val/test tras el filtro de T6 - es un fallo del filtro, reportado aqui sin ocultarlo, no corregido en esta tarea."
+}

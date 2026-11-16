@@ -1,0 +1,1065 @@
+% ==============================================================================
+% Bibliografía — logSguarDian (componente de ciberseguridad)
+% ==============================================================================
+% Se eliminaron las entradas de ejemplo que traía la plantilla original
+% (hoover2010bio, park2014design: robótica bio-inspirada, sin relación con
+% este trabajo).
+%
+% Las entradas de abajo se tomaron verbatim de la lista de referencias de
+% protocolo_sebastian_v1 (3).pdf (sección 11), que es la única fuente
+% verificada disponible hasta ahora. No se agregó ninguna referencia que no
+% esté ya confirmada en ese documento. urldate se omite porque no se conoce
+% la fecha de acceso real que usó el autor del protocolo.
+
+% ------------------------------------------------------------------------------
+% Capítulo de Antecedentes — entradas provistas directamente por el
+% estudiante. Se corrigió el tipo de mereani2019 de article a
+% inproceedings (traía booktitle/organization, campos de conferencia que
+% article no admite en biblatex).
+% ------------------------------------------------------------------------------
+
+@incollection{mereani2019,
+  author    = {Mereani, Fawaz A. and Howe, Jacob M.},
+  title     = {Detecting Cross-Site Scripting Attacks Using Machine Learning},
+  booktitle = {The International Conference on Advanced Machine Learning Technologies and Applications (AMLTA2018)},
+  series    = {Advances in Intelligent Systems and Computing},
+  volume    = {723},
+  publisher = {Springer International Publishing},
+  year      = {2018},
+  pages     = {200--210},
+  doi       = {10.1007/978-3-319-74690-6_20},
+}
+
+@article{seyyar2024,
+  author       = {Wang, Xinyu and Zhai, Jiqiang and Yang, Hailu},
+  title        = {Detecting command injection attacks in web applications based on novel deep learning methods},
+  journaltitle = {Scientific Reports},
+  volume       = {14},
+  number       = {1},
+  eid          = {25487},
+  date         = {2024},
+  doi          = {10.1038/s41598-024-74350-3},
+}
+
+@online{saparchive2019,
+  author  = {{SAP-archive}},
+  title   = {node-rasp: An extended {Node.js} runtime with additional security mechanisms built-in},
+  year    = {2019},
+  organization = {GitHub},
+  url     = {https://github.com/SAP-archive/node-rasp},
+  urldate = {2026-08-06},
+}
+
+% NOTA de verificación (no se imprime): Revisado con reserva: IJERT es una revista de acceso abierto con barrera de entrada baja, no indexada en bases de datos de primer nivel.
+% NOTA de verificación (no se imprime): Fuente de proveedor, sin fecha de publicación explícita; usada únicamente como referencia primaria del producto comercial.
+@online{contrastsecurity,
+  author  = {{Contrast Security}},
+  title   = {What is {RASP} security? {R}untime application self protection},
+  url     = {https://www.contrastsecurity.com/glossary/rasp-security},
+  urldate = {2026-08-06},
+}
+
+@online{lahora2025ley6347,
+  author  = {{La Hora}},
+  title   = {Qué se sabe de la iniciativa de ley que promueve la ciberseguridad en {G}uatemala},
+  year    = {2025},
+  url     = {https://lahora.gt/nacionales/asalay/2025/06/22/que-se-sabe-de-la-iniciativa-de-ley-que-promueve-la-ciberseguridad-en-guatemala/},
+  urldate = {2026-08-06},
+}
+
+@online{congreso2025dictamen,
+  author  = {{Congreso de la República de Guatemala}},
+  title   = {Dictamen a iniciativa de ley de ciberseguridad},
+  year    = {2025},
+  url     = {https://www.congreso.gob.gt/noticias_congreso/14233/2025/3},
+  urldate = {2026-08-06},
+}
+
+@online{lahora2026estancada,
+  author  = {{La Hora}},
+  title   = {Ley de ciberseguridad sigue estancada en el {C}ongreso en medio de reciente ataque informático a la {D}igecam},
+  year    = {2026},
+  url     = {https://lahora.gt/nacionales/dguzman/2026/04/13/ley-de-ciberseguridad-sigue-estancada-en-el-congreso-en-medio-de-reciente-ataque-informatico-a-la-digecam/},
+  urldate = {2026-08-06},
+}
+
+@online{cien2025boletin,
+  author  = {{Alianza por un Congreso Eficiente}},
+  title   = {Boletín al {C}ongreso No. 01-2025: Iniciativa de Ley 6347, {L}ey de {C}iberseguridad},
+  date    = {2025-09},
+  url     = {https://cien.org.gt/index.php/boletin-al-congreso-01-2025-analisis-de-la-iniciativa-de-ley-6347-ley-de-ciberseguridad/},
+  urldate = {2026-08-06},
+}
+
+% ------------------------------------------------------------------------------
+% Capítulo de Justificación — entradas nuevas provistas directamente por el
+% estudiante (augustine2024, mereani2019, seyyar2024, saparchive2019,
+% shinde2026, contrastsecurity, lahora2025ley6347, congreso2025dictamen,
+% lahora2026estancada, cien2025boletin ya estaban en el .bib desde
+% Antecedentes y se reutilizan, no se duplicaron).
+%
+% Verificado por WebFetch (2026-08-08): soy502fortinet2026 respalda
+% literalmente la cifra de 726 millones de intentos de ataque (dato 2025).
+% mastercard2025 NO se pudo verificar (la URL responde 403 Forbidden); la
+% cifra de 200% de incremento y el ranking "top 10 en Latinoamérica" quedan
+% sin confirmar por este medio.
+% ------------------------------------------------------------------------------
+
+% NOTA de verificación (no se imprime): reemplaza a zeng2024, que tenía autores
+% y año incorrectos para el mismo documento (IEEE Xplore 11082123). El DOI
+% 10.1109/ACCESS.2025.3589620 resuelve a ese documento (verificado 2026-10-09);
+% autores, título, volumen y páginas según la bibliografía del componente de IA
+% y citas en la literatura.
+@article{zhen2025anomaly,
+  author       = {Zhen, L. and Hafizah Kamarudin, N. and Jyn Kok, V. and Qamar, F.},
+  title        = {Anomaly Detection Model in Network Security Situational Awareness Based on Machine Learning: Limitation, Techniques, and Future Trends},
+  journaltitle = {IEEE Access},
+  volume       = {13},
+  pages        = {126084--126129},
+  year         = {2025},
+  doi          = {10.1109/ACCESS.2025.3589620},
+}
+
+% NOTA de verificación (no se imprime): referencias canónicas de los algoritmos,
+% tomadas de la bibliografía del componente de IA.
+@article{breiman2001random,
+  author       = {Breiman, L.},
+  title        = {Random Forests},
+  journaltitle = {Machine Learning},
+  volume       = {45},
+  number       = {1},
+  pages        = {5--32},
+  year         = {2001},
+  doi          = {10.1023/A:1010933404324},
+}
+
+@inproceedings{liu2008isolation,
+  author    = {Liu, F. T. and Ting, K. M. and Zhou, Z.-H.},
+  title     = {Isolation Forest},
+  booktitle = {2008 Eighth IEEE International Conference on Data Mining},
+  publisher = {IEEE},
+  pages     = {413--422},
+  year      = {2008},
+  doi       = {10.1109/ICDM.2008.17},
+}
+
+% NOTA de verificación (no se imprime): Reemplaza a la entrada previa "Mastercard (2024)" del protocolo, que carecía de fecha exacta y de URL verificable. NO verificado por WebFetch: la URL responde 403 Forbidden; revisar manualmente antes de la entrega final.
+@online{mastercard2025,
+  author  = {{Mastercard}},
+  title   = {Guatemala avanza en su digitalización: {M}astercard presenta hallazgos clave sobre ciberseguridad},
+  year    = {2025},
+  url     = {https://www.mastercard.com/ar/es/news-and-trends/press/2025/august/guatemala-avanza-en-su-digitalizacion-mastercard-presenta-hallazgos-clave-sobre-ciberseguridad-y-refuerza-su-compromiso-con-la-proteccion-del-ecosistema-digital-en-el-pais.html},
+  urldate = {2026-08-08},
+}
+
+% NOTA de verificación (no se imprime): Reemplaza la cifra no sustentada de "80\% del tejido empresarial" atribuida a startups tecnológicas en el protocolo original; la cifra verificable corresponde a MIPYMES en general, no a startups de software específicamente.
+@online{mineco2015mipyme,
+  author  = {{Ministerio de Economía de Guatemala, OCSE-MIPYME}},
+  title   = {Sistema Nacional de Información {MIPYME} Guatemala, año base 2015},
+  year    = {2015},
+  url     = {https://sen.ine.gob.gt/wp-content/uploads/2023/08/FOLLETO-INFORMATIVO-HECHO-POR-OCSEMIPYME-2015-1.pdf},
+  urldate = {2026-08-08},
+}
+
+% ------------------------------------------------------------------------------
+% Capítulo de Objetivos — el estudiante no adjuntó .bib esta vez; ambas
+% entradas se verificaron directamente por WebFetch contra las páginas
+% oficiales antes de agregarlas (2026-08-08), en vez de citarlas de memoria.
+% ------------------------------------------------------------------------------
+
+% NOTA de verificación (no se imprime): Actualizada 2026-08-15: se reemplazó la URL específica de A03:2021-Injection por la landing general del Top 10:2021, ya que en el capítulo de Marco Teórico esta clave se usa tanto para el ranking general como para la categoría A03 específica.
+@online{owasp2021,
+  author  = {{OWASP Foundation}},
+  title   = {{OWASP} Top 10: 2021 -- the most critical web application security risks},
+  year    = {2021},
+  url     = {https://owasp.org/Top10/},
+  urldate = {2026-08-08},
+}
+
+% NOTA de verificación (no se imprime): Agregada porque el protocolo original cita "MITRE ATT\&CK (2024)" repetidamente en el texto (secciones 6.5 y 6.6.3) sin que exista una entrada correspondiente en su lista de referencias. Framework de actualización continua, sin número de versión o fecha de publicación único visible en el sitio.
+@online{mitreattack,
+  author  = {{MITRE Corporation}},
+  title   = {{MITRE ATT\&CK}},
+  url     = {https://attack.mitre.org/},
+  urldate = {2026-08-15},
+}
+
+% ------------------------------------------------------------------------------
+% Capítulo de Marco Teórico — entradas nuevas provistas directamente por el
+% estudiante (2026-08-15). Verificación de fuentes: CVE-2021-27185
+% confirmado por Snyk (command injection, paquete npm samba-client), no se
+% verificó independientemente el puntaje CVSS 9.8. republicamastercard2025
+% (200% de incremento; tecnológico 7.9%, tercer sector más atacado)
+% confirmado literal por WebFetch. gem2024 (segunda tasa de emprendimiento
+% temprano del mundo, 32.4%) verificado el 2026-10-24 en el PDF (pp. 10 y 23).
+% ------------------------------------------------------------------------------
+
+@online{crowdstrikeioc,
+  author  = {{CrowdStrike}},
+  title   = {What are indicators of compromise ({IOC})?},
+  year    = {2025},
+  url     = {https://www.crowdstrike.com/en-us/cybersecurity-101/threat-intelligence/indicators-of-compromise-ioc/},
+  urldate = {2026-08-15},
+}
+
+% NOTA de verificación (no se imprime): CrowdStrike acuñó y popularizó el término IOA; se cita como fuente primaria del concepto.
+@online{crowdstrikeioa,
+  author  = {{CrowdStrike}},
+  title   = {What are indicators of attack ({IOA})?},
+  year    = {2025},
+  url     = {https://www.crowdstrike.com/en-us/cybersecurity-101/threat-intelligence/indicators-of-attack-ioa/},
+  urldate = {2026-08-15},
+}
+
+@techreport{nist80094,
+  author  = {Scarfone, K. and Mell, P.},
+  title   = {Guide to intrusion detection and prevention systems ({IDPS})},
+  institution = {National Institute of Standards and Technology},
+  number  = {SP 800-94},
+  year    = {2007},
+  url     = {https://csrc.nist.gov/pubs/sp/800/94/final},
+  urldate = {2026-08-15},
+}
+
+% NOTA de verificación (no se imprime): Reemplaza a CIEN (2021) para las cifras del Modelo de Madurez de Capacidad en Ciberseguridad (CMM), actualizando la comparación 2020--2025.
+@online{bidoea2025,
+  author  = {{Banco Interamericano de Desarrollo y Organización de los Estados Americanos}},
+  title   = {Ciberseguridad 2025: vulnerabilidad y desafíos de madurez para reducir brechas en América Latina y el Caribe},
+  year    = {2025},
+  url     = {https://www.oas.org/es/centro_noticias/comunicado_prensa.asp?sCodigo=C-092/25},
+  urldate = {2026-08-15},
+}
+
+@online{openjsfoundation2024,
+  author  = {{OpenJS Foundation}},
+  title   = {About {Node.js}},
+  year    = {2024},
+  url     = {https://nodejs.org/en/about},
+  urldate = {2026-08-15},
+}
+
+@online{expressjsguide,
+  author  = {{OpenJS Foundation}},
+  title   = {Using {Express} middleware},
+  url     = {https://expressjs.com/en/guide/using-middleware.html},
+  urldate = {2026-08-15},
+}
+
+@online{npmregistry2024,
+  author  = {{npm, Inc.}},
+  title   = {npm documentation: registry},
+  year    = {2024},
+  url     = {https://docs.npmjs.com/cli/v10/using-npm/registry},
+  urldate = {2026-08-15},
+}
+
+@online{owaspapi2023,
+  author  = {{OWASP Foundation}},
+  title   = {{OWASP} {API} Security Top 10: 2023},
+  year    = {2023},
+  url     = {https://owasp.org/API-Security/editions/2023/en/0x00-header/},
+  urldate = {2026-08-15},
+}
+
+% NOTA de verificación (no se imprime): Verificado por WebFetch contra Snyk (2026-08-15): confirma paquete y tipo de vulnerabilidad (command injection). El puntaje CVSS 9.8 citado en el texto no se verificó independientemente.
+@online{gitlabadvisory2021,
+  author  = {{GitLab Advisory Database}},
+  title   = {{CVE}-2021-27185: injection vulnerability in samba-client for {Node.js}},
+  year    = {2021},
+  url     = {https://advisories.gitlab.com/pkg/npm/samba-client/CVE-2021-27185},
+  urldate = {2026-08-15},
+}
+
+% NOTA de verificación (no se imprime): Entrada separada de Gartner (s.f.); en el protocolo original ambas referencias estaban fusionadas en una sola entrada bibliográfica.
+@article{bermejohiguera2022,
+  author       = {Sureda Riera, Tomás and Bermejo Higuera, Juan-Ramón and Bermejo Higuera, Javier and Sicilia Montalvo, Juan-Antonio and Martínez Herraiz, José-Javier},
+  title        = {Systematic Approach for Web Protection Runtime Tools' Effectiveness Analysis},
+  journaltitle = {Computer Modeling in Engineering \& Sciences},
+  volume       = {133},
+  number       = {3},
+  pages        = {579--599},
+  year         = {2022},
+  doi          = {10.32604/cmes.2022.020976},
+}
+
+@online{expressjsmorgan,
+  author  = {{expressjs/morgan}},
+  title   = {{HTTP} request logger middleware for node.js},
+  organization = {GitHub},
+  url     = {https://github.com/expressjs/morgan},
+  urldate = {2026-08-15},
+}
+
+% NOTA de verificación (no se imprime): Verificado por WebFetch (2026-08-15): confirma literalmente el incremento de 200\% y que el sector tecnológico fue el tercero más atacado (7.9\%), después de financiero (19.3\%) e industrial (16.8\%).
+@online{republicamastercard2025,
+  author  = {{República / Mastercard}},
+  title   = {Ciberseguridad en Guatemala: un reto urgente para empresas y Estado},
+  year    = {2025},
+  url     = {https://republica.com/agenda-empresarial/ciberseguridad-en-guatemala-un-reto-urgente-para-empresas-y-estado-202581121200},
+  urldate = {2026-08-15},
+}
+
+% NOTA de verificación (no se imprime): NO verificado por WebFetch: el PDF responde 403 Forbidden. La cifra de 32.4\% (segunda tasa de actividad emprendedora temprana más alta del mundo) queda sin confirmar por este medio; revisar manualmente antes de la entrega final.
+@online{gem2024,
+  author  = {{GEM (Global Entrepreneurship Monitor)}},
+  title   = {Reporte Nacional {GEM} Guatemala 2023-2024},
+  year    = {2024},
+  organization = {Universidad Francisco Marroquín},
+  url     = {https://gem.ufm.edu/wp-content/uploads/2024/09/Reporte-Nacional-GEM-Guatemala-2023-2024.pdf},
+  urldate = {2026-08-15},
+}
+
+@online{pronacom,
+  author  = {{PRONACOM}},
+  title   = {Proyectos de desarrollo empresarial},
+  url     = {https://www.pronacom.org/en/2000/01/01/proyectos-de-desarrollo-empresarial/},
+  urldate = {2026-08-15},
+}
+
+% NOTA de verificación (no se imprime): No citada en ningún capítulo actual; agregada por si se referencia más adelante.
+@report{iadb2024,
+  author      = {Buenadicha Sánchez, César and Virviescas Mendoza, Tatiana and Lecaros, Camila and Gordon, Paola and Cardeña Rodríguez, Eric},
+  title       = {Ecosistema del emprendimiento por oportunidad en Guatemala},
+  institution = {Banco Interamericano de Desarrollo},
+  date        = {2024-12-02},
+  doi         = {10.18235/0013284},
+  url         = {https://publications.iadb.org/en/node/35807},
+  urldate     = {2026-10-20},
+}
+
+@online{onnxruntimedocs,
+  author  = {{ONNX Runtime}},
+  title   = {{ONNX} Runtime documentation},
+  url     = {https://onnxruntime.ai/docs/},
+  urldate = {2026-08-15},
+}
+
+@article{stasinopoulos2019,
+  author  = {Stasinopoulos, A. and Ntantogian, C. and Xenakis, C.},
+  title   = {Commix: automating evaluation and exploitation of command injection vulnerabilities in web applications},
+  journaltitle = {International Journal of Information Security},
+  volume  = {18},
+  number  = {1},
+  year    = {2019},
+  url     = {https://www.researchgate.net/publication/322875799},
+}
+
+@online{artillerydocs,
+  author  = {{Artillery}},
+  title   = {Artillery documentation},
+  url     = {https://www.artillery.io/docs},
+  urldate = {2026-08-15},
+}
+
+@online{dockerdocs,
+  author  = {{Docker Inc.}},
+  title   = {Docker Compose overview},
+  url     = {https://docs.docker.com/compose/},
+  urldate = {2026-08-15},
+}
+
+@article{moreau2023,
+  author  = {Moreau, D. and Wiebels, K. and Boettiger, C.},
+  title   = {Containers for computational reproducibility},
+  journaltitle = {Nature Reviews Methods Primers},
+  volume  = {3},
+  number  = {1},
+  pages   = {50},
+  year    = {2023},
+  doi     = {10.1038/s43586-023-00236-9},
+}
+
+@online{jestdocs,
+  author  = {{OpenJS Foundation}},
+  title   = {Jest: testing framework documentation},
+  url     = {https://jestjs.io/docs/getting-started},
+  urldate = {2026-08-15},
+}
+
+@online{supertestdocs,
+  author  = {{ladjs/supertest}},
+  title   = {Supertest: {HTTP} assertions made easy},
+  organization = {GitHub},
+  url     = {https://github.com/ladjs/supertest},
+  urldate = {2026-08-15},
+}
+
+% ------------------------------------------------------------------------------
+% Actualización 2026-09-04 — verificada por WebFetch antes de agregarla.
+% xssnet2025 (Oshoiribhor & John-Otumu, XSS-Net) se verificó también por DOI
+% en esta misma sesión, pero no se agrega aquí porque el intento de usarla
+% en Marco Teórico se revirtió (contenido redundante con Antecedentes); no
+% se agrega una entrada sin cita en ningún capítulo.
+% ------------------------------------------------------------------------------
+
+% NOTA de verificación (no se imprime): Verificado por WebFetch (2026-09-04): página archivada, fecha original 2009-11-12, describe las seis categorías de STRIDE (Spoofing, Tampering, Repudiation, Information Disclosure, Denial of Service, Elevation of Privilege) tal como se citan en el texto.
+% NOTA de verificación (no se imprime): NO verificado por WebFetch: la URL responde 403 Forbidden. El concepto de defensa en profundidad es estándar y no controvertido en la literatura de ciberseguridad, pero esta fuente puntual no se pudo confirmar por este medio; revisar manualmente antes de la entrega final o sustituir por una fuente accesible (p. ej. NIST SP 800-53 o CISA).
+@online{cloudflaredefenseindepth,
+  author  = {{Cloudflare}},
+  title   = {What is defense in depth?},
+  url     = {https://www.cloudflare.com/learning/security/glossary/what-is-defense-in-depth/},
+  urldate = {2026-09-04},
+}
+
+% ------------------------------------------------------------------------------
+% Actualización 2026-10-02 — corrección de clasificación OWASP/MITRE en
+% Marco Teórico (ver encabezado de i-marco_teorico.tex). Las seis entradas
+% siguientes se verificaron por WebFetch contra la página oficial real
+% antes de escribirse.
+% ------------------------------------------------------------------------------
+
+% NOTA de verificación (no se imprime): Verificado por WebFetch (2026-10-02): la página mapea explícitamente CWE-22 ("Path Traversal") y CWE-23 ("Relative Path Traversal") a esta categoría, entre 34 CWEs en total.
+@online{owaspa01_2021,
+  author  = {{OWASP Foundation}},
+  title   = {{A01}:2021 -- Broken Access Control},
+  year    = {2021},
+  url     = {https://owasp.org/Top10/A01_2021-Broken_Access_Control/},
+  urldate = {2026-10-02},
+}
+
+% NOTA de verificación (no se imprime): Verificado por WebFetch (2026-10-02): la página confirma CWE-89 (SQL Injection), CWE-79 (XSS) y CWE-78 (OS Command Injection) entre los 33 CWEs mapeados; CWE-22 (Path Traversal) NO aparece en esta categoría.
+@online{owaspa03_2021,
+  author  = {{OWASP Foundation}},
+  title   = {{A03}:2021 -- Injection},
+  year    = {2021},
+  url     = {https://owasp.org/Top10/A03_2021-Injection/},
+  urldate = {2026-10-02},
+}
+
+% NOTA de verificación (no se imprime): Verificado por WebFetch (2026-10-02): la categoría combina Excessive Data Exposure y Mass Assignment (API3/API6 de la edición 2019); no tiene relación con manipulación de rutas de archivo.
+@online{owaspapi3_2023,
+  author  = {{OWASP Foundation}},
+  title   = {{API3}:2023 -- Broken Object Property Level Authorization},
+  year    = {2023},
+  url     = {https://owasp.org/API-Security/editions/2023/en/0xa3-broken-object-property-level-authorization/},
+  urldate = {2026-10-02},
+}
+
+% NOTA de verificación (no se imprime): Verificado por WebFetch (2026-10-02): página legítima de OWASP Foundation, define el ataque como acceso a archivos y directorios fuera del directorio raíz de la aplicación web.
+@online{owasptraversal,
+  author  = {{OWASP Foundation}},
+  title   = {Path Traversal},
+  organization = {OWASP Community Pages},
+  url     = {https://owasp.org/www-community/attacks/Path_Traversal},
+  urldate = {2026-10-02},
+}
+
+% NOTA de verificación (no se imprime): Verificado por WebFetch (2026-10-02): la página confirma que la técnica se centra en explotar software en el endpoint cliente al visitar un sitio web, listando XSS/iframes maliciosos como uno de los mecanismos de entrega.
+@online{mitret1189,
+  author  = {{MITRE Corporation}},
+  title   = {{T1189}: Drive-by Compromise},
+  organization = {MITRE ATT\&CK},
+  url     = {https://attack.mitre.org/techniques/T1189/},
+  urldate = {2026-10-02},
+}
+
+% NOTA de verificación (no se imprime): Verificado por WebFetch (2026-10-02): la página menciona explícitamente SQL injection, path traversal, aplicaciones web y bases de datos, y remite al OWASP Top 10 y CWE Top 25 como referencia de las vulnerabilidades más comunes explotadas mediante esta técnica.
+@online{mitret1190,
+  author  = {{MITRE Corporation}},
+  title   = {{T1190}: Exploit Public-Facing Application},
+  organization = {MITRE ATT\&CK},
+  url     = {https://attack.mitre.org/techniques/T1190/},
+  urldate = {2026-10-02},
+}
+
+% ------------------------------------------------------------------------------
+% Capítulo de Metodología (2026-10-02). Todas verificadas por WebSearch/WebFetch
+% en la misma sesión antes de agregarse; la verificación se documenta en
+% comentarios y no en el campo note, porque biblatex-ieee imprime note en la
+% lista de referencias.
+%   hernandez2014: título, autores, edición, editorial e ISBN confirmados
+%     (catálogos Dialnet y Google Libros).
+%   anderson2010: editorial Blue Hole Press, 2010, ISBN 978-0984521401
+%     (WorldCat OCLC 699604917 y Google Books).
+%   fawcett2006: Pattern Recognition Letters 27(8):861-874,
+%     doi 10.1016/j.patrec.2005.10.010.
+%   pedregosa2011: JMLR 12:2825-2830 (PDF oficial en jmlr.org).
+%   kapoor2023: Patterns 4(9), 100804, doi 10.1016/j.patter.2023.100804.
+%   lucz2025: registro Zenodo 17178461 (único autor listado: Geza Lucz; v1,
+%     22-09-2025, CC BY 4.0). docs/dataset-audit.md del repositorio lo
+%     atribuye a "Lucz & Forstner"; el registro de Zenodo solo lista a Lucz.
+%   sqlmap, owaspzap, owaspcrs: sitios oficiales consultados por WebFetch.
+% ------------------------------------------------------------------------------
+
+@book{hernandez2014,
+  author    = {Hernández Sampieri, Roberto and Fernández Collado, Carlos and Baptista Lucio, María del Pilar},
+  title     = {Metodología de la investigación},
+  edition   = {6},
+  publisher = {McGraw-Hill/Interamericana Editores},
+  location  = {México, D.F.},
+  year      = {2014},
+  isbn      = {978-1-4562-2396-0},
+}
+
+@book{anderson2010,
+  author    = {Anderson, David J.},
+  title     = {Kanban: Successful Evolutionary Change for Your Technology Business},
+  publisher = {Blue Hole Press},
+  location  = {Sequim, WA},
+  year      = {2010},
+  isbn      = {978-0-9845214-0-1},
+}
+
+@article{fawcett2006,
+  author       = {Fawcett, Tom},
+  title        = {An introduction to {ROC} analysis},
+  journaltitle = {Pattern Recognition Letters},
+  volume       = {27},
+  number       = {8},
+  pages        = {861--874},
+  year         = {2006},
+  doi          = {10.1016/j.patrec.2005.10.010},
+}
+
+@article{pedregosa2011,
+  author       = {Pedregosa, Fabian and Varoquaux, Gaël and Gramfort, Alexandre and Michel, Vincent and Thirion, Bertrand and Grisel, Olivier and Blondel, Mathieu and Prettenhofer, Peter and Weiss, Ron and Dubourg, Vincent and Vanderplas, Jake and Passos, Alexandre and Cournapeau, David and Brucher, Matthieu and Perrot, Matthieu and Duchesnay, Édouard},
+  title        = {Scikit-learn: Machine Learning in {Python}},
+  journaltitle = {Journal of Machine Learning Research},
+  volume       = {12},
+  pages        = {2825--2830},
+  year         = {2011},
+  url          = {https://jmlr.org/papers/volume12/pedregosa11a/pedregosa11a.pdf},
+}
+
+@article{kapoor2023,
+  author       = {Kapoor, Sayash and Narayanan, Arvind},
+  title        = {Leakage and the reproducibility crisis in machine-learning-based science},
+  journaltitle = {Patterns},
+  volume       = {4},
+  number       = {9},
+  pages        = {100804},
+  year         = {2023},
+  doi          = {10.1016/j.patter.2023.100804},
+}
+
+@dataset{lucz2025,
+  author    = {Lucz, Geza and Forstner, Bertalan},
+  title     = {A Thirty-Day Dataset of Malicious {HTTP} Requests Blocked by {OWASP} {ModSecurity} on a Production Web Server},
+  publisher = {Zenodo},
+  version   = {v1},
+  year      = {2025},
+  doi       = {10.5281/zenodo.17178461},
+}
+
+@online{sqlmap,
+  author  = {Damele, Bernardo and Stampar, Miroslav},
+  title   = {sqlmap: automatic {SQL} injection and database takeover tool},
+  url     = {https://sqlmap.org/},
+  urldate = {2026-10-02},
+}
+
+@online{owaspzap,
+  author  = {{ZAP Project}},
+  title   = {{Zed Attack Proxy (ZAP)}},
+  url     = {https://www.zaproxy.org/},
+  urldate = {2026-10-02},
+}
+
+@online{owaspcrs,
+  author  = {{OWASP Foundation}},
+  title   = {{OWASP CRS} (Core Rule Set)},
+  url     = {https://coreruleset.org/},
+  urldate = {2026-10-02},
+}
+
+% NOTA de verificación (no se imprime): verificado el 2026-10-09 en el PDF
+% oficial (62 págs., publicado el 28-06-2021). Pág. impresa 16: SIEM "are also
+% large investments"; pág. 17: "many cybersecurity solutions require
+% specialized IT knowledge to implement and manage them properly"; pág. 18:
+% "only 28% of the participants (almost half of them in the ICT industry)
+% declared that they have assigned the role of the Information Security
+% Officer". El estudio se refiere a pymes de la Unión Europea.
+@techreport{enisa2021smes,
+  author      = {{European Union Agency for Cybersecurity (ENISA)}},
+  title       = {Cybersecurity for {SMEs}: Challenges and Recommendations},
+  institution = {ENISA},
+  location    = {Atenas},
+  year        = {2021},
+  month       = jun,
+  url         = {https://www.enisa.europa.eu/publications/enisa-report-cybersecurity-for-smes},
+  urldate     = {2026-10-09},
+}
+
+@online{synergy2025cloud,
+  author  = {{Synergy Research Group}},
+  title   = {Cloud Market Jumped to \$330 billion in 2024 -- GenAI is Now Driving Half of the Growth},
+  date    = {2025-02-06},
+  url     = {https://www.newswire.ca/news-releases/cloud-market-jumped-to-330-billion-in-2024-genai-is-now-driving-half-of-the-growth-830038395.html},
+  urldate = {2026-10-20},
+}
+
+@online{stackoverflow2025survey,
+  author  = {{Stack Overflow}},
+  title   = {2025 Stack Overflow Developer Survey: Technology},
+  date    = {2025},
+  url     = {https://survey.stackoverflow.co/2025/technology},
+  urldate = {2026-10-20},
+}
+
+@online{nodejs2026intro,
+  author  = {{OpenJS Foundation}},
+  title   = {Introduction to Node.js},
+  url     = {https://nodejs.org/learn/getting-started/introduction-to-nodejs},
+  urldate = {2026-10-20},
+}
+
+@online{nodejs2026eventloop,
+  author  = {{OpenJS Foundation}},
+  title   = {The Node.js Event Loop},
+  url     = {https://nodejs.org/learn/asynchronous-work/event-loop-timers-and-nexttick},
+  urldate = {2026-10-20},
+}
+
+@online{nodejs2026worker,
+  author  = {{OpenJS Foundation}},
+  title   = {Worker threads. Node.js documentation},
+  url     = {https://nodejs.org/api/worker_threads.html},
+  urldate = {2026-10-20},
+}
+
+@online{mdn2026execution,
+  author  = {{MDN Web Docs}},
+  title   = {JavaScript execution model},
+  url     = {https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Execution_model},
+  urldate = {2026-10-20},
+}
+
+@online{onnx2026,
+  author  = {{ONNX}},
+  title   = {Open Neural Network Exchange (ONNX): the open standard for machine learning interoperability},
+  url     = {https://onnx.ai/},
+  urldate = {2026-10-20},
+}
+
+@online{expressratelimit2026,
+  author  = {{express-rate-limit contributors}},
+  title   = {express-rate-limit},
+  organization = {npm},
+  url     = {https://npmjs.com/package/express-rate-limit},
+  urldate = {2026-10-20},
+}
+
+@article{durmuskaya2025waf,
+  author       = {Durmuşkaya, Muhammed Ersin and Bayraklı, Selim},
+  title        = {Web application firewall based on machine learning models},
+  journaltitle = {PeerJ Computer Science},
+  volume       = {11},
+  eid          = {e2975},
+  date         = {2025-07},
+  doi          = {10.7717/peerj-cs.2975},
+  url          = {https://peerj.com/articles/cs-2975},
+  urldate      = {2026-10-20},
+}
+
+@online{crs2026paranoia,
+  author       = {{OWASP CRS Project}},
+  title        = {What are the paranoia levels?},
+  organization = {OWASP Core Rule Set, FAQ},
+  url          = {https://coreruleset.org/faq/what-are-the-paranoia-levels/},
+  urldate      = {2026-10-20},
+}
+
+@online{nistioc2025,
+  author       = {{National Institute of Standards and Technology}},
+  title        = {Indicator of compromise},
+  organization = {Computer Security Resource Center, Glossary},
+  url          = {https://csrc.nist.gov/glossary/term/indicator_of_compromise},
+  urldate      = {2026-10-20},
+}
+
+@online{nistinfosec2026,
+  author       = {{National Institute of Standards and Technology}},
+  title        = {Information security},
+  organization = {Computer Security Resource Center, Glossary},
+  url          = {https://csrc.nist.gov/glossary/term/information_security},
+  urldate      = {2026-10-20},
+}
+
+@online{microsoft2025stride,
+  author       = {{Microsoft}},
+  title        = {Threat modeling framework},
+  organization = {Microsoft Learn},
+  date         = {2025-05-12},
+  url          = {https://learn.microsoft.com/en-us/training/modules/tm-use-a-framework-to-identify-threats-and-find-ways-to-reduce-or-eliminate-risk/1b-threat-modeling-framework},
+  urldate      = {2026-10-20},
+}
+
+@online{crowdstrike2016ioa,
+  author  = {{CrowdStrike Content Team}},
+  title   = {Moving beyond Indicators of Compromise (IOCs)},
+  date    = {2016-03-22},
+  url     = {https://crowdstrike.com/en-us/blog/moving-beyond-indicators-compromise},
+  urldate = {2026-10-20},
+}
+
+@inproceedings{zimmermann2019small,
+  author    = {Zimmermann, Markus and Staicu, Cristian-Alexandru and Tenny, Cam and Pradel, Michael},
+  title     = {Small World with High Risks: A Study of Security Threats in the npm Ecosystem},
+  booktitle = {28th USENIX Security Symposium (USENIX Security 19)},
+  publisher = {USENIX Association},
+  location  = {Santa Clara, CA},
+  year      = {2019},
+  pages     = {995--1010},
+  url       = {https://www.usenix.org/conference/usenixsecurity19/presentation/zimmerman},
+  urldate   = {2026-10-20},
+}
+
+@online{zerouali2022impact,
+  author      = {Zerouali, Ahmed and Mens, Tom and Decan, Alexandre and De Roover, Coen},
+  title       = {On the Impact of Security Vulnerabilities in the npm and RubyGems Dependency Networks},
+  date        = {2022-03-28},
+  eprint      = {2106.06747},
+  eprinttype  = {arxiv},
+  eprintclass = {cs.SE},
+  url         = {https://arxiv.org/pdf/2106.06747},
+  urldate     = {2026-10-20},
+}
+
+@online{emisoras2026digecam,
+  author  = {{Emisoras Unidas}},
+  title   = {Ejército amplía detalles sobre ataque cibernético},
+  date    = {2026-04-24},
+  url     = {https://emisorasunidas.com/nacional/2026/04/24/ciberataque-digecam-ejercito-ministro-defensa-ejercito/},
+  urldate = {2026-10-20},
+}
+
+@online{emisoras2026usac,
+  author  = {{Emisoras Unidas}},
+  title   = {Usac confirma ataque cibernético},
+  date    = {2026-04-27},
+  url     = {https://emisorasunidas.com/nacional/2026/04/27/usac-confirma-ataque-cibernetico/},
+  urldate = {2026-10-20},
+}
+
+@online{agn2025mipymes,
+  author  = {{Agencia Guatemalteca de Noticias}},
+  title   = {Mipymes impulsan economía y empleo: representan el 96.3 \% de las empresas},
+  date    = {2025-07-04},
+  url     = {https://agn.gt/mipymes-impulsan-economia-y-empleo-representan-el-96-3-de-las-empresas/},
+  urldate = {2026-10-20},
+}
+
+@dataset{sureda2022srbh,
+  author    = {Sureda Riera, Tomás and Bermejo Higuera, Juan Ramón and Bermejo Higuera, Javier and Sicilia Montalvo, Juan Antonio and Martínez Herráiz, José Javier},
+  title     = {SR-BH 2020 multi-label dataset},
+  version   = {1.2},
+  publisher = {Harvard Dataverse},
+  year      = {2022},
+  doi       = {10.7910/DVN/OGOIXX},
+  urldate   = {2026-10-20},
+}
+
+@article{sureda2022newmultilabel,
+  author       = {Sureda Riera, Tomás and Bermejo Higuera, Juan-Ramón and Bermejo Higuera, Javier and Martínez Herraiz, José-Javier and Sicilia Montalvo, Juan-Antonio},
+  title        = {A new multi-label dataset for Web attacks CAPEC classification using machine learning techniques},
+  journaltitle = {Computers \& Security},
+  volume       = {120},
+  eid          = {102788},
+  year         = {2022},
+  doi          = {10.1016/j.cose.2022.102788},
+}
+
+@online{scano2024modseclearn,
+  author     = {Scano, Christian and Floris, Giuseppe and Montaruli, Biagio and Demetrio, Luca and Valenza, Andrea and Compagna, Luca and Ariu, Davide and Piras, Luca and Balzarotti, Davide and Biggio, Battista},
+  title      = {ModSec-Learn: Boosting ModSecurity with Machine Learning},
+  date       = {2024-06-19},
+  eprint     = {2406.13547},
+  eprinttype = {arxiv},
+  url        = {https://arxiv.org/pdf/2406.13547},
+  urldate    = {2026-10-20},
+}
+
+@software{pralab2024modseclearn,
+  author  = {{PRALab, University of Cagliari}},
+  title   = {modsec-learn},
+  url     = {https://github.com/pralab/modsec-learn},
+}
+
+@online{torrano2010csic,
+  author       = {Torrano Giménez, Carmen and Pérez Villegas, Alejandro and Álvarez Marañón, Gonzalo},
+  title        = {HTTP dataset CSIC 2010},
+  organization = {Information Security Institute, Consejo Superior de Investigaciones Científicas (CSIC)},
+  year         = {2010},
+  url          = {https://www.tic.itefi.csic.es/dataset/},
+  urldate      = {2026-10-20},
+}
+
+@online{datadog2026nodejs,
+  author  = {{Datadog}},
+  title   = {Node.js compatibility requirements (App and API Protection)},
+  url     = {https://docs.datadoghq.com/security/application_security/setup/compatibility/nodejs/},
+  urldate = {2026-10-20},
+}
+
+@online{datadog2021sqreen,
+  author  = {{Datadog}},
+  title   = {Datadog Signs Definitive Agreement to Acquire Sqreen},
+  date    = {2021-02-11},
+  url     = {https://www.datadoghq.com/about/latest-news/press-releases/datadog-signs-definitive-agreement-to-acquire-sqreen},
+  urldate = {2026-10-20},
+}
+
+@software{baidu2026openrasp,
+  author  = {{Baidu}},
+  title   = {OpenRASP: open source RASP solution},
+  url     = {https://github.com/baidu/openrasp},
+  urldate = {2026-10-20},
+}
+
+@software{appsecco2026dvna,
+  author  = {{Appsecco}},
+  title   = {Damn Vulnerable NodeJS Application (DVNA)},
+  url     = {https://github.com/appsecco/dvna},
+  urldate = {2026-10-20},
+}
+
+@software{layro012026nodeapigoat,
+  author  = {{layro01}},
+  title   = {node-api-goat},
+  url     = {https://github.com/layro01/node-api-goat},
+  urldate = {2026-10-20},
+}
+
+@software{snoopysecurity2026dvwsnode,
+  author  = {{snoopysecurity}},
+  title   = {Damn Vulnerable Web Services (dvws-node)},
+  url     = {https://github.com/snoopysecurity/dvws-node},
+  urldate = {2026-10-20},
+}
+
+@software{kimminich2026juiceshop,
+  author  = {Kimminich, Björn and Hollenbach, Jannik},
+  title   = {OWASP Juice Shop},
+  url     = {https://github.com/juice-shop/juice-shop},
+  urldate = {2026-10-20},
+}
+
+@software{owasp2026modsecurity,
+  author  = {{OWASP ModSecurity}},
+  title   = {ModSecurity (libModSecurity, v3)},
+  url     = {https://github.com/owasp-modsecurity/ModSecurity},
+  urldate = {2026-10-20},
+}
+
+@software{miessler2026seclists,
+  author  = {Miessler, Daniel and Haddix, Jason and Portal, Ignacio and {g0tmi1k}},
+  title   = {SecLists: the security tester's companion},
+  url     = {https://github.com/danielmiessler/SecLists},
+  urldate = {2026-10-20},
+}
+
+@software{swisskyrepo2026payloads,
+  author  = {{swisskyrepo}},
+  title   = {PayloadsAllTheThings},
+  url     = {https://github.com/swisskyrepo/PayloadsAllTheThings},
+  urldate = {2026-10-20},
+}
+
+@online{mitre2026cwe22,
+  author       = {{MITRE Corporation}},
+  title        = {CWE-22: Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')},
+  organization = {Common Weakness Enumeration, versión 4.20},
+  url          = {https://cwe.mitre.org/data/definitions/22.html},
+  urldate      = {2026-10-20},
+}
+
+@online{mitre2026cwe98,
+  author       = {{MITRE Corporation}},
+  title        = {CWE-98: Improper Control of Filename for Include/Require Statement in PHP Program ('PHP Remote File Inclusion')},
+  organization = {Common Weakness Enumeration, versión 4.20},
+  url          = {https://cwe.mitre.org/data/definitions/98.html},
+  urldate      = {2026-10-20},
+}
+
+@online{owasp2025top10,
+  author  = {{OWASP Foundation}},
+  title   = {OWASP Top 10:2025},
+  url     = {https://top10.owasp.org/2025/},
+  urldate = {2026-10-20},
+}
+
+@article{wilson1927probable,
+  author       = {Wilson, Edwin B.},
+  title        = {Probable Inference, the Law of Succession, and Statistical Inference},
+  journaltitle = {Journal of the American Statistical Association},
+  volume       = {22},
+  number       = {158},
+  pages        = {209--212},
+  year         = {1927},
+  doi          = {10.1080/01621459.1927.10502953},
+}
+
+@inproceedings{lundberg2017unified,
+  author     = {Lundberg, Scott M. and Lee, Su-In},
+  title      = {A Unified Approach to Interpreting Model Predictions},
+  booktitle  = {Advances in Neural Information Processing Systems 30 (NeurIPS 2017)},
+  year       = {2017},
+  pages      = {4765--4774},
+  eprint     = {1705.07874},
+  eprinttype = {arxiv},
+}
+
+@inproceedings{broder1997resemblance,
+  author    = {Broder, Andrei Z.},
+  title     = {On the resemblance and containment of documents},
+  booktitle = {Proceedings. Compression and Complexity of SEQUENCES 1997},
+  publisher = {IEEE},
+  year      = {1997},
+  pages     = {21--29},
+  doi       = {10.1109/SEQUEN.1997.666900},
+}
+
+@inproceedings{indyk1998approximate,
+  author    = {Indyk, Piotr and Motwani, Rajeev},
+  title     = {Approximate nearest neighbors: towards removing the curse of dimensionality},
+  booktitle = {Proceedings of the 30th Annual ACM Symposium on Theory of Computing (STOC '98)},
+  publisher = {ACM},
+  year      = {1998},
+  pages     = {604--613},
+  doi       = {10.1145/276698.276876},
+}
+
+@article{brown2001interval,
+  author       = {Brown, Lawrence D. and Cai, T. Tony and DasGupta, Anirban},
+  title        = {Interval Estimation for a Binomial Proportion},
+  journaltitle = {Statistical Science},
+  volume       = {16},
+  number       = {2},
+  pages        = {101--133},
+  year         = {2001},
+  doi          = {10.1214/ss/1009213286},
+}
+
+@article{papadogiannaki2021survey,
+  author       = {Papadogiannaki, Eva and Ioannidis, Sotiris},
+  title        = {A Survey on Encrypted Network Traffic Analysis Applications, Techniques, and Countermeasures},
+  journaltitle = {ACM Computing Surveys},
+  volume       = {54},
+  number       = {6},
+  year         = {2021},
+  doi          = {10.1145/3457904},
+}
+
+@software{auth02026jsonwebtoken,
+  author  = {{Auth0}},
+  title   = {jsonwebtoken: JsonWebToken implementation for Node.js},
+  url     = {https://github.com/auth0/node-jsonwebtoken},
+  urldate = {2026-10-20},
+}
+
+@software{kelektiv2026bcrypt,
+  author  = {{kelektiv}},
+  title   = {node.bcrypt.js: bcrypt for Node.js},
+  url     = {https://github.com/kelektiv/node.bcrypt.js},
+  urldate = {2026-10-20},
+}
+
+@article{peralta2024sql,
+  author       = {Peralta-Garcia, Edwin and Quevedo-Monsalbe, Juan and Tuesta-Monteza, Victor and Arcila-Diaz, Juan},
+  title        = {Detecting Structured Query Language Injections in Web Microservices Using Machine Learning},
+  journaltitle = {Informatics},
+  volume       = {11},
+  number       = {2},
+  eid          = {15},
+  date         = {2024-04},
+  doi          = {10.3390/informatics11020015},
+}
+
+@dataset{shahane2021xss,
+  author    = {Shahane, Saurabh},
+  title     = {XSS attacks dataset},
+  publisher = {Kaggle},
+  year      = {2021},
+  url       = {https://www.kaggle.com/datasets/saurabhshahane/xss-attacks-dataset},
+}
+
+@dataset{thakur2025payloads,
+  author    = {Thakur, Sunny},
+  title     = {Web application payloads dataset},
+  publisher = {Kaggle},
+  year      = {2025},
+  url       = {https://www.kaggle.com/datasets/cyberprince/web-application-payloads-dataset},
+}
+
+@dataset{shah2020xss,
+  author    = {Shah, S. S. H.},
+  title     = {Cross site scripting XSS dataset for deep learning},
+  publisher = {Kaggle},
+  year      = {2020},
+  url       = {https://www.kaggle.com/datasets/syedsaqlainhussain/cross-site-scripting-xss-dataset-for-deep-learning},
+}
+
+@dataset{pawase2024cmdi,
+  author    = {Pawase, Sanket},
+  title     = {OS command injection dataset},
+  publisher = {Kaggle},
+  year      = {2024},
+  url       = {https://www.kaggle.com/datasets/sanketpawase/os-command-injection},
+}
+
+@dataset{ugur2019traversal,
+  author    = {Uğur, Ö.},
+  title     = {Path traversal vulnerability payload list},
+  publisher = {GitHub},
+  year      = {2019},
+  url       = {https://github.com/omurugur/Path_Travelsal_Payload_List},
+}
+
+@dataset{landauer2022ait,
+  author    = {Landauer, Max and Skopik, Florian and Frank, Maximilian and Hotwagner, Wolfgang and Wurzenberger, Markus and Rauber, Andreas},
+  title     = {AIT log data set v2.0},
+  publisher = {Zenodo},
+  year      = {2022},
+  doi       = {10.5281/zenodo.5789064},
+}
+
+@article{landauer2023maintainable,
+  author       = {Landauer, Max and Skopik, Florian and Frank, Maximilian and Hotwagner, Wolfgang and Wurzenberger, Markus and Rauber, Andreas},
+  title        = {Maintainable log datasets for evaluation of intrusion detection systems},
+  journaltitle = {IEEE Transactions on Dependable and Secure Computing},
+  volume       = {20},
+  number       = {4},
+  pages        = {3466--3482},
+  year         = {2023},
+  doi          = {10.1109/TDSC.2022.3201582},
+}
+
+@article{lucz2025data,
+  author       = {Lucz, Geza and Forstner, Bertalan},
+  title        = {A Thirty-Day Dataset of Malicious {HTTP} Requests Blocked by {OWASP} {ModSecurity} on a Production Web Server},
+  journaltitle = {Data},
+  volume       = {10},
+  number       = {11},
+  eid          = {186},
+  year         = {2025},
+  doi          = {10.3390/data10110186},
+}
+
+@thesis{valenzuela2026ia,
+  type        = {Trabajo de graduación},
+  author      = {Valenzuela Palacios, Diego Pablo},
+  title       = {logSguarDian: Desarrollo de una Librería para la Detección de Amenazas de Seguridad en Endpoints de Aplicaciones},
+  institution = {Universidad del Valle de Guatemala},
+  location    = {Guatemala},
+  date        = {2026},
+}
+
+@article{doran1981smart,
+  author       = {Doran, George T.},
+  title        = {There's a S.M.A.R.T. way to write management's goals and objectives},
+  journaltitle = {Management Review},
+  volume       = {70},
+  number       = {11},
+  pages        = {35--36},
+  year         = {1981},
+}
+
+@article{levenshtein1966binary,
+  author       = {Levenshtein, Vladimir I.},
+  title        = {Binary codes capable of correcting deletions, insertions, and reversals},
+  journaltitle = {Soviet Physics Doklady},
+  volume       = {10},
+  number       = {8},
+  pages        = {707--710},
+  year         = {1966},
+}

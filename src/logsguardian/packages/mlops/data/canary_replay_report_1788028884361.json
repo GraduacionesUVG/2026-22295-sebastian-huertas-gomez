@@ -1,0 +1,13 @@
+{
+  "status": "APPROVED_FOR_PROMOTION",
+  "candidate_model": "../../training/models/rf_self_candidate.onnx",
+  "total_fixtures": 500,
+  "compared": 365,
+  "uncovered": 135,
+  "verdict_agreement_rate": 1,
+  "soft_gate_threshold": 0.995,
+  "soft_gate_passed": true,
+  "hard_gate_regressions": 0,
+  "hard_gate_passed": true,
+  "regression_details": []
+}

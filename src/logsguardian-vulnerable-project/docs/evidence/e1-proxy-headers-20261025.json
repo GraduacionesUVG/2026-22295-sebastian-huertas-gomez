@@ -1,0 +1,1232 @@
+{
+ "columnas_detection_events": [
+  "id",
+  "timestamp",
+  "method",
+  "path",
+  "query_string",
+  "user_agent",
+  "client_ip",
+  "verdict",
+  "predicted_class",
+  "confidence",
+  "if_score",
+  "is_anomaly",
+  "webhook_sent",
+  "elapsed_ms"
+ ],
+ "n_envios": 63,
+ "n_eventos_ping": 63,
+ "n_emparejados": 63,
+ "cabeceras_proxy": {
+  "X-Real-IP": "192.168.65.1",
+  "X-Forwarded-For": "192.168.65.1",
+  "X-Forwarded-Port": "8080",
+  "X-Forwarded-Proto": "http"
+ },
+ "variantes": [
+  "v0_sin_cabeceras",
+  "v1_cabeceras_xff",
+  "v2_cabeceras_xff_host_sin_puerto"
+ ],
+ "envios": [
+  {
+   "variante": "v0_sin_cabeceras",
+   "rep": 1,
+   "id": "cmdi_112",
+   "status": 200,
+   "blocked": false,
+   "t0": 1792952306786.402,
+   "t1": 1792952306807.28,
+   "evento": {
+    "verdict": "pass_anomaly",
+    "predicted_class": "benign",
+    "confidence": 0.4000000059604645,
+    "if_score": -0.13384777307510376,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 2
+  },
+  {
+   "variante": "v0_sin_cabeceras",
+   "rep": 1,
+   "id": "cmdi_134",
+   "status": 200,
+   "blocked": false,
+   "t0": 1792952306807.282,
+   "t1": 1792952306817.0427,
+   "evento": {
+    "verdict": "pass_anomaly",
+    "predicted_class": "sqli",
+    "confidence": 0.3333333432674408,
+    "if_score": -0.14188459515571594,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 2
+  },
+  {
+   "variante": "v0_sin_cabeceras",
+   "rep": 1,
+   "id": "cmdi_31",
+   "status": 200,
+   "blocked": false,
+   "t0": 1792952306817.044,
+   "t1": 1792952306827.122,
+   "evento": {
+    "verdict": "pass_anomaly",
+    "predicted_class": "benign",
+    "confidence": 0.3333333432674408,
+    "if_score": -0.1311483085155487,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 2
+  },
+  {
+   "variante": "v0_sin_cabeceras",
+   "rep": 1,
+   "id": "cmdi_38",
+   "status": 200,
+   "blocked": false,
+   "t0": 1792952306827.125,
+   "t1": 1792952306844.997,
+   "evento": {
+    "verdict": "pass_anomaly",
+    "predicted_class": "sqli",
+    "confidence": 0.3333333432674408,
+    "if_score": -0.15094473958015442,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 2
+  },
+  {
+   "variante": "v0_sin_cabeceras",
+   "rep": 1,
+   "id": "cmdi_6",
+   "status": 200,
+   "blocked": false,
+   "t0": 1792952306845.001,
+   "t1": 1792952306856.3071,
+   "evento": {
+    "verdict": "pass_anomaly",
+    "predicted_class": "benign",
+    "confidence": 0.36666667461395264,
+    "if_score": -0.14395222067832947,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 2
+  },
+  {
+   "variante": "v0_sin_cabeceras",
+   "rep": 1,
+   "id": "cmdi_184",
+   "status": 200,
+   "blocked": false,
+   "t0": 1792952306856.3088,
+   "t1": 1792952306863.811,
+   "evento": {
+    "verdict": "pass_anomaly",
+    "predicted_class": "benign",
+    "confidence": 0.3333333432674408,
+    "if_score": -0.13224148750305176,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 2
+  },
+  {
+   "variante": "v0_sin_cabeceras",
+   "rep": 1,
+   "id": "cmdi_185",
+   "status": 200,
+   "blocked": false,
+   "t0": 1792952306863.8132,
+   "t1": 1792952306876.737,
+   "evento": {
+    "verdict": "pass_anomaly",
+    "predicted_class": "path_traversal",
+    "confidence": 0.30000001192092896,
+    "if_score": -0.13955870270729065,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 2
+  },
+  {
+   "variante": "v0_sin_cabeceras",
+   "rep": 2,
+   "id": "cmdi_112",
+   "status": 200,
+   "blocked": false,
+   "t0": 1792952306876.74,
+   "t1": 1792952306884.807,
+   "evento": {
+    "verdict": "pass_anomaly",
+    "predicted_class": "benign",
+    "confidence": 0.4000000059604645,
+    "if_score": -0.13384777307510376,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 2
+  },
+  {
+   "variante": "v0_sin_cabeceras",
+   "rep": 2,
+   "id": "cmdi_134",
+   "status": 200,
+   "blocked": false,
+   "t0": 1792952306884.81,
+   "t1": 1792952306892.316,
+   "evento": {
+    "verdict": "pass_anomaly",
+    "predicted_class": "sqli",
+    "confidence": 0.3333333432674408,
+    "if_score": -0.14188459515571594,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 2
+  },
+  {
+   "variante": "v0_sin_cabeceras",
+   "rep": 2,
+   "id": "cmdi_31",
+   "status": 200,
+   "blocked": false,
+   "t0": 1792952306892.3198,
+   "t1": 1792952306901.069,
+   "evento": {
+    "verdict": "pass_anomaly",
+    "predicted_class": "benign",
+    "confidence": 0.3333333432674408,
+    "if_score": -0.1311483085155487,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 3
+  },
+  {
+   "variante": "v0_sin_cabeceras",
+   "rep": 2,
+   "id": "cmdi_38",
+   "status": 200,
+   "blocked": false,
+   "t0": 1792952306901.071,
+   "t1": 1792952306906.125,
+   "evento": {
+    "verdict": "pass_anomaly",
+    "predicted_class": "sqli",
+    "confidence": 0.3333333432674408,
+    "if_score": -0.15094473958015442,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 3
+  },
+  {
+   "variante": "v0_sin_cabeceras",
+   "rep": 2,
+   "id": "cmdi_6",
+   "status": 200,
+   "blocked": false,
+   "t0": 1792952306906.1272,
+   "t1": 1792952306912.3818,
+   "evento": {
+    "verdict": "pass_anomaly",
+    "predicted_class": "benign",
+    "confidence": 0.36666667461395264,
+    "if_score": -0.14395222067832947,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 3
+  },
+  {
+   "variante": "v0_sin_cabeceras",
+   "rep": 2,
+   "id": "cmdi_184",
+   "status": 200,
+   "blocked": false,
+   "t0": 1792952306912.383,
+   "t1": 1792952306919.33,
+   "evento": {
+    "verdict": "pass_anomaly",
+    "predicted_class": "benign",
+    "confidence": 0.3333333432674408,
+    "if_score": -0.13224148750305176,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 3
+  },
+  {
+   "variante": "v0_sin_cabeceras",
+   "rep": 2,
+   "id": "cmdi_185",
+   "status": 200,
+   "blocked": false,
+   "t0": 1792952306919.332,
+   "t1": 1792952306926.5261,
+   "evento": {
+    "verdict": "pass_anomaly",
+    "predicted_class": "path_traversal",
+    "confidence": 0.30000001192092896,
+    "if_score": -0.13955870270729065,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 3
+  },
+  {
+   "variante": "v0_sin_cabeceras",
+   "rep": 3,
+   "id": "cmdi_112",
+   "status": 200,
+   "blocked": false,
+   "t0": 1792952306926.528,
+   "t1": 1792952306932.826,
+   "evento": {
+    "verdict": "pass_anomaly",
+    "predicted_class": "benign",
+    "confidence": 0.4000000059604645,
+    "if_score": -0.13384777307510376,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 2
+  },
+  {
+   "variante": "v0_sin_cabeceras",
+   "rep": 3,
+   "id": "cmdi_134",
+   "status": 200,
+   "blocked": false,
+   "t0": 1792952306932.8289,
+   "t1": 1792952306942.2568,
+   "evento": {
+    "verdict": "pass_anomaly",
+    "predicted_class": "sqli",
+    "confidence": 0.3333333432674408,
+    "if_score": -0.14188459515571594,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 2
+  },
+  {
+   "variante": "v0_sin_cabeceras",
+   "rep": 3,
+   "id": "cmdi_31",
+   "status": 200,
+   "blocked": false,
+   "t0": 1792952306942.2588,
+   "t1": 1792952306952.3132,
+   "evento": {
+    "verdict": "pass_anomaly",
+    "predicted_class": "benign",
+    "confidence": 0.3333333432674408,
+    "if_score": -0.1311483085155487,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 3
+  },
+  {
+   "variante": "v0_sin_cabeceras",
+   "rep": 3,
+   "id": "cmdi_38",
+   "status": 200,
+   "blocked": false,
+   "t0": 1792952306952.317,
+   "t1": 1792952306958.4707,
+   "evento": {
+    "verdict": "pass_anomaly",
+    "predicted_class": "sqli",
+    "confidence": 0.3333333432674408,
+    "if_score": -0.15094473958015442,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 2
+  },
+  {
+   "variante": "v0_sin_cabeceras",
+   "rep": 3,
+   "id": "cmdi_6",
+   "status": 200,
+   "blocked": false,
+   "t0": 1792952306958.473,
+   "t1": 1792952306967.389,
+   "evento": {
+    "verdict": "pass_anomaly",
+    "predicted_class": "benign",
+    "confidence": 0.36666667461395264,
+    "if_score": -0.14395222067832947,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 2
+  },
+  {
+   "variante": "v0_sin_cabeceras",
+   "rep": 3,
+   "id": "cmdi_184",
+   "status": 200,
+   "blocked": false,
+   "t0": 1792952306967.392,
+   "t1": 1792952306973.106,
+   "evento": {
+    "verdict": "pass_anomaly",
+    "predicted_class": "benign",
+    "confidence": 0.3333333432674408,
+    "if_score": -0.13224148750305176,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 2
+  },
+  {
+   "variante": "v0_sin_cabeceras",
+   "rep": 3,
+   "id": "cmdi_185",
+   "status": 200,
+   "blocked": false,
+   "t0": 1792952306973.1082,
+   "t1": 1792952306981.169,
+   "evento": {
+    "verdict": "pass_anomaly",
+    "predicted_class": "path_traversal",
+    "confidence": 0.30000001192092896,
+    "if_score": -0.13955870270729065,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 4
+  },
+  {
+   "variante": "v1_cabeceras_xff",
+   "rep": 1,
+   "id": "cmdi_112",
+   "status": 403,
+   "blocked": true,
+   "t0": 1792952306981.175,
+   "t1": 1792952306983.713,
+   "evento": {
+    "verdict": "block",
+    "predicted_class": "sqli",
+    "confidence": 0.4000000059604645,
+    "if_score": -0.13384777307510376,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 3
+  },
+  {
+   "variante": "v1_cabeceras_xff",
+   "rep": 1,
+   "id": "cmdi_134",
+   "status": 403,
+   "blocked": true,
+   "t0": 1792952306983.715,
+   "t1": 1792952306986.672,
+   "evento": {
+    "verdict": "block",
+    "predicted_class": "sqli",
+    "confidence": 0.36666667461395264,
+    "if_score": -0.14188459515571594,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 4
+  },
+  {
+   "variante": "v1_cabeceras_xff",
+   "rep": 1,
+   "id": "cmdi_31",
+   "status": 403,
+   "blocked": true,
+   "t0": 1792952306986.6729,
+   "t1": 1792952306989.8801,
+   "evento": {
+    "verdict": "block",
+    "predicted_class": "sqli",
+    "confidence": 0.36666667461395264,
+    "if_score": -0.1311483085155487,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 3
+  },
+  {
+   "variante": "v1_cabeceras_xff",
+   "rep": 1,
+   "id": "cmdi_38",
+   "status": 403,
+   "blocked": true,
+   "t0": 1792952306989.881,
+   "t1": 1792952306993.684,
+   "evento": {
+    "verdict": "block",
+    "predicted_class": "cmdi",
+    "confidence": 0.36666667461395264,
+    "if_score": -0.15094473958015442,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 3
+  },
+  {
+   "variante": "v1_cabeceras_xff",
+   "rep": 1,
+   "id": "cmdi_6",
+   "status": 200,
+   "blocked": false,
+   "t0": 1792952306993.686,
+   "t1": 1792952307001.118,
+   "evento": {
+    "verdict": "pass_anomaly",
+    "predicted_class": "benign",
+    "confidence": 0.3333333432674408,
+    "if_score": -0.14395222067832947,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 3
+  },
+  {
+   "variante": "v1_cabeceras_xff",
+   "rep": 1,
+   "id": "cmdi_184",
+   "status": 200,
+   "blocked": false,
+   "t0": 1792952307001.121,
+   "t1": 1792952307010.6292,
+   "evento": {
+    "verdict": "pass_anomaly",
+    "predicted_class": "sqli",
+    "confidence": 0.3333333432674408,
+    "if_score": -0.13224148750305176,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 2
+  },
+  {
+   "variante": "v1_cabeceras_xff",
+   "rep": 1,
+   "id": "cmdi_185",
+   "status": 200,
+   "blocked": false,
+   "t0": 1792952307010.6309,
+   "t1": 1792952307018.198,
+   "evento": {
+    "verdict": "pass_anomaly",
+    "predicted_class": "sqli",
+    "confidence": 0.3333333432674408,
+    "if_score": -0.13955870270729065,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 4
+  },
+  {
+   "variante": "v1_cabeceras_xff",
+   "rep": 2,
+   "id": "cmdi_112",
+   "status": 403,
+   "blocked": true,
+   "t0": 1792952307018.2012,
+   "t1": 1792952307022.281,
+   "evento": {
+    "verdict": "block",
+    "predicted_class": "sqli",
+    "confidence": 0.4000000059604645,
+    "if_score": -0.13384777307510376,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 4
+  },
+  {
+   "variante": "v1_cabeceras_xff",
+   "rep": 2,
+   "id": "cmdi_134",
+   "status": 403,
+   "blocked": true,
+   "t0": 1792952307022.281,
+   "t1": 1792952307024.686,
+   "evento": {
+    "verdict": "block",
+    "predicted_class": "sqli",
+    "confidence": 0.36666667461395264,
+    "if_score": -0.14188459515571594,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 4
+  },
+  {
+   "variante": "v1_cabeceras_xff",
+   "rep": 2,
+   "id": "cmdi_31",
+   "status": 403,
+   "blocked": true,
+   "t0": 1792952307024.687,
+   "t1": 1792952307028.852,
+   "evento": {
+    "verdict": "block",
+    "predicted_class": "sqli",
+    "confidence": 0.36666667461395264,
+    "if_score": -0.1311483085155487,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 4
+  },
+  {
+   "variante": "v1_cabeceras_xff",
+   "rep": 2,
+   "id": "cmdi_38",
+   "status": 403,
+   "blocked": true,
+   "t0": 1792952307028.853,
+   "t1": 1792952307031.5679,
+   "evento": {
+    "verdict": "block",
+    "predicted_class": "cmdi",
+    "confidence": 0.36666667461395264,
+    "if_score": -0.15094473958015442,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 3
+  },
+  {
+   "variante": "v1_cabeceras_xff",
+   "rep": 2,
+   "id": "cmdi_6",
+   "status": 200,
+   "blocked": false,
+   "t0": 1792952307031.57,
+   "t1": 1792952307038.5051,
+   "evento": {
+    "verdict": "pass_anomaly",
+    "predicted_class": "benign",
+    "confidence": 0.3333333432674408,
+    "if_score": -0.14395222067832947,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 4
+  },
+  {
+   "variante": "v1_cabeceras_xff",
+   "rep": 2,
+   "id": "cmdi_184",
+   "status": 200,
+   "blocked": false,
+   "t0": 1792952307038.506,
+   "t1": 1792952307043.8918,
+   "evento": {
+    "verdict": "pass_anomaly",
+    "predicted_class": "sqli",
+    "confidence": 0.3333333432674408,
+    "if_score": -0.13224148750305176,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 2
+  },
+  {
+   "variante": "v1_cabeceras_xff",
+   "rep": 2,
+   "id": "cmdi_185",
+   "status": 200,
+   "blocked": false,
+   "t0": 1792952307043.895,
+   "t1": 1792952307053.78,
+   "evento": {
+    "verdict": "pass_anomaly",
+    "predicted_class": "sqli",
+    "confidence": 0.3333333432674408,
+    "if_score": -0.13955870270729065,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 3
+  },
+  {
+   "variante": "v1_cabeceras_xff",
+   "rep": 3,
+   "id": "cmdi_112",
+   "status": 403,
+   "blocked": true,
+   "t0": 1792952307053.782,
+   "t1": 1792952307056.24,
+   "evento": {
+    "verdict": "block",
+    "predicted_class": "sqli",
+    "confidence": 0.4000000059604645,
+    "if_score": -0.13384777307510376,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 2
+  },
+  {
+   "variante": "v1_cabeceras_xff",
+   "rep": 3,
+   "id": "cmdi_134",
+   "status": 403,
+   "blocked": true,
+   "t0": 1792952307056.242,
+   "t1": 1792952307061.405,
+   "evento": {
+    "verdict": "block",
+    "predicted_class": "sqli",
+    "confidence": 0.36666667461395264,
+    "if_score": -0.14188459515571594,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 4
+  },
+  {
+   "variante": "v1_cabeceras_xff",
+   "rep": 3,
+   "id": "cmdi_31",
+   "status": 403,
+   "blocked": true,
+   "t0": 1792952307061.407,
+   "t1": 1792952307065.622,
+   "evento": {
+    "verdict": "block",
+    "predicted_class": "sqli",
+    "confidence": 0.36666667461395264,
+    "if_score": -0.1311483085155487,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 3
+  },
+  {
+   "variante": "v1_cabeceras_xff",
+   "rep": 3,
+   "id": "cmdi_38",
+   "status": 403,
+   "blocked": true,
+   "t0": 1792952307065.623,
+   "t1": 1792952307069.182,
+   "evento": {
+    "verdict": "block",
+    "predicted_class": "cmdi",
+    "confidence": 0.36666667461395264,
+    "if_score": -0.15094473958015442,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 3
+  },
+  {
+   "variante": "v1_cabeceras_xff",
+   "rep": 3,
+   "id": "cmdi_6",
+   "status": 200,
+   "blocked": false,
+   "t0": 1792952307069.184,
+   "t1": 1792952307077.608,
+   "evento": {
+    "verdict": "pass_anomaly",
+    "predicted_class": "benign",
+    "confidence": 0.3333333432674408,
+    "if_score": -0.14395222067832947,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 3
+  },
+  {
+   "variante": "v1_cabeceras_xff",
+   "rep": 3,
+   "id": "cmdi_184",
+   "status": 200,
+   "blocked": false,
+   "t0": 1792952307077.61,
+   "t1": 1792952307083.0002,
+   "evento": {
+    "verdict": "pass_anomaly",
+    "predicted_class": "sqli",
+    "confidence": 0.3333333432674408,
+    "if_score": -0.13224148750305176,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 2
+  },
+  {
+   "variante": "v1_cabeceras_xff",
+   "rep": 3,
+   "id": "cmdi_185",
+   "status": 200,
+   "blocked": false,
+   "t0": 1792952307083.0027,
+   "t1": 1792952307090.132,
+   "evento": {
+    "verdict": "pass_anomaly",
+    "predicted_class": "sqli",
+    "confidence": 0.3333333432674408,
+    "if_score": -0.13955870270729065,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 3
+  },
+  {
+   "variante": "v2_cabeceras_xff_host_sin_puerto",
+   "rep": 1,
+   "id": "cmdi_112",
+   "status": 403,
+   "blocked": true,
+   "t0": 1792952307090.139,
+   "t1": 1792952307093.466,
+   "evento": {
+    "verdict": "block",
+    "predicted_class": "sqli",
+    "confidence": 0.4000000059604645,
+    "if_score": -0.13384777307510376,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 3
+  },
+  {
+   "variante": "v2_cabeceras_xff_host_sin_puerto",
+   "rep": 1,
+   "id": "cmdi_134",
+   "status": 403,
+   "blocked": true,
+   "t0": 1792952307093.468,
+   "t1": 1792952307098.124,
+   "evento": {
+    "verdict": "block",
+    "predicted_class": "sqli",
+    "confidence": 0.36666667461395264,
+    "if_score": -0.14188459515571594,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 4
+  },
+  {
+   "variante": "v2_cabeceras_xff_host_sin_puerto",
+   "rep": 1,
+   "id": "cmdi_31",
+   "status": 403,
+   "blocked": true,
+   "t0": 1792952307098.1262,
+   "t1": 1792952307101.2822,
+   "evento": {
+    "verdict": "block",
+    "predicted_class": "sqli",
+    "confidence": 0.36666667461395264,
+    "if_score": -0.1311483085155487,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 3
+  },
+  {
+   "variante": "v2_cabeceras_xff_host_sin_puerto",
+   "rep": 1,
+   "id": "cmdi_38",
+   "status": 403,
+   "blocked": true,
+   "t0": 1792952307101.284,
+   "t1": 1792952307105.479,
+   "evento": {
+    "verdict": "block",
+    "predicted_class": "cmdi",
+    "confidence": 0.36666667461395264,
+    "if_score": -0.15094473958015442,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 3
+  },
+  {
+   "variante": "v2_cabeceras_xff_host_sin_puerto",
+   "rep": 1,
+   "id": "cmdi_6",
+   "status": 200,
+   "blocked": false,
+   "t0": 1792952307105.4822,
+   "t1": 1792952307113.917,
+   "evento": {
+    "verdict": "pass_anomaly",
+    "predicted_class": "benign",
+    "confidence": 0.3333333432674408,
+    "if_score": -0.14395222067832947,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 3
+  },
+  {
+   "variante": "v2_cabeceras_xff_host_sin_puerto",
+   "rep": 1,
+   "id": "cmdi_184",
+   "status": 200,
+   "blocked": false,
+   "t0": 1792952307113.92,
+   "t1": 1792952307124.0908,
+   "evento": {
+    "verdict": "pass_anomaly",
+    "predicted_class": "sqli",
+    "confidence": 0.3333333432674408,
+    "if_score": -0.13224148750305176,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 2
+  },
+  {
+   "variante": "v2_cabeceras_xff_host_sin_puerto",
+   "rep": 1,
+   "id": "cmdi_185",
+   "status": 200,
+   "blocked": false,
+   "t0": 1792952307124.094,
+   "t1": 1792952307132.722,
+   "evento": {
+    "verdict": "pass_anomaly",
+    "predicted_class": "sqli",
+    "confidence": 0.3333333432674408,
+    "if_score": -0.13955870270729065,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 2
+  },
+  {
+   "variante": "v2_cabeceras_xff_host_sin_puerto",
+   "rep": 2,
+   "id": "cmdi_112",
+   "status": 403,
+   "blocked": true,
+   "t0": 1792952307132.724,
+   "t1": 1792952307138.0742,
+   "evento": {
+    "verdict": "block",
+    "predicted_class": "sqli",
+    "confidence": 0.4000000059604645,
+    "if_score": -0.13384777307510376,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 3
+  },
+  {
+   "variante": "v2_cabeceras_xff_host_sin_puerto",
+   "rep": 2,
+   "id": "cmdi_134",
+   "status": 403,
+   "blocked": true,
+   "t0": 1792952307138.076,
+   "t1": 1792952307141.263,
+   "evento": {
+    "verdict": "block",
+    "predicted_class": "sqli",
+    "confidence": 0.36666667461395264,
+    "if_score": -0.14188459515571594,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 3
+  },
+  {
+   "variante": "v2_cabeceras_xff_host_sin_puerto",
+   "rep": 2,
+   "id": "cmdi_31",
+   "status": 403,
+   "blocked": true,
+   "t0": 1792952307141.2659,
+   "t1": 1792952307145.204,
+   "evento": {
+    "verdict": "block",
+    "predicted_class": "sqli",
+    "confidence": 0.36666667461395264,
+    "if_score": -0.1311483085155487,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 4
+  },
+  {
+   "variante": "v2_cabeceras_xff_host_sin_puerto",
+   "rep": 2,
+   "id": "cmdi_38",
+   "status": 403,
+   "blocked": true,
+   "t0": 1792952307145.207,
+   "t1": 1792952307148.6653,
+   "evento": {
+    "verdict": "block",
+    "predicted_class": "cmdi",
+    "confidence": 0.36666667461395264,
+    "if_score": -0.15094473958015442,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 3
+  },
+  {
+   "variante": "v2_cabeceras_xff_host_sin_puerto",
+   "rep": 2,
+   "id": "cmdi_6",
+   "status": 200,
+   "blocked": false,
+   "t0": 1792952307148.6677,
+   "t1": 1792952307159.2278,
+   "evento": {
+    "verdict": "pass_anomaly",
+    "predicted_class": "benign",
+    "confidence": 0.3333333432674408,
+    "if_score": -0.14395222067832947,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 3
+  },
+  {
+   "variante": "v2_cabeceras_xff_host_sin_puerto",
+   "rep": 2,
+   "id": "cmdi_184",
+   "status": 200,
+   "blocked": false,
+   "t0": 1792952307159.231,
+   "t1": 1792952307165.423,
+   "evento": {
+    "verdict": "pass_anomaly",
+    "predicted_class": "sqli",
+    "confidence": 0.3333333432674408,
+    "if_score": -0.13224148750305176,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 2
+  },
+  {
+   "variante": "v2_cabeceras_xff_host_sin_puerto",
+   "rep": 2,
+   "id": "cmdi_185",
+   "status": 200,
+   "blocked": false,
+   "t0": 1792952307165.426,
+   "t1": 1792952307176.1912,
+   "evento": {
+    "verdict": "pass_anomaly",
+    "predicted_class": "sqli",
+    "confidence": 0.3333333432674408,
+    "if_score": -0.13955870270729065,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 2
+  },
+  {
+   "variante": "v2_cabeceras_xff_host_sin_puerto",
+   "rep": 3,
+   "id": "cmdi_112",
+   "status": 403,
+   "blocked": true,
+   "t0": 1792952307176.195,
+   "t1": 1792952307181.755,
+   "evento": {
+    "verdict": "block",
+    "predicted_class": "sqli",
+    "confidence": 0.4000000059604645,
+    "if_score": -0.13384777307510376,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 2
+  },
+  {
+   "variante": "v2_cabeceras_xff_host_sin_puerto",
+   "rep": 3,
+   "id": "cmdi_134",
+   "status": 403,
+   "blocked": true,
+   "t0": 1792952307181.7578,
+   "t1": 1792952307187.422,
+   "evento": {
+    "verdict": "block",
+    "predicted_class": "sqli",
+    "confidence": 0.36666667461395264,
+    "if_score": -0.14188459515571594,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 3
+  },
+  {
+   "variante": "v2_cabeceras_xff_host_sin_puerto",
+   "rep": 3,
+   "id": "cmdi_31",
+   "status": 403,
+   "blocked": true,
+   "t0": 1792952307187.4238,
+   "t1": 1792952307190.8481,
+   "evento": {
+    "verdict": "block",
+    "predicted_class": "sqli",
+    "confidence": 0.36666667461395264,
+    "if_score": -0.1311483085155487,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 2
+  },
+  {
+   "variante": "v2_cabeceras_xff_host_sin_puerto",
+   "rep": 3,
+   "id": "cmdi_38",
+   "status": 403,
+   "blocked": true,
+   "t0": 1792952307190.85,
+   "t1": 1792952307196.283,
+   "evento": {
+    "verdict": "block",
+    "predicted_class": "cmdi",
+    "confidence": 0.36666667461395264,
+    "if_score": -0.15094473958015442,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 3
+  },
+  {
+   "variante": "v2_cabeceras_xff_host_sin_puerto",
+   "rep": 3,
+   "id": "cmdi_6",
+   "status": 200,
+   "blocked": false,
+   "t0": 1792952307196.285,
+   "t1": 1792952307203.5698,
+   "evento": {
+    "verdict": "pass_anomaly",
+    "predicted_class": "benign",
+    "confidence": 0.3333333432674408,
+    "if_score": -0.14395222067832947,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 2
+  },
+  {
+   "variante": "v2_cabeceras_xff_host_sin_puerto",
+   "rep": 3,
+   "id": "cmdi_184",
+   "status": 200,
+   "blocked": false,
+   "t0": 1792952307203.573,
+   "t1": 1792952307217.197,
+   "evento": {
+    "verdict": "pass_anomaly",
+    "predicted_class": "sqli",
+    "confidence": 0.3333333432674408,
+    "if_score": -0.13224148750305176,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   },
+   "eventos_candidatos": 2
+  },
+  {
+   "variante": "v2_cabeceras_xff_host_sin_puerto",
+   "rep": 3,
+   "id": "cmdi_185",
+   "status": 200,
+   "blocked": false,
+   "t0": 1792952307217.2,
+   "t1": 1792952307227.2441,
+   "evento": {
+    "verdict": "pass_anomaly",
+    "predicted_class": "sqli",
+    "confidence": 0.3333333432674408,
+    "if_score": -0.13955870270729065,
+    "user_agent": "logsguardian-corpus-runner/1.0",
+    "client_ip": "192.168.65.1",
+    "query_string": ""
+   }
+  }
+ ],
+ "emparejamiento": "por orden (un solo cliente secuencial); numero de eventos de /admin/ping igual al de envios; coherencia verdict==block frente a HTTP 403 verificada",
+ "inconsistencias_verdict_vs_http": 0
+}

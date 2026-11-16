@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Error <%= status %> — NotesApp</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<%- include('_nav', { user: user }) %>
+<main>
+  <h1>Error <%= status %></h1>
+  <p><%= message %></p>
+  <p><a href="/posts">&larr; Back to notes</a></p>
+</main>
+</body>
+</html>

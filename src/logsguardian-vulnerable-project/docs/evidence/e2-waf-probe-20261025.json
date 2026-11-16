@@ -1,0 +1,79 @@
+[
+ {
+  "id": "cmdi_6",
+  "status_cliente": 200,
+  "http_code_registro": 200,
+  "interrumpida": false,
+  "uri": "/admin/ping",
+  "reglas": []
+ },
+ {
+  "id": "cmdi_184",
+  "status_cliente": 200,
+  "http_code_registro": 200,
+  "interrumpida": false,
+  "uri": "/admin/ping",
+  "reglas": []
+ },
+ {
+  "id": "cmdi_185",
+  "status_cliente": 200,
+  "http_code_registro": 200,
+  "interrumpida": false,
+  "uri": "/admin/ping",
+  "reglas": []
+ },
+ {
+  "id": "cmdi_112",
+  "status_cliente": 200,
+  "http_code_registro": 200,
+  "interrumpida": false,
+  "uri": "/admin/ping",
+  "reglas": []
+ },
+ {
+  "id": "cmdi_134",
+  "status_cliente": 200,
+  "http_code_registro": 200,
+  "interrumpida": false,
+  "uri": "/admin/ping",
+  "reglas": []
+ },
+ {
+  "id": "cmdi_31",
+  "status_cliente": 200,
+  "http_code_registro": 200,
+  "interrumpida": false,
+  "uri": "/admin/ping",
+  "reglas": []
+ },
+ {
+  "id": "cmdi_38",
+  "status_cliente": 200,
+  "http_code_registro": 200,
+  "interrumpida": false,
+  "uri": "/admin/ping",
+  "reglas": []
+ },
+ {
+  "id": "cmdi_0",
+  "status_cliente": 403,
+  "http_code_registro": 403,
+  "interrumpida": true,
+  "uri": "/admin/ping",
+  "reglas": [
+   {
+    "ruleId": "932235",
+    "message": "Remote Command Execution: Unix Command Injection (command without evasion)",
+    "severity": "2",
+    "data": "Matched Data: &&echo  found within ARGS:host: 127.0.0.1&&echo LSG_CMDI_MARKER #"
+   },
+   {
+    "ruleId": "949110",
+    "message": "Inbound Anomaly Score Exceeded (Total Score: 5)",
+    "severity": "0",
+    "data": ""
+   }
+  ]
+ }
+]

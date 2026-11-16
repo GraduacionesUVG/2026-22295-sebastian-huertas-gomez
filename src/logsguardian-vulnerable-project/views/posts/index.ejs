@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Notes — NotesApp</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<%- include('../_nav', { user: user }) %>
+<main>
+  <div class="page-header">
+    <h1>Notes</h1>
+    <a href="/posts/new" class="btn">New Note</a>
+  </div>
+
+  <form action="/posts/search" method="GET" class="search-form">
+    <input type="text" name="q" placeholder="Search notes..." value="<%= query || '' %>">
+    <button type="submit">Search</button>
+  </form>
+
+  <% if (query !== null) { %>
+    <p class="meta">Search results for: <strong><%= query %></strong></p>
+  <% } %>
+
+  <% if (posts.length === 0) { %>
+    <p>No notes found.</p>
+  <% } else { %>
+    <ul class="post-list">
+      <% posts.forEach(post => { %>
+        <li>
+          <a href="/posts/<%= post.id %>"><%= post.title %></a>
+          <span class="meta">by <a href="/users/<%= post.user_id %>"><%= post.username %></a>
+          — <%= new Date(post.created_at).toLocaleDateString() %></span>
+        </li>
+      <% }) %>
+    </ul>
+  <% } %>
+</main>
+</body>
+</html>

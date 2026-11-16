@@ -1,0 +1,27 @@
+T3 - verificacion empirica de Content-Type aceptado por endpoint objetivo de XSS
+Fecha: 2026-10-25
+Stack: Config 1 (LOGSGUARDIAN_DISABLED=true), COMPOSE_PROJECT_NAME=lsgxss20261025, localhost:3000
+
+Metodo: un marcador unico por combinacion endpoint x content-type, enviado por separado (no en
+paralelo, para no pisar el valor guardado), releido inmediatamente despues de cada envio.
+
+POST /profile (bio)
+  urlencoded  -> status 200, releido: MARK_URLENC_A1B2 presente
+  multipart   -> status 200, releido: MARK_MULTIPART_C3D4 presente
+  json        -> status 200, releido: MARK_JSON_E5F6 presente
+
+POST /posts (title, content)
+  urlencoded  -> status 302, releido: TITLE_URLENC_G7H8 presente
+  multipart   -> status 302, releido: TITLE_MULTIPART_I9J0 presente
+  json        -> status 302, releido: TITLE_JSON_K1L2 presente
+
+Conclusion: los tres Content-Type (application/x-www-form-urlencoded, multipart/form-data,
+application/json) son aceptados y persistidos por ambos endpoints. Generador y muestreador (T4/T5)
+usan los tres como transporte valido.
+
+Nota adicional (hallada al verificar send_xss_corpus.py antes del freeze): POST /posts exige
+title Y content no vacios a nivel de ruta (src/routes/posts.js:53) para persistir. El corpus de
+esta tarea solo rellena el campo objetivo de la dimension "campo" (content o title, no ambos) -
+esto no afecta el bloqueo de logSguarDian (ocurre en el middleware, antes de la validacion de la
+ruta), pero significa que un post con solo "content" poblado no se guarda en la base de datos.
+Declarado en docs/protocol-xss.md, seccion T3.

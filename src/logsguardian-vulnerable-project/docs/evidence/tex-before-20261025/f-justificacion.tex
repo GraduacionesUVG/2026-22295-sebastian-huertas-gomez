@@ -1,0 +1,189 @@
+% ==============================================================================
+% JUSTIFICACIÓN
+% ==============================================================================
+% Contenido redactado y provisto directamente por el estudiante (no adaptado
+% del protocolo; reestructura las subsecciones 3.6-3.9 del protocolo
+% "Utilidad para..." en una organización más estándar de tesis: pertinencia,
+% relevancia técnica, relevancia social/económica, relevancia institucional,
+% beneficiarios). No se modificó el contenido, solo se revisó.
+%
+% NOTA: el protocolo incluía una subsección explícita "3.7 Utilidad para el
+% estudiante" que este capítulo no reproduce como sección propia. Puede ser
+% una omisión involuntaria o una decisión editorial (es una categoría de
+% justificación más débil/subjetiva que las demás); no se asume ninguna de
+% las dos, se deja señalado.
+%
+% Verificación de fuentes (2026-08-08): se confirmó por WebFetch que
+% soy502fortinet2026 respalda literalmente la cifra de 726 millones de
+% intentos de ataque citada (dato de 2025). No se pudo verificar
+% mastercard2025 (la URL devuelve 403 Forbidden); la cifra de 200% de
+% incremento y el ranking "top 10 en Latinoamérica" quedan sin confirmar por
+% este medio y deben revisarse manualmente antes de la entrega final.
+% Actualización 2026-10-09: zeng2024 se reemplazó por zhen2025anomaly (mismo
+% documento IEEE, autores y año corregidos). Se retiró la cita a verma2020 de la
+% afirmación sobre el costo de los SIEM: ese artículo es una revisión de IDS
+% para IoT y no respalda la afirmación. Resuelto el mismo día: la oración se
+% reformuló sobre enisa2021smes (verificado en el PDF: págs. impresas 16, 17 y
+% 18); se retiró la afirmación sobre "Machine Learning integrado en SIEM" e
+% "infraestructura de análisis masivo", que no tiene fuente verificada.
+% Actualización 2026-10-10: se acotó la promesa de entrega del dataset a scripts y
+% vectores derivados (dos fuentes, XSS_dataset.csv y command injection.csv, no
+% tienen licencia especificada por su origen). Estado verificado ese día: los
+% archivos de vectores (training/data_clean/*.parquet|csv, training/splits/*.parquet)
+% están en .gitignore y NO están publicados en el repositorio; ver la
+% recomendación correspondiente en n-recomendaciones.tex.
+\ifdefined\modoensamble
+\else
+	\input{0-preambulo_standalone}
+\fi
+
+\chapter{Justificación}
+
+\section{Importancia y pertinencia del problema}
+Como se estableció en el capítulo de Antecedentes, la carencia identificada no es la ausencia de
+investigación sobre detección de ataques web mediante aprendizaje automático, sino la ausencia
+de una solución que integre esa detección de forma nativa en el runtime de aplicaciones Node.js,
+cubra múltiples vectores de ataque en un único sistema y sea operable por organizaciones sin
+personal de seguridad dedicado. Justificar este trabajo exige, entonces, explicar por qué esa
+carencia específica importa y para quién.
+
+Las aplicaciones web construidas sobre Node.js constituyen una superficie de ataque
+particularmente expuesta: el ecosistema npm se caracteriza por cadenas extensas de dependencias transitivas: un estudio
+empírico publicado en 2022 reportó que el 42.1~\% de los paquetes analizados tenía al menos una
+dependencia directa o indirecta vulnerable en su última versión \cite{zerouali2022impact}, y otro de
+2019 concluyó que paquetes individuales pueden afectar a gran parte del ecosistema y que un número
+muy reducido de cuentas de mantenedores podría usarse para inyectar código malicioso en la mayoría
+de los paquetes \cite{zimmermann2019small}. Además, la ausencia de controles a nivel de aplicación
+deja expuesta la lógica de negocio incluso cuando existen defensas perimetrales. Los mecanismos de defensa tradicionales, sea un Web Application Firewall (WAF)
+o un Sistema de Detección de Intrusiones (IDS), fueron diseñados para operar en el borde de la red
+y dependen de firmas estáticas; esta dependencia produce una tasa de falsos negativos
+estructuralmente alta frente a variantes ligeramente modificadas de un ataque conocido o frente a
+abuso de la lógica de negocio de la aplicación, categorías que no son detectables por coincidencia de patrones. Esta limitación es coherente con la
+comparación experimental de Sureda Riera et al., en la que las herramientas RASP evaluadas superaron
+a los WAF \cite{bermejohiguera2022}. Este no es un problema exclusivamente técnico: es un problema de
+acceso. Las organizaciones que sí pueden mitigar esta limitación suelen hacerlo mediante plataformas de
+gestión de eventos e información de seguridad (SIEM). Para las pequeñas y medianas empresas, sin
+embargo, estos sistemas representan inversiones considerables, y muchas soluciones de
+ciberseguridad requieren conocimiento especializado para implementarse y administrarse; en el
+estudio de la Agencia de la Unión Europea para la Ciberseguridad sobre pymes europeas, solo el
+28~\% de los participantes de la encuesta declaró haber asignado el rol de responsable de seguridad
+de la información \cite{enisa2021smes}. Aunque ese estudio no se refiere a Guatemala, describe las
+mismas dos barreras, presupuesto y personal especializado, que enfrentan las organizaciones que
+constituyen la población objetivo de este trabajo (Sección~\ref{sec:just-contexto}). El problema, por tanto, no se limita a la existencia de ataques contra
+aplicaciones Node.js, sino a la distribución desigual de las herramientas capaces de detectarlos.
+
+\section{Relevancia técnica y científica}
+Desde el punto de vista técnico, este trabajo es pertinente porque aborda una limitación
+metodológica recurrente en la literatura de detección de ataques web mediante aprendizaje
+automático: la evaluación de modelos sobre payloads o cadenas de texto aisladas, sin considerar
+las restricciones de un entorno de ejecución real. Los sistemas de detección basados
+exclusivamente en reglas colapsan frente a cargas útiles polimórficas o sintaxis de ataque
+ligeramente ofuscada que evade patrones conocidos, mientras que los enfoques de aprendizaje
+automático permiten generalizar el comportamiento base del servidor y detectar desviaciones
+estadísticas sin depender de actualizaciones manuales de firmas \cite{zhen2025anomaly}. La combinación
+de un componente supervisado, orientado a clasificar con precisión los vectores de ataque
+conocidos, con un componente no supervisado orientado a identificar anomalías estadísticas
+asociadas a variantes no observadas durante el entrenamiento, se propone responder a esta limitación sin comprometer la capacidad de generalización del sistema frente a amenazas nuevas; en qué medida lo logra se evalúa en los capítulos de Resultados y de Análisis de resultados.
+
+La relevancia científica del proyecto radica en que el problema de integrar inferencia de
+aprendizaje automático dentro de un proceso Node.js sin degradar su rendimiento no está resuelto
+de forma satisfactoria en la literatura revisada, precisamente porque la mayoría de los sistemas
+comparables opera como componente externo (proxy inverso o plataforma SIEM) y no como
+extensión del propio proceso de la aplicación. Ejecutar inferencia dentro del ciclo de vida de una
+petición HTTP exige resolver un reto de ingeniería específico de las arquitecturas orientadas a
+eventos: evitar que el cómputo del modelo bloquee el bucle de eventos (\textit{event loop}) del cual
+depende toda la capacidad de manejar peticiones concurrentes de Node.js. La construcción de un
+pipeline de extracción de características e inferencia que opere de forma asíncrona sobre datos de
+naturaleza multidimensional, sin bloquear dicho bucle, constituye un aporte técnico verificable
+independientemente del desempeño final del modelo de clasificación, y es generalizable a
+cualquier otro problema de seguridad en tiempo de ejecución sobre arquitecturas orientadas a
+eventos.
+
+\section{Relevancia social y económica en el contexto guatemalteco}
+\label{sec:just-contexto}
+La pertinencia de este trabajo no puede argumentarse en abstracto: depende directamente del
+contexto en que se desarrollaría la solución. En Guatemala, los ataques cibernéticos registrados
+durante 2024 aumentaron un 200~\% respecto del año anterior, cifra que posicionó al país entre los
+diez de mayor exposición cibernética en Latinoamérica según el Cyber Insights Report de
+Mastercard \cite{mastercard2025}. Reportes posteriores muestran que los incidentes continuaron: durante 2026 se reportaron ataques
+cibernéticos contra instituciones públicas guatemaltecas, entre ellos el ataque a la Dirección
+General de Control de Armas y Municiones (Digecam) ocurrido el 7 de abril \cite{emisoras2026digecam}
+y el ataque cibernético confirmado por la Universidad de San Carlos de Guatemala
+\cite{emisoras2026usac}, en un país que, además, no cuenta todavía con un marco legal de
+ciberseguridad vigente que module la respuesta institucional a estos incidentes
+\cite{lahora2026estancada}.
+
+Este panorama de riesgo creciente contrasta con la estructura del tejido empresarial
+guatemalteco. Según cifras del Ministerio de Economía, las micro, pequeñas y medianas empresas
+representaron el 99.57~\% de las empresas activas con ventas en el año base 2015
+\cite{mineco2015mipyme}, y una nota de la Agencia Guatemalteca de Noticias de julio de 2025 afirma
+que representan el 96.3~\% de las empresas guatemaltecas \cite{agn2025mipymes}, y
+es razonable asumir que una proporción sustancial de las empresas de base tecnológica que
+desarrollan servicios sobre Node.js pertenece a este mismo segmento, es decir, opera sin un
+Centro de Operaciones de Seguridad ni presupuesto destinado a licencias de plataformas
+empresariales de detección. Nótese que esta es una inferencia razonable a partir de la estructura
+general del tejido empresarial del país, y no una cifra específica y verificada sobre el segmento de
+startups tecnológicas, dato que no está disponible públicamente de forma desagregada; el
+argumento de relevancia social se sostiene sobre la composición general del sector empresarial
+guatemalteco, no sobre una estadística exclusiva del sector de software que actualmente no existe.
+En ese contexto, una herramienta que se distribuye sin costo mediante un gestor de paquetes de
+uso estándar y que no exige modificar la infraestructura de red reduce directamente las dos
+barreras de adopción más frecuentemente documentadas para estas organizaciones: el presupuesto y la complejidad operativa \cite{enisa2021smes}.
+
+\section{Relevancia institucional}
+Para la Universidad del Valle de Guatemala, este trabajo se ubica en la intersección entre Ciencia
+de Datos, Ciberseguridad e Inteligencia Artificial, tres áreas de demanda creciente en el mercado
+tecnológico regional. La metodología documentada de construcción del corpus (auditoría de fuentes, etiquetado
+determinista y partición verificada por hash) y los vectores de características derivados
+constituyen un recurso académico que puede emplearse en cursos de seguridad informática y
+aprendizaje automático dentro de la Facultad de Ingeniería,
+independientemente de si el sistema resultante alcanza los criterios de aceptación definidos para
+el proyecto. La alineación explícita del diseño con marcos de referencia reconocidos
+internacionalmente, como OWASP Top 10 y MITRE ATT\&CK, permite además que la metodología
+documentada sea replicada, contrastada o extendida por trabajos de graduación posteriores dentro
+del mismo programa.
+
+\section{Beneficiarios directos e indirectos}
+Es posible distinguir con claridad entre los beneficiarios directos de este trabajo y sus beneficiarios
+indirectos, distinción necesaria para no sobreestimar el alcance real de la investigación en esta
+etapa.
+
+Los beneficiarios directos son las organizaciones guatemaltecas que desarrollan aplicaciones
+sobre Node.js sin equipo de seguridad dedicado y que podrían instalar la librería resultante como
+un componente adicional de su arquitectura existente sin incurrir en costo de licenciamiento ni en
+modificaciones estructurales de su infraestructura de red. Dentro de este grupo se incluyen
+también iniciativas comunitarias, organizaciones no gubernamentales con presencia digital y
+proyectos de gobierno abierto que comparten la misma restricción de recursos técnicos y
+financieros que las startups tecnológicas.
+
+Los beneficiarios indirectos son de tres tipos. Primero, la comunidad académica de la
+Universidad del Valle de Guatemala, a través de la metodología documentada de construcción del corpus, de los vectores derivados y del precedente
+metodológico que este trabajo establece para investigaciones futuras en la intersección de
+ciberseguridad e inteligencia artificial aplicada. Segundo, otros investigadores y equipos de desarrollo de la región centroamericana que, a partir del
+material publicado del proyecto, podrían reproducir la construcción del corpus desde las mismas
+fuentes públicas y reutilizar los vectores de características derivados para entrenar o validar
+sistemas de detección propios, en un contexto donde la investigación aplicada en ciberseguridad con
+datos representativos de la región es escasa. El proyecto no redistribuye los datos crudos de las
+fuentes cuya licencia no está especificada por su origen: pone a disposición los analizadores y
+scripts de normalización, el archivo de mapeo de etiquetas, la auditoría de fuentes y los
+vectores de características derivados, que contienen valores numéricos y no el texto de las
+peticiones. La reproducción del corpus no es completa: los conjuntos sintéticos de Command
+Injection, que aportan el 17.8~\% de las filas de esa clase en el conjunto de prueba, no cuentan
+con un generador versionado. Tercero, y de forma
+más amplia, el ecosistema tecnológico guatemalteco en su conjunto, en la medida en que la
+adopción voluntaria de controles de seguridad accesibles contribuye a elevar el nivel general de
+madurez en ciberseguridad del país mientras el marco regulatorio correspondiente continúa en
+trámite legislativo \cite{lahora2026estancada}.
+
+Es importante precisar que la magnitud real de estos beneficios, tanto en términos de tasa de
+detección como de impacto en el rendimiento del servidor anfitrión, es precisamente lo que este
+trabajo se propone medir y no puede darse por establecida antes de la fase de evaluación descrita
+en la metodología. Esta justificación argumenta la pertinencia de investigar el problema, no
+anticipa el desempeño del sistema que se construirá para abordarlo.
+
+\ifdefined\modoensamble
+\else
+	\section*{Referencias}
+	\printbibliography[heading=none]
+	\end{document}
+\fi

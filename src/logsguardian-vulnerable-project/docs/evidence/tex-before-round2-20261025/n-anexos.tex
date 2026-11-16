@@ -1,0 +1,383 @@
+% ==============================================================================
+% ANEXOS
+% ==============================================================================
+% Datos tomados de los repositorios del proyecto:
+%   - docs/model-provenance.md (logSguarDian): hashes de los pares de modelos.
+%   - SHA-256 de los archivos .tgz de npm: calculados con npm pack y shasum el
+%     2026-10-12.
+%   - docs/cybersecurity-objectives-compliance.md: historial del bloqueo del
+%     conjunto de prueba (git log --all -- training/splits/test.lock.sha256).
+%   - docs/dataset-audit.md: auditoria de fuentes.
+%   - docs/evidence/README.md (logSguarDian-vulnerable-project): corrida de
+%     latencia en Linux.
+\ifdefined\modoensamble
+\else
+	\input{0-preambulo_standalone}
+\fi
+
+\chapter{Anexos}
+\label{cap:anexos}
+
+\section{Procedencia de los modelos y de los paquetes}
+\label{anx:procedencia}
+
+El Cuadro~\ref{tab:anx-hashes} lista los archivos \texttt{rf.onnx} e \texttt{if.onnx} de cada par
+de modelos descrito en el Cuadro~\ref{tab:pares-modelos}, con su suma SHA-256 completa. Las sumas
+se calcularon sobre el contenido del objeto de git de cada archivo y, para los paquetes, sobre el
+contenido extraído del archivo publicado en npm.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|L{3.6cm}|L{9.9cm}|}
+\hline
+\textbf{Archivo} & \textbf{SHA-256} \\ \hline
+Par A, \texttt{rf.onnx} (\texttt{rf\_v10}) & {\scriptsize\texttt{180837255dffd596a38bf7c29032ccc313005cd70eca5c6238e23e35bdc0d4ec}} \\ \hline
+Par A, \texttt{if.onnx} (\texttt{if\_v9}) & {\scriptsize\texttt{5de374a7f1d19176d7c66d3354e972d37b28a7306a87efa0ce8639278f489150}} \\ \hline
+Par B, \texttt{rf.onnx} (\texttt{rf\_v11}, primer build) & {\scriptsize\texttt{a7c015f5a5fa3fabfd91b79ec9338dc7da6a68c392c19ded4b04cc6f0fb903b2}} \\ \hline
+Par B, \texttt{if.onnx} (\texttt{if\_v10}, primer build) & {\scriptsize\texttt{3cf8e45c285de19bc86e6dc284e502cd2c24becb888747b9645bed4cfb224417}} \\ \hline
+Par C, \texttt{rf.onnx} (\texttt{rf\_v11}, reentrenamiento) & {\scriptsize\texttt{25b407e649283606a231665a5a8c8ea1c2c7ad4fd0374a8945b3f119651b0870}} \\ \hline
+Par C, \texttt{if.onnx} (\texttt{if\_v10}, reentrenamiento) & {\scriptsize\texttt{5be28ee8437643b2f13708eee1ac3175348a350ea6fb8f8daeb09bd5717f797e}} \\ \hline
+\end{tabular}
+\caption[Sumas SHA-256 de los pares de modelos]{Sumas SHA-256 de los archivos ONNX de cada par de modelos}
+\label{tab:anx-hashes}
+\end{table}
+{\footnotesize Nota. Elaboración propia con datos de \texttt{docs/model-provenance.md} (repositorio
+\texttt{logSguarDian}). El par~A es el contenido del paquete \texttt{logsguardian@0.1.0}; el par~C,
+el del paquete \texttt{logsguardian@0.1.1}.}
+
+El Cuadro~\ref{tab:anx-paquetes} reúne los dos paquetes publicados en el registro de npm y el umbral
+del Isolation Forest que cada uno aplica.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|L{2.3cm}|L{2.5cm}|L{6.2cm}|L{2.5cm}|}
+\hline
+\textbf{Paquete} & \textbf{Publicación} & \textbf{SHA-256 del archivo \texttt{.tgz}} & \textbf{Umbral del IF} \\ \hline
+\texttt{0.1.0} & 30 de agosto de 2026 & {\scriptsize\texttt{c5c1a1da57cfb873350ac0c8ab3e7bad395e8cbf507b18cc3272df447880dcb0}} & 0.002486 (constante) \\ \hline
+\texttt{0.1.1} & 11 de octubre de 2026 (UTC) & {\scriptsize\texttt{abf8d5c47036d9c3a289bc36158f1caaa91b9504689aa97193e51c6808258d15}} & 0.004206 (leído de \texttt{parity\_report.json}) \\ \hline
+\end{tabular}
+\caption[Paquetes publicados en npm]{Paquetes \texttt{logsguardian} publicados en el registro de npm}
+\label{tab:anx-paquetes}
+\end{table}
+{\footnotesize Nota. Elaboración propia. Las sumas de los archivos se calcularon descargando cada
+versión del registro (\texttt{npm pack}); los umbrales provienen de \texttt{docs/decision-policy.md}
+del repositorio \texttt{logSguarDian}. Los otros dos archivos que se mencionan en el texto, el
+tarball de la Ronda~5 original (\texttt{e09120006dd1...}) y el tarball de validación
+(\texttt{cf1238deb333...}), no se publicaron en el registro.}
+
+\section{Historial del bloqueo del conjunto de prueba}
+\label{anx:lock}
+
+El bloqueo del conjunto de prueba es el SHA-256 de los identificadores por fila del conjunto,
+ordenados y unidos por saltos de línea. El valor cambió nueve veces; el Cuadro~\ref{tab:anx-lock}
+las lista. No hay un único bloqueo por generación de modelo, y el cambio del 23 de septiembre de
+2026 entró en tres commits.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|L{2.2cm}|L{2.4cm}|L{4.8cm}|L{2.2cm}|L{2.2cm}|}
+\hline
+\textbf{Fecha} & \textbf{Commit} & \textbf{Motivo} & \textbf{Antes} & \textbf{Después} \\ \hline
+11 jun 2026 & \texttt{cc00c3c} & Bloqueo inicial & --- & \texttt{3beeaba4} \\ \hline
+23 jul 2026 & \texttt{df62619} & Nuevo conjunto, antes de la generación v3 & \texttt{3beeaba4} & \texttt{d1a2a284} \\ \hline
+24 jul 2026 & \texttt{6867f28} & Antes de la generación v4 & \texttt{d1a2a284} & \texttt{7df5adb8} \\ \hline
+24 jul 2026 & \texttt{59990ca} & Antes de la generación v6 & \texttt{7df5adb8} & \texttt{ee4b85db} \\ \hline
+25 jul 2026 & \texttt{5dc7c06} & Antes de la generación v8 & \texttt{ee4b85db} & \texttt{251716bb} \\ \hline
+26 jul 2026 & \texttt{fa46bdd} & Antes de la generación v9 & \texttt{251716bb} & \texttt{4a5e0b97} \\ \hline
+2 ago 2026 & \texttt{b43de9c} & Antes de la generación v10 & \texttt{4a5e0b97} & \texttt{6c5f253d} \\ \hline
+30 ago 2026 & \texttt{8cbe6c9} & Antes de la generación v11 & \texttt{6c5f253d} & \texttt{a3140ab3} \\ \hline
+23 sep 2026 & \texttt{f15e7cc}, \texttt{72aabd6}, \texttt{6d1fa68} & Rebloqueo para que coincida con la generación v11 restaurada & \texttt{a3140ab3} & \texttt{7486c258} \\ \hline
+\end{tabular}
+\caption[Historial del bloqueo del conjunto de prueba]{Historial de cambios del bloqueo del conjunto de prueba (hashes truncados a 8 caracteres)}
+\label{tab:anx-lock}
+\end{table}
+{\footnotesize Nota. Elaboración propia con datos de \texttt{docs/cybersecurity-objectives-compliance.md}
+(repositorio \texttt{logSguarDian}), generados con \texttt{git log --all -{}- training/splits/test.lock.sha256}.}
+
+\section{Auditoría de las fuentes de datos}
+\label{anx:auditoria}
+
+El Cuadro~\ref{tab:anx-auditoria} resume la auditoría de licencias de las nueve fuentes públicas
+candidatas, verificada contra la API o la página de cada origen.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|L{3.8cm}|L{3.0cm}|L{3.3cm}|L{3.6cm}|}
+\hline
+\textbf{Fuente} & \textbf{Licencia} & \textbf{DOI} & \textbf{Decisión} \\ \hline
+Colección CAPEC (SR-BH 2020) \cite{sureda2022srbh,sureda2022newmultilabel} & CC0-1.0 & 10.7910/DVN/OGOIXX & Incluida \\ \hline
+modsec-learn \cite{pralab2024modseclearn,scano2024modseclearn} & MIT & No verificado & Incluida \\ \hline
+OWASP ModSecurity, registros de un servidor protegido (Zenodo) \cite{lucz2025} & CC BY 4.0 & 10.5281/zenodo.17178461 & Incluida \\ \hline
+Payloads.csv (Kaggle) \cite{shahane2021xss} & CC BY 4.0 & No asignado por Kaggle & Incluida \\ \hline
+payload\_full.csv (Kaggle) \cite{thakur2025payloads} & MIT & No asignado por Kaggle & Incluida \\ \hline
+XSS\_dataset.csv (Kaggle) \cite{shah2020xss} & No especificada por el origen & No asignado por Kaggle & Incluida; no se redistribuye \\ \hline
+command injection.csv (Kaggle) \cite{pawase2024cmdi} & No especificada por el origen & No asignado por Kaggle & Incluida; no se redistribuye \\ \hline
+Lista de payloads de Path Traversal de omurugur \cite{ugur2019traversal} & MIT & No asignado & Aprobada; sin analizador, no aporta filas \\ \hline
+AIT-LDSv2 (russellmitchell) \cite{landauer2022ait,landauer2023maintainable} & CC-BY-NC-SA-4.0 & 10.5281/zenodo.5789064 & Excluida: sus etiquetas describen el rol del atacante, no el tipo de payload \\ \hline
+\end{tabular}
+\caption[Auditoría de las fuentes de datos]{Licencia, DOI y decisión de inclusión de cada fuente auditada}
+\label{tab:anx-auditoria}
+\end{table}
+{\footnotesize Nota. Elaboración propia con datos de \texttt{docs/dataset-audit.md} (repositorio
+\texttt{logSguarDian}). El número de filas que cada fuente aporta al corpus final está en el
+Cuadro~\ref{tab:met-origenes}. Las listas SecLists y PayloadsAllTheThings no constan en esta
+auditoría; su licencia (MIT) se consultó en sus repositorios el 10 de octubre de 2026.}
+
+\section{Evidencia de la corrida de latencia en Linux}
+\label{anx:latencia}
+
+El Cuadro~\ref{tab:anx-latencia} identifica la corrida de integración continua de la que provienen
+las cifras de latencia, memoria y CPU del Capítulo~\ref{cap:resultados}.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|L{4.2cm}|L{9.3cm}|}
+\hline
+\textbf{Campo} & \textbf{Valor} \\ \hline
+Flujo de trabajo & \texttt{.github/workflows/latency-benchmark.yml} \\ \hline
+Identificador de la ejecución & 36276690236 \\ \hline
+Identificador del artefacto & 10917957439 \\ \hline
+Commit & \texttt{f15a9e8} \\ \hline
+Fecha & 26 de septiembre de 2026 \\ \hline
+Ejecutor & Ubuntu (Azure), x86\_64, 2 vCPU, 7.8~GiB de memoria \\ \hline
+Docker Engine / Compose & 28.0.4 / v2.38.2 \\ \hline
+Modelos & Par~B (\texttt{rf.onnx} \texttt{a7c015f5...}, \texttt{if.onnx} \texttt{3cf8e45c...}) \\ \hline
+Contenido del archivo & 30 reportes de Artillery (3 escenarios, 2 condiciones, 5 repeticiones), muestras de \texttt{docker stats} cada $\approx$5~s y análisis de memoria \\ \hline
+Copia en el repositorio & \texttt{docs/evidence/latency-linux-2026-09-26.tgz} (SHA-256 {\scriptsize\texttt{b96d901408547331fb4859a5dac4810abdb1caaeb2f15f3378877c2290187cec}}) \\ \hline
+\end{tabular}
+\caption[Corrida de latencia en Linux]{Identificación de la corrida de latencia, memoria y CPU en Linux nativo}
+\label{tab:anx-latencia}
+\end{table}
+{\footnotesize Nota. Elaboración propia con datos de \texttt{docs/evidence/README.md} (repositorio
+\texttt{logSguarDian-vulnerable-project}). El artefacto original de GitHub Actions expira el 26 de
+octubre de 2026; la copia del repositorio es la que se conserva.}
+
+\section{Cobertura de XSS por estrato}
+\label{anx:xss-estratos}
+
+El Cuadro~\ref{tab:anx-xss-estratos} desglosa la cobertura del corpus propio de XSS por cada
+dimensión de su generador, y el Cuadro~\ref{tab:anx-xss-bio} repite el desglose para los 64
+payloads dirigidos al campo \texttt{bio}, el único con vulnerabilidad confirmada. Las
+Configuraciones 2 y 3b bloquearon todos los payloads de cada estrato. La Configuración 3a falló en
+11 payloads, todos con doble codificación URL (\texttt{url\_double}, 14 de 25 bloqueados) y
+enviados como JSON o \texttt{multipart/form-data}. Los intervalos son de Wilson al 95~\%; en un
+estrato con pocos payloads, el límite inferior es amplio aun con 100~\% de bloqueo.
+
+\begin{longtable}{|L{4.2cm}|L{0.9cm}|L{3.4cm}|L{4.0cm}|}
+\hline
+\textbf{Estrato} & \textbf{n} & \textbf{Configuraciones 2 y 3b: bloqueados e IC 95~\%} & \textbf{Configuración 3a: bloqueados e IC 95~\%} \\ \hline
+\endfirsthead
+\multicolumn{4}{l}{\footnotesize\textit{(continuación)}} \\ \hline
+\textbf{Estrato} & \textbf{n} & \textbf{Configuraciones 2 y 3b: bloqueados e IC 95~\%} & \textbf{Configuración 3a: bloqueados e IC 95~\%} \\ \hline
+\endhead
+\multicolumn{4}{r}{\footnotesize\textit{Continúa en la página siguiente}} \\
+\endfoot
+\endlastfoot
+\multicolumn{4}{|l|}{\textit{Contexto de inyección}} \\ \hline
+\texttt{attr\_double} & 41 & 41/41 (100.0~\%) [91.4--100.0] & 39/41 (95.1~\%) [83.9--98.7] \\ \hline
+\texttt{attr\_single} & 44 & 44/44 (100.0~\%) [92.0--100.0] & 41/44 (93.2~\%) [81.8--97.7] \\ \hline
+\texttt{attr\_unquoted} & 23 & 23/23 (100.0~\%) [85.7--100.0] & 22/23 (95.7~\%) [79.0--99.2] \\ \hline
+\texttt{html\_body} & 47 & 47/47 (100.0~\%) [92.4--100.0] & 44/47 (93.6~\%) [82.8--97.8] \\ \hline
+\texttt{html\_comment} & 16 & 16/16 (100.0~\%) [80.6--100.0] & 15/16 (93.8~\%) [71.7--98.9] \\ \hline
+\texttt{js\_string} & 7 & 7/7 (100.0~\%) [64.6--100.0] & 7/7 (100.0~\%) [64.6--100.0] \\ \hline
+\texttt{svg} & 13 & 13/13 (100.0~\%) [77.2--100.0] & 12/13 (92.3~\%) [66.7--98.6] \\ \hline
+\texttt{url\_href\_src} & 9 & 9/9 (100.0~\%) [70.1--100.0] & 9/9 (100.0~\%) [70.1--100.0] \\ \hline
+\multicolumn{4}{|l|}{\textit{Vector de ejecución}} \\ \hline
+\texttt{event\_onerror} & 37 & 37/37 (100.0~\%) [90.6--100.0] & 34/37 (91.9~\%) [78.7--97.2] \\ \hline
+\texttt{event\_onfocus\_autofocus} & 15 & 15/15 (100.0~\%) [79.6--100.0] & 14/15 (93.3~\%) [70.2--98.8] \\ \hline
+\texttt{event\_onload\_body} & 15 & 15/15 (100.0~\%) [79.6--100.0] & 14/15 (93.3~\%) [70.2--98.8] \\ \hline
+\texttt{event\_onmouseover} & 36 & 36/36 (100.0~\%) [90.4--100.0] & 33/36 (91.7~\%) [78.2--97.1] \\ \hline
+\texttt{event\_ontoggle} & 25 & 25/25 (100.0~\%) [86.7--100.0] & 23/25 (92.0~\%) [75.0--97.8] \\ \hline
+\texttt{iframe\_srcdoc} & 6 & 6/6 (100.0~\%) [61.0--100.0] & 6/6 (100.0~\%) [61.0--100.0] \\ \hline
+\texttt{javascript\_uri} & 9 & 9/9 (100.0~\%) [70.1--100.0] & 9/9 (100.0~\%) [70.1--100.0] \\ \hline
+\texttt{script} & 21 & 21/21 (100.0~\%) [84.5--100.0] & 21/21 (100.0~\%) [84.5--100.0] \\ \hline
+\texttt{svg\_onload} & 36 & 36/36 (100.0~\%) [90.4--100.0] & 35/36 (97.2~\%) [85.8--99.5] \\ \hline
+\multicolumn{4}{|l|}{\textit{Función ejecutada}} \\ \hline
+\texttt{alert} & 28 & 28/28 (100.0~\%) [87.9--100.0] & 23/28 (82.1~\%) [64.4--92.1] \\ \hline
+\texttt{confirm} & 31 & 31/31 (100.0~\%) [89.0--100.0] & 29/31 (93.5~\%) [79.3--98.2] \\ \hline
+\texttt{document\_cookie} & 18 & 18/18 (100.0~\%) [82.4--100.0] & 18/18 (100.0~\%) [82.4--100.0] \\ \hline
+\texttt{eval\_atob} & 32 & 32/32 (100.0~\%) [89.3--100.0] & 32/32 (100.0~\%) [89.3--100.0] \\ \hline
+\texttt{fetch\_externo} & 40 & 40/40 (100.0~\%) [91.2--100.0] & 38/40 (95.0~\%) [83.5--98.6] \\ \hline
+\texttt{fromcharcode} & 29 & 29/29 (100.0~\%) [88.3--100.0] & 29/29 (100.0~\%) [88.3--100.0] \\ \hline
+\texttt{prompt} & 22 & 22/22 (100.0~\%) [85.1--100.0] & 20/22 (90.9~\%) [72.2--97.5] \\ \hline
+\multicolumn{4}{|l|}{\textit{Codificación o evasión}} \\ \hline
+\texttt{html\_entities\_dec} & 23 & 23/23 (100.0~\%) [85.7--100.0] & 23/23 (100.0~\%) [85.7--100.0] \\ \hline
+\texttt{html\_entities\_hex} & 21 & 21/21 (100.0~\%) [84.5--100.0] & 21/21 (100.0~\%) [84.5--100.0] \\ \hline
+\texttt{inline\_comment} & 23 & 23/23 (100.0~\%) [85.7--100.0] & 23/23 (100.0~\%) [85.7--100.0] \\ \hline
+\texttt{mixed\_case} & 15 & 15/15 (100.0~\%) [79.6--100.0] & 15/15 (100.0~\%) [79.6--100.0] \\ \hline
+\texttt{raw} & 14 & 14/14 (100.0~\%) [78.5--100.0] & 14/14 (100.0~\%) [78.5--100.0] \\ \hline
+\texttt{slash\_for\_space} & 16 & 16/16 (100.0~\%) [80.6--100.0] & 16/16 (100.0~\%) [80.6--100.0] \\ \hline
+\texttt{unicode\_escape} & 18 & 18/18 (100.0~\%) [82.4--100.0] & 18/18 (100.0~\%) [82.4--100.0] \\ \hline
+\texttt{url\_double} & 25 & 25/25 (100.0~\%) [86.7--100.0] & 14/25 (56.0~\%) [37.1--73.3] \\ \hline
+\texttt{url\_single} & 25 & 25/25 (100.0~\%) [86.7--100.0] & 25/25 (100.0~\%) [86.7--100.0] \\ \hline
+\texttt{whitespace\_tab\_newline} & 20 & 20/20 (100.0~\%) [83.9--100.0] & 20/20 (100.0~\%) [83.9--100.0] \\ \hline
+\multicolumn{4}{|l|}{\textit{Transporte}} \\ \hline
+\texttt{json} & 68 & 68/68 (100.0~\%) [94.7--100.0] & 63/68 (92.6~\%) [83.9--96.8] \\ \hline
+\texttt{multipart} & 68 & 68/68 (100.0~\%) [94.7--100.0] & 62/68 (91.2~\%) [82.1--95.9] \\ \hline
+\texttt{urlencoded} & 64 & 64/64 (100.0~\%) [94.3--100.0] & 64/64 (100.0~\%) [94.3--100.0] \\ \hline
+\multicolumn{4}{|l|}{\textit{Campo de destino}} \\ \hline
+\texttt{bio} & 64 & 64/64 (100.0~\%) [94.3--100.0] & 59/64 (92.2~\%) [83.0--96.6] \\ \hline
+\texttt{content} & 68 & 68/68 (100.0~\%) [94.7--100.0] & 63/68 (92.6~\%) [83.9--96.8] \\ \hline
+\texttt{title} & 68 & 68/68 (100.0~\%) [94.7--100.0] & 67/68 (98.5~\%) [92.1--99.7] \\ \hline
+\multicolumn{4}{|l|}{\textit{Subcadena literal \texttt{alert} en el payload}} \\ \hline
+Con la subcadena & 17 & 17/17 (100.0~\%) [81.6--100.0] & 12/17 (70.6~\%) [46.9--86.7] \\ \hline
+Sin la subcadena & 183 & 183/183 (100.0~\%) [97.9--100.0] & 177/183 (96.7~\%) [93.0--98.5] \\ \hline
+\caption[Cobertura de XSS por estrato, corpus completo]{Cobertura de XSS por estrato sobre los 200 payloads del corpus propio (corrida 1, paquete 0.1.1 en las Configuraciones 2 y 3b)}
+\label{tab:anx-xss-estratos}
+\end{longtable}
+{\footnotesize Nota. Elaboración propia con datos de
+\texttt{attack-sim/results\_combined\_config\{2,3a,3b\}\_run1\_20261025.json} y de
+\texttt{attack-sim/xss\_corpus\_filtered\_20261025.jsonl} (repositorio
+\texttt{logSguarDian-vulnerable-project}); cálculo en
+\texttt{docs/evidence/errata-v3-strata-20261025.py}. Las Configuraciones 2 y 3b coinciden en todos
+los estratos.}
+
+\begin{longtable}{|L{4.2cm}|L{0.9cm}|L{3.4cm}|L{4.0cm}|}
+\hline
+\textbf{Estrato} & \textbf{n} & \textbf{Configuraciones 2 y 3b: bloqueados e IC 95~\%} & \textbf{Configuración 3a: bloqueados e IC 95~\%} \\ \hline
+\endfirsthead
+\multicolumn{4}{l}{\footnotesize\textit{(continuación)}} \\ \hline
+\textbf{Estrato} & \textbf{n} & \textbf{Configuraciones 2 y 3b: bloqueados e IC 95~\%} & \textbf{Configuración 3a: bloqueados e IC 95~\%} \\ \hline
+\endhead
+\multicolumn{4}{r}{\footnotesize\textit{Continúa en la página siguiente}} \\
+\endfoot
+\endlastfoot
+\multicolumn{4}{|l|}{\textit{Contexto de inyección}} \\ \hline
+\texttt{attr\_double} & 13 & 13/13 (100.0~\%) [77.2--100.0] & 12/13 (92.3~\%) [66.7--98.6] \\ \hline
+\texttt{attr\_single} & 13 & 13/13 (100.0~\%) [77.2--100.0] & 12/13 (92.3~\%) [66.7--98.6] \\ \hline
+\texttt{attr\_unquoted} & 9 & 9/9 (100.0~\%) [70.1--100.0] & 8/9 (88.9~\%) [56.5--98.0] \\ \hline
+\texttt{html\_body} & 17 & 17/17 (100.0~\%) [81.6--100.0] & 15/17 (88.2~\%) [65.7--96.7] \\ \hline
+\texttt{html\_comment} & 3 & 3/3 (100.0~\%) [43.9--100.0] & 3/3 (100.0~\%) [43.9--100.0] \\ \hline
+\texttt{js\_string} & 2 & 2/2 (100.0~\%) [34.2--100.0] & 2/2 (100.0~\%) [34.2--100.0] \\ \hline
+\texttt{svg} & 4 & 4/4 (100.0~\%) [51.0--100.0] & 4/4 (100.0~\%) [51.0--100.0] \\ \hline
+\texttt{url\_href\_src} & 3 & 3/3 (100.0~\%) [43.9--100.0] & 3/3 (100.0~\%) [43.9--100.0] \\ \hline
+\multicolumn{4}{|l|}{\textit{Vector de ejecución}} \\ \hline
+\texttt{event\_onerror} & 15 & 15/15 (100.0~\%) [79.6--100.0] & 13/15 (86.7~\%) [62.1--96.3] \\ \hline
+\texttt{event\_onfocus\_autofocus} & 2 & 2/2 (100.0~\%) [34.2--100.0] & 2/2 (100.0~\%) [34.2--100.0] \\ \hline
+\texttt{event\_onload\_body} & 5 & 5/5 (100.0~\%) [56.6--100.0] & 5/5 (100.0~\%) [56.6--100.0] \\ \hline
+\texttt{event\_onmouseover} & 14 & 14/14 (100.0~\%) [78.5--100.0] & 12/14 (85.7~\%) [60.1--96.0] \\ \hline
+\texttt{event\_ontoggle} & 8 & 8/8 (100.0~\%) [67.6--100.0] & 7/8 (87.5~\%) [52.9--97.8] \\ \hline
+\texttt{iframe\_srcdoc} & 1 & 1/1 (100.0~\%) [20.7--100.0] & 1/1 (100.0~\%) [20.7--100.0] \\ \hline
+\texttt{javascript\_uri} & 3 & 3/3 (100.0~\%) [43.9--100.0] & 3/3 (100.0~\%) [43.9--100.0] \\ \hline
+\texttt{script} & 7 & 7/7 (100.0~\%) [64.6--100.0] & 7/7 (100.0~\%) [64.6--100.0] \\ \hline
+\texttt{svg\_onload} & 9 & 9/9 (100.0~\%) [70.1--100.0] & 9/9 (100.0~\%) [70.1--100.0] \\ \hline
+\multicolumn{4}{|l|}{\textit{Función ejecutada}} \\ \hline
+\texttt{alert} & 12 & 12/12 (100.0~\%) [75.8--100.0] & 10/12 (83.3~\%) [55.2--95.3] \\ \hline
+\texttt{confirm} & 8 & 8/8 (100.0~\%) [67.6--100.0] & 8/8 (100.0~\%) [67.6--100.0] \\ \hline
+\texttt{document\_cookie} & 5 & 5/5 (100.0~\%) [56.6--100.0] & 5/5 (100.0~\%) [56.6--100.0] \\ \hline
+\texttt{eval\_atob} & 8 & 8/8 (100.0~\%) [67.6--100.0] & 8/8 (100.0~\%) [67.6--100.0] \\ \hline
+\texttt{fetch\_externo} & 16 & 16/16 (100.0~\%) [80.6--100.0] & 14/16 (87.5~\%) [64.0--96.5] \\ \hline
+\texttt{fromcharcode} & 8 & 8/8 (100.0~\%) [67.6--100.0] & 8/8 (100.0~\%) [67.6--100.0] \\ \hline
+\texttt{prompt} & 7 & 7/7 (100.0~\%) [64.6--100.0] & 6/7 (85.7~\%) [48.7--97.4] \\ \hline
+\multicolumn{4}{|l|}{\textit{Codificación o evasión}} \\ \hline
+\texttt{html\_entities\_dec} & 6 & 6/6 (100.0~\%) [61.0--100.0] & 6/6 (100.0~\%) [61.0--100.0] \\ \hline
+\texttt{html\_entities\_hex} & 6 & 6/6 (100.0~\%) [61.0--100.0] & 6/6 (100.0~\%) [61.0--100.0] \\ \hline
+\texttt{inline\_comment} & 9 & 9/9 (100.0~\%) [70.1--100.0] & 9/9 (100.0~\%) [70.1--100.0] \\ \hline
+\texttt{mixed\_case} & 6 & 6/6 (100.0~\%) [61.0--100.0] & 6/6 (100.0~\%) [61.0--100.0] \\ \hline
+\texttt{raw} & 5 & 5/5 (100.0~\%) [56.6--100.0] & 5/5 (100.0~\%) [56.6--100.0] \\ \hline
+\texttt{slash\_for\_space} & 4 & 4/4 (100.0~\%) [51.0--100.0] & 4/4 (100.0~\%) [51.0--100.0] \\ \hline
+\texttt{unicode\_escape} & 7 & 7/7 (100.0~\%) [64.6--100.0] & 7/7 (100.0~\%) [64.6--100.0] \\ \hline
+\texttt{url\_double} & 9 & 9/9 (100.0~\%) [70.1--100.0] & 4/9 (44.4~\%) [18.9--73.3] \\ \hline
+\texttt{url\_single} & 8 & 8/8 (100.0~\%) [67.6--100.0] & 8/8 (100.0~\%) [67.6--100.0] \\ \hline
+\texttt{whitespace\_tab\_newline} & 4 & 4/4 (100.0~\%) [51.0--100.0] & 4/4 (100.0~\%) [51.0--100.0] \\ \hline
+\multicolumn{4}{|l|}{\textit{Transporte}} \\ \hline
+\texttt{json} & 21 & 21/21 (100.0~\%) [84.5--100.0] & 18/21 (85.7~\%) [65.4--95.0] \\ \hline
+\texttt{multipart} & 17 & 17/17 (100.0~\%) [81.6--100.0] & 15/17 (88.2~\%) [65.7--96.7] \\ \hline
+\texttt{urlencoded} & 26 & 26/26 (100.0~\%) [87.1--100.0] & 26/26 (100.0~\%) [87.1--100.0] \\ \hline
+\multicolumn{4}{|l|}{\textit{Campo de destino}} \\ \hline
+\texttt{bio} & 64 & 64/64 (100.0~\%) [94.3--100.0] & 59/64 (92.2~\%) [83.0--96.6] \\ \hline
+\caption[Cobertura de XSS por estrato, campo bio]{Cobertura de XSS por estrato sobre los 64 payloads dirigidos al campo \texttt{bio} (corrida 1, paquete 0.1.1 en las Configuraciones 2 y 3b)}
+\label{tab:anx-xss-bio}
+\end{longtable}
+{\footnotesize Nota. Elaboración propia con las mismas fuentes del Cuadro~\ref{tab:anx-xss-estratos}.
+Los 5 payloads que la Configuración 3a no bloqueó en \texttt{bio} reciben HTTP 200 de la aplicación.}
+
+\section{Command Injection con separadores codificados y sin codificar}
+\label{anx:cmdi-codificacion}
+
+De los 200 payloads de Command Injection, 105 traen al menos un separador ya codificado
+(\texttt{\%XX}) y 95 no. El Cuadro~\ref{tab:anx-cmdi-codificacion} los separa por configuración y
+por versión del ejecutor. El ejecutor anterior volvía a codificar los separadores ya codificados,
+por lo que solo alteraba el primer grupo; el segundo da el mismo resultado con ambos ejecutores.
+Con el ejecutor corregido, el WAF sigue bloqueando menos los payloads con separadores codificados
+(76.2~\%) que los no codificados (88.4~\%), una diferencia de 12.2 puntos porcentuales cuyos
+intervalos de Wilson se solapan parcialmente.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|L{3.7cm}|L{3.6cm}|L{3.6cm}|L{2.5cm}|}
+\hline
+\textbf{Configuración y ejecutor} & \textbf{Separadores codificados (n=105): bloqueados e IC 95~\%} & \textbf{Sin codificar (n=95): bloqueados e IC 95~\%} & \textbf{Total (n=200)} \\ \hline
+Configuración 1 (sin protección) & 0/105 (0.0~\%) [0.0--3.5] & 0/95 (0.0~\%) [0.0--3.9] & 0/200 (0.0~\%) \\ \hline
+Configuración 2 (0.1.1), ejecutor corregido & 95/105 (90.5~\%) [83.4--94.7] & 90/95 (94.7~\%) [88.3--97.7] & 185/200 (92.5~\%) \\ \hline
+Configuración 2 (0.1.1), ejecutor anterior (10 de octubre) & 102/105 (97.1~\%) [91.9--99.0] & 90/95 (94.7~\%) [88.3--97.7] & 192/200 (96.0~\%) \\ \hline
+Configuración 3a, ejecutor corregido (25 de octubre) & 80/105 (76.2~\%) [67.2--83.3] & 84/95 (88.4~\%) [80.4--93.4] & 164/200 (82.0~\%) \\ \hline
+Configuración 3a, ejecutor anterior (10 de octubre; reproducido el 25) & 52/105 (49.5~\%) [40.1--58.9] & 84/95 (88.4~\%) [80.4--93.4] & 136/200 (68.0~\%) \\ \hline
+Configuración 3b (0.1.1), ejecutor corregido & 104/105 (99.0~\%) [94.8--99.8] & 93/95 (97.9~\%) [92.6--99.4] & 197/200 (98.5~\%) \\ \hline
+\end{tabular}
+\caption[Command Injection con separadores codificados y sin codificar]{Command Injection: payloads con separadores ya codificados y sin codificar, por configuración y por versión del ejecutor}
+\label{tab:anx-cmdi-codificacion}
+\end{table}
+{\footnotesize Nota. Elaboración propia con datos de
+\texttt{attack-sim/results\_combined\_config\{1,2,3a,3b\}\_run1\_20261025.json},
+\texttt{attack-sim/results\_config3a-round5-20261010.json},
+\texttt{attack-sim/results\_phase2a\_prefixexecutor\_config3a\_run1\_20261025.json} y los archivos
+de resultados de la Configuración~2 del 10 de octubre de 2026; cálculo en
+\texttt{docs/evidence/errata-v7b-cmdi-encoding-20261025.py}. Un payload se cuenta como codificado
+si contiene al menos un \texttt{\%XX}.}
+
+\section{Procedencia de la medición unificada del 25 de octubre de 2026}
+\label{anx:ronda5-procedencia}
+
+El Cuadro~\ref{tab:anx-ronda5-procedencia} identifica los archivos y las versiones de la medición
+de las cuatro configuraciones con el corpus combinado de 800 peticiones. Las rutas son relativas a
+la raíz del repositorio \texttt{logSguarDian-vulnerable-project}, rama
+\texttt{exp/ronda5-20261025}, sin commits propios.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|L{4.2cm}|L{9.3cm}|}
+\hline
+\textbf{Elemento} & \textbf{Valor} \\ \hline
+SHA base de la rama & {\scriptsize\texttt{07e80ead6a64db5db086216322624bc5bfa4edb0}} \\ \hline
+Candidatos de XSS (400), SHA-256 & {\scriptsize\texttt{98d6e846899feedb0e736f3cb842d13c8d506751fb60911318bf840137883614}} \\ \hline
+Corpus de XSS (200), SHA-256 & {\scriptsize\texttt{ef67ffd34d09a59c4cf8212722f78d5a2e8894f8d6a38d6e63a2f4598b6fae0d}} \\ \hline
+Corpus combinado (800), SHA-256 & {\scriptsize\texttt{f1fb0b0a2c552636358785ec323aa10c76519638d0da1cb62ce131be2330263d}} \\ \hline
+Protocolo de XSS, SHA-256 & {\scriptsize\texttt{ae52abc3227feb00650e98e0e1e81185fc76a56d8bd6b93ba1ca5cb3cc53134f}} \\ \hline
+Manifiesto de congelación de XSS, SHA-256 & {\scriptsize\texttt{b3ccb69cc6329b520d4b0e91e28e9c1030940afedbdfe3915408ca31faee0496}} \\ \hline
+Ejecutor corregido (\texttt{run\_large\_corpus.py}, commit \texttt{00ea3a3}), SHA-256 & {\scriptsize\texttt{422393460dfea808efe411d358166d37b662bbcaad77843ede0247c684c61af1}} \\ \hline
+Ejecutor anterior (\texttt{00ea3a3\^{}}), SHA-256 & {\scriptsize\texttt{0c84de551f1138bbeb1ef7a9ed1801d83e4c52a7312c04b873a75de57a286623}} \\ \hline
+Emisor de XSS (\texttt{send\_xss\_corpus.py}), SHA-256 & {\scriptsize\texttt{18c645527d1c6944734edb899ce10279928285abef1a627691c06223dcaa75ee}} \\ \hline
+Paquete \texttt{logsguardian@0.1.1}, SHA-256 del archivo & {\scriptsize\texttt{abf8d5c47036d9c3a289bc36158f1caaa91b9504689aa97193e51c6808258d15}} \\ \hline
+Modelo \texttt{rf.onnx} (par~C), SHA-256 & {\scriptsize\texttt{25b407e649283606a231665a5a8c8ea1c2c7ad4fd0374a8945b3f119651b0870}} \\ \hline
+Modelo \texttt{if.onnx} (par~C), SHA-256 & {\scriptsize\texttt{5be28ee8437643b2f13708eee1ac3175348a350ea6fb8f8daeb09bd5717f797e}} \\ \hline
+Imagen del WAF, digest & {\scriptsize\texttt{sha256:\allowbreak f12da37e72e29d1f06e7e829780f1016606d0799eac2966e58ef3819a3d30a50}} \\ \hline
+Versiones del WAF & Nginx 1.30.5, ModSecurity 3.0.17, OWASP CRS 4.30.0; paranoia 1; \texttt{SecRuleEngine On}; umbral de anomalía de entrada 5; sin exclusiones activas \\ \hline
+\texttt{Dockerfile} de la aplicación, SHA-256 & {\scriptsize\texttt{7f1edcdd31b1bd63b3d84d71a49f91b6a2cb63c8435413b6bab3e4e09d84203d}} \\ \hline
+Resultados de la Configuración~1, corrida 1, SHA-256 & {\scriptsize\texttt{d88f968d203762aa469998968a79801018992f444c8ad7ff1bfef65986610903}} \\ \hline
+Resultados de la Configuración~2, corrida 1, SHA-256 & {\scriptsize\texttt{577e6e002fb4989c719562a63a4db06482e40bff46ad68eb1faefcbb3b9b59aa}} \\ \hline
+Resultados de la Configuración~3a, corrida 1, SHA-256 & {\scriptsize\texttt{1cf8badbbcc7f92f633aabd07d5d208355d94a97802587d510ff7f51818b502c}} \\ \hline
+Resultados de la Configuración~3b, corrida 1, SHA-256 & {\scriptsize\texttt{1cfd0b5ec657d7fdc6816d10eb2b3f8992cf687d3c22d0a0d957db3b1048ba8e}} \\ \hline
+\end{tabular}
+\caption[Procedencia de la medición unificada]{Procedencia de la medición unificada de las cuatro configuraciones del 25 de octubre de 2026}
+\label{tab:anx-ronda5-procedencia}
+\end{table}
+{\footnotesize Nota. Elaboración propia con datos de \texttt{docs/thesis-delta-xss.md},
+\texttt{docs/thesis-delta-configs.md} y \texttt{docs/thesis-delta-errata-20261025.md}; las sumas
+se recalcularon el 25 de octubre de 2026. La etiqueta de la imagen del WAF es flotante y hoy
+resuelve a otro manifiesto, por lo que se cita el digest medido. La imagen local de la aplicación
+tuvo el identificador \texttt{a75c14208ccd}; su digest no se verificó en cada arranque.}
+
+\ifdefined\modoensamble
+\else
+	\section*{Referencias}
+	\printbibliography[heading=none]
+	\end{document}
+\fi

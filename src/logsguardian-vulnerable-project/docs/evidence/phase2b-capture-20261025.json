@@ -1,0 +1,502 @@
+[
+ {
+  "ruta": "directa",
+  "id": "cmdi_112",
+  "status_cliente": 200,
+  "registros_recibidos": 1,
+  "recibido": {
+   "method": "POST",
+   "raw_target": "/admin/ping",
+   "version": "HTTP/1.1",
+   "headers": [
+    [
+     "Accept-Encoding",
+     "identity"
+    ],
+    [
+     "Content-Length",
+     "25"
+    ],
+    [
+     "Host",
+     "127.0.0.1:9301"
+    ],
+    [
+     "Cookie",
+     "connect.sid=s%3Afixedcookie20261025"
+    ],
+    [
+     "Content-Type",
+     "application/x-www-form-urlencoded"
+    ],
+    [
+     "User-Agent",
+     "logsguardian-corpus-runner/1.0"
+    ],
+    [
+     "Connection",
+     "close"
+    ]
+   ],
+   "raw_body": "host=127.0.0.1%26net user"
+  }
+ },
+ {
+  "ruta": "directa",
+  "id": "cmdi_134",
+  "status_cliente": 200,
+  "registros_recibidos": 1,
+  "recibido": {
+   "method": "POST",
+   "raw_target": "/admin/ping",
+   "version": "HTTP/1.1",
+   "headers": [
+    [
+     "Accept-Encoding",
+     "identity"
+    ],
+    [
+     "Content-Length",
+     "37"
+    ],
+    [
+     "Host",
+     "127.0.0.1:9301"
+    ],
+    [
+     "Cookie",
+     "connect.sid=s%3Afixedcookie20261025"
+    ],
+    [
+     "Content-Type",
+     "application/x-www-form-urlencoded"
+    ],
+    [
+     "User-Agent",
+     "logsguardian-corpus-runner/1.0"
+    ],
+    [
+     "Connection",
+     "close"
+    ]
+   ],
+   "raw_body": "host=127.0.0.1%26%26cat+%2Fapp%2F.env"
+  }
+ },
+ {
+  "ruta": "directa",
+  "id": "cmdi_31",
+  "status_cliente": 200,
+  "registros_recibidos": 1,
+  "recibido": {
+   "method": "POST",
+   "raw_target": "/admin/ping",
+   "version": "HTTP/1.1",
+   "headers": [
+    [
+     "Accept-Encoding",
+     "identity"
+    ],
+    [
+     "Content-Length",
+     "25"
+    ],
+    [
+     "Host",
+     "127.0.0.1:9301"
+    ],
+    [
+     "Cookie",
+     "connect.sid=s%3Afixedcookie20261025"
+    ],
+    [
+     "Content-Type",
+     "application/x-www-form-urlencoded"
+    ],
+    [
+     "User-Agent",
+     "logsguardian-corpus-runner/1.0"
+    ],
+    [
+     "Connection",
+     "close"
+    ]
+   ],
+   "raw_body": "host=127.0.0.1%7Cnet+user"
+  }
+ },
+ {
+  "ruta": "directa",
+  "id": "cmdi_38",
+  "status_cliente": 200,
+  "registros_recibidos": 1,
+  "recibido": {
+   "method": "POST",
+   "raw_target": "/admin/ping",
+   "version": "HTTP/1.1",
+   "headers": [
+    [
+     "Accept-Encoding",
+     "identity"
+    ],
+    [
+     "Content-Length",
+     "28"
+    ],
+    [
+     "Host",
+     "127.0.0.1:9301"
+    ],
+    [
+     "Cookie",
+     "connect.sid=s%3Afixedcookie20261025"
+    ],
+    [
+     "Content-Type",
+     "application/x-www-form-urlencoded"
+    ],
+    [
+     "User-Agent",
+     "logsguardian-corpus-runner/1.0"
+    ],
+    [
+     "Connection",
+     "close"
+    ]
+   ],
+   "raw_body": "host=127.0.0.1|&sleep 10 %23"
+  }
+ },
+ {
+  "ruta": "directa",
+  "id": "cmdi_6",
+  "status_cliente": 200,
+  "registros_recibidos": 1,
+  "recibido": {
+   "method": "POST",
+   "raw_target": "/admin/ping",
+   "version": "HTTP/1.1",
+   "headers": [
+    [
+     "Accept-Encoding",
+     "identity"
+    ],
+    [
+     "Content-Length",
+     "25"
+    ],
+    [
+     "Host",
+     "127.0.0.1:9301"
+    ],
+    [
+     "Cookie",
+     "connect.sid=s%3Afixedcookie20261025"
+    ],
+    [
+     "Content-Type",
+     "application/x-www-form-urlencoded"
+    ],
+    [
+     "User-Agent",
+     "logsguardian-corpus-runner/1.0"
+    ],
+    [
+     "Connection",
+     "close"
+    ]
+   ],
+   "raw_body": "host=127.0.0.1%0Anet+user"
+  }
+ },
+ {
+  "ruta": "via_waf",
+  "id": "cmdi_112",
+  "status_cliente": 200,
+  "registros_recibidos": 1,
+  "recibido": {
+   "method": "POST",
+   "raw_target": "/admin/ping",
+   "version": "HTTP/1.1",
+   "headers": [
+    [
+     "Host",
+     "127.0.0.1"
+    ],
+    [
+     "Connection",
+     "close"
+    ],
+    [
+     "X-REAL-IP",
+     "192.168.65.1"
+    ],
+    [
+     "X-Forwarded-For",
+     "192.168.65.1"
+    ],
+    [
+     "X-Forwarded-Port",
+     "8080"
+    ],
+    [
+     "X-Forwarded-Proto",
+     "http"
+    ],
+    [
+     "Content-Length",
+     "25"
+    ],
+    [
+     "Accept-Encoding",
+     "identity"
+    ],
+    [
+     "Cookie",
+     "connect.sid=s%3Afixedcookie20261025"
+    ],
+    [
+     "Content-Type",
+     "application/x-www-form-urlencoded"
+    ],
+    [
+     "User-Agent",
+     "logsguardian-corpus-runner/1.0"
+    ]
+   ],
+   "raw_body": "host=127.0.0.1%26net user"
+  }
+ },
+ {
+  "ruta": "via_waf",
+  "id": "cmdi_134",
+  "status_cliente": 200,
+  "registros_recibidos": 1,
+  "recibido": {
+   "method": "POST",
+   "raw_target": "/admin/ping",
+   "version": "HTTP/1.1",
+   "headers": [
+    [
+     "Host",
+     "127.0.0.1"
+    ],
+    [
+     "Connection",
+     "close"
+    ],
+    [
+     "X-REAL-IP",
+     "192.168.65.1"
+    ],
+    [
+     "X-Forwarded-For",
+     "192.168.65.1"
+    ],
+    [
+     "X-Forwarded-Port",
+     "8080"
+    ],
+    [
+     "X-Forwarded-Proto",
+     "http"
+    ],
+    [
+     "Content-Length",
+     "37"
+    ],
+    [
+     "Accept-Encoding",
+     "identity"
+    ],
+    [
+     "Cookie",
+     "connect.sid=s%3Afixedcookie20261025"
+    ],
+    [
+     "Content-Type",
+     "application/x-www-form-urlencoded"
+    ],
+    [
+     "User-Agent",
+     "logsguardian-corpus-runner/1.0"
+    ]
+   ],
+   "raw_body": "host=127.0.0.1%26%26cat+%2Fapp%2F.env"
+  }
+ },
+ {
+  "ruta": "via_waf",
+  "id": "cmdi_31",
+  "status_cliente": 200,
+  "registros_recibidos": 1,
+  "recibido": {
+   "method": "POST",
+   "raw_target": "/admin/ping",
+   "version": "HTTP/1.1",
+   "headers": [
+    [
+     "Host",
+     "127.0.0.1"
+    ],
+    [
+     "Connection",
+     "close"
+    ],
+    [
+     "X-REAL-IP",
+     "192.168.65.1"
+    ],
+    [
+     "X-Forwarded-For",
+     "192.168.65.1"
+    ],
+    [
+     "X-Forwarded-Port",
+     "8080"
+    ],
+    [
+     "X-Forwarded-Proto",
+     "http"
+    ],
+    [
+     "Content-Length",
+     "25"
+    ],
+    [
+     "Accept-Encoding",
+     "identity"
+    ],
+    [
+     "Cookie",
+     "connect.sid=s%3Afixedcookie20261025"
+    ],
+    [
+     "Content-Type",
+     "application/x-www-form-urlencoded"
+    ],
+    [
+     "User-Agent",
+     "logsguardian-corpus-runner/1.0"
+    ]
+   ],
+   "raw_body": "host=127.0.0.1%7Cnet+user"
+  }
+ },
+ {
+  "ruta": "via_waf",
+  "id": "cmdi_38",
+  "status_cliente": 200,
+  "registros_recibidos": 1,
+  "recibido": {
+   "method": "POST",
+   "raw_target": "/admin/ping",
+   "version": "HTTP/1.1",
+   "headers": [
+    [
+     "Host",
+     "127.0.0.1"
+    ],
+    [
+     "Connection",
+     "close"
+    ],
+    [
+     "X-REAL-IP",
+     "192.168.65.1"
+    ],
+    [
+     "X-Forwarded-For",
+     "192.168.65.1"
+    ],
+    [
+     "X-Forwarded-Port",
+     "8080"
+    ],
+    [
+     "X-Forwarded-Proto",
+     "http"
+    ],
+    [
+     "Content-Length",
+     "28"
+    ],
+    [
+     "Accept-Encoding",
+     "identity"
+    ],
+    [
+     "Cookie",
+     "connect.sid=s%3Afixedcookie20261025"
+    ],
+    [
+     "Content-Type",
+     "application/x-www-form-urlencoded"
+    ],
+    [
+     "User-Agent",
+     "logsguardian-corpus-runner/1.0"
+    ]
+   ],
+   "raw_body": "host=127.0.0.1|&sleep 10 %23"
+  }
+ },
+ {
+  "ruta": "via_waf",
+  "id": "cmdi_6",
+  "status_cliente": 200,
+  "registros_recibidos": 1,
+  "recibido": {
+   "method": "POST",
+   "raw_target": "/admin/ping",
+   "version": "HTTP/1.1",
+   "headers": [
+    [
+     "Host",
+     "127.0.0.1"
+    ],
+    [
+     "Connection",
+     "close"
+    ],
+    [
+     "X-REAL-IP",
+     "192.168.65.1"
+    ],
+    [
+     "X-Forwarded-For",
+     "192.168.65.1"
+    ],
+    [
+     "X-Forwarded-Port",
+     "8080"
+    ],
+    [
+     "X-Forwarded-Proto",
+     "http"
+    ],
+    [
+     "Content-Length",
+     "25"
+    ],
+    [
+     "Accept-Encoding",
+     "identity"
+    ],
+    [
+     "Cookie",
+     "connect.sid=s%3Afixedcookie20261025"
+    ],
+    [
+     "Content-Type",
+     "application/x-www-form-urlencoded"
+    ],
+    [
+     "User-Agent",
+     "logsguardian-corpus-runner/1.0"
+    ]
+   ],
+   "raw_body": "host=127.0.0.1%0Anet+user"
+  }
+ }
+]

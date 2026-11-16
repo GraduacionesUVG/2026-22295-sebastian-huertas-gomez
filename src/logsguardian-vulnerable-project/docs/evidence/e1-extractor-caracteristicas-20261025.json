@@ -1,0 +1,52 @@
+{
+ "fuente": "logsguardian@0.1.1 instalado en el contenedor lsgt6final20261025-app-1 (imagen a75c14208ccd); lectura de node_modules/logsguardian/node_modules/@logsguardian/extractor/dist/{structural,types,index}.js y de node_modules/logsguardian/dist/{worker,middleware}.js",
+ "caracteristicas_que_dependen_de_cabeceras": {
+  "ua_present": "cabecera User-Agent",
+  "ua_length": "cabecera User-Agent",
+  "ua_suspicious": "cabecera User-Agent",
+  "content_type_encoded": "cabecera Content-Type",
+  "authorization_length": "cabecera Authorization (via extraHeaders)",
+  "unusual_headers_count": "numero de cabeceras fuera de la lista estandar (host, user-agent, accept, content-type, content-length, authorization, cookie, referer, connection, accept-encoding, accept-language, cache-control)"
+ },
+ "caracteristicas_que_dependen_de_la_ip": "ninguna; client_ip solo se guarda en el evento (middleware.js: clientIp = req.ip) y no entra al vector",
+ "referer_y_cookie": "se copian a la peticion canonica pero ninguna caracteristica los usa",
+ "host": "esta en la lista estandar y no genera ninguna caracteristica",
+ "excluidas_de_ambos_modelos": [
+  "status_code",
+  "req_count_1s",
+  "req_count_5s",
+  "req_count_60s",
+  "error_rate_4xx_60s",
+  "endpoint_diversity_60s",
+  "non_json_quote_count"
+ ],
+ "excluidas_solo_del_if": [
+  "dotdot_encoded_count",
+  "authorization_length",
+  "unusual_headers_count",
+  "null_byte_count",
+  "os_path_indicator",
+  "sensitive_file_target"
+ ],
+ "uso_por_los_modelos": "unusual_headers_count y las demas caracteristicas de cabecera entran al Random Forest (69 caracteristicas); unusual_headers_count no entra al Isolation Forest (63)",
+ "politica_de_decision": "worker/middleware: se toma el argmax de las probabilidades del RF entre las cinco clases (benign, cmdi, path_traversal, sqli, xss); se bloquea si la clase es de ataque y su probabilidad es >= 0.35; el campo confidence del evento es la probabilidad del argmax",
+ "calculo_unusual_headers_count": {
+  "sin_cabeceras_extra": 0,
+  "con_x_real_ip_x_forwarded_for_x_forwarded_port_x_forwarded_proto": 4,
+  "metodo": "normalizeCanonicalRequest + extractFeatures del paquete instalado, peticion POST /admin/ping con el cuerpo de cmdi_112"
+ },
+ "diferencia_vector_con_y_sin_cabeceras_proxy": {
+  "payloads": [
+   "cmdi_112",
+   "cmdi_134",
+   "cmdi_31",
+   "cmdi_38",
+   "cmdi_6",
+   "cmdi_184",
+   "cmdi_185"
+  ],
+  "resultado": "en los siete, la unica caracteristica del vector de 76 que cambia es unusual_headers_count (0 a 4)",
+  "aproximacion": "se uso como cuerpo host=<payload> sin codificar; el middleware reconstruye el cuerpo con URLSearchParams, de modo que otras caracteristicas de contenido pueden diferir en valor absoluto, pero no entre las dos variantes de cabeceras, que comparten el mismo cuerpo",
+  "metodo": "extractFeatures(normalizeCanonicalRequest(...)) del paquete instalado, ejecutado con docker run sobre la imagen lsgt6final20261025-app"
+ }
+}

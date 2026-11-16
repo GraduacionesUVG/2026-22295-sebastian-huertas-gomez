@@ -1,0 +1,194 @@
+{
+ "cmdi_codificados_n": 105,
+ "cmdi_sin_codificar_n": 95,
+ "config1_nuevo": {
+  "codificados": {
+   "k": 0,
+   "n": 105,
+   "wilson": [
+    0.0,
+    3.5
+   ]
+  },
+  "sin_codificar": {
+   "k": 0,
+   "n": 95,
+   "wilson": [
+    0.0,
+    3.9
+   ]
+  },
+  "total_cmdi": 0
+ },
+ "config2_nuevo": {
+  "codificados": {
+   "k": 95,
+   "n": 105,
+   "wilson": [
+    83.4,
+    94.7
+   ]
+  },
+  "sin_codificar": {
+   "k": 90,
+   "n": 95,
+   "wilson": [
+    88.3,
+    97.7
+   ]
+  },
+  "total_cmdi": 185
+ },
+ "config3a_nuevo": {
+  "codificados": {
+   "k": 80,
+   "n": 105,
+   "wilson": [
+    67.2,
+    83.3
+   ]
+  },
+  "sin_codificar": {
+   "k": 84,
+   "n": 95,
+   "wilson": [
+    80.4,
+    93.4
+   ]
+  },
+  "total_cmdi": 164
+ },
+ "config3b_nuevo": {
+  "codificados": {
+   "k": 104,
+   "n": 105,
+   "wilson": [
+    94.8,
+    99.8
+   ]
+  },
+  "sin_codificar": {
+   "k": 93,
+   "n": 95,
+   "wilson": [
+    92.6,
+    99.4
+   ]
+  },
+  "total_cmdi": 197
+ },
+ "config1_viejo_20261010": {
+  "codificados": {
+   "k": 0,
+   "n": 105,
+   "wilson": [
+    0.0,
+    3.5
+   ]
+  },
+  "sin_codificar": {
+   "k": 0,
+   "n": 95,
+   "wilson": [
+    0.0,
+    3.9
+   ]
+  },
+  "total_cmdi": 0
+ },
+ "config3a_viejo_20261010": {
+  "codificados": {
+   "k": 52,
+   "n": 105,
+   "wilson": [
+    40.1,
+    58.9
+   ]
+  },
+  "sin_codificar": {
+   "k": 84,
+   "n": 95,
+   "wilson": [
+    80.4,
+    93.4
+   ]
+  },
+  "total_cmdi": 136
+ },
+ "config3b_viejo_20261010": {
+  "codificados": {
+   "k": 104,
+   "n": 105,
+   "wilson": [
+    94.8,
+    99.8
+   ]
+  },
+  "sin_codificar": {
+   "k": 93,
+   "n": 95,
+   "wilson": [
+    92.6,
+    99.4
+   ]
+  },
+  "total_cmdi": 197
+ },
+ "config2_0.1.0_tarball_viejo": {
+  "codificados": {
+   "k": 97,
+   "n": 105,
+   "wilson": [
+    85.7,
+    96.1
+   ]
+  },
+  "sin_codificar": {
+   "k": 86,
+   "n": 95,
+   "wilson": [
+    83.0,
+    94.9
+   ]
+  },
+  "total_cmdi": 183
+ },
+ "config2_0.1.1_ejecutor_original_20261010": {
+  "codificados": {
+   "k": 102,
+   "n": 105,
+   "wilson": [
+    91.9,
+    99.0
+   ]
+  },
+  "sin_codificar": {
+   "k": 90,
+   "n": 95,
+   "wilson": [
+    88.3,
+    97.7
+   ]
+  },
+  "total_cmdi": 192
+ },
+ "config2_0.1.1_ejecutor_corregido_20261010": {
+  "codificados": {
+   "k": 95,
+   "n": 105,
+   "wilson": [
+    83.4,
+    94.7
+   ]
+  },
+  "sin_codificar": {
+   "k": 90,
+   "n": 95,
+   "wilson": [
+    88.3,
+    97.7
+   ]
+  },
+  "total_cmdi": 185
+ }
+}

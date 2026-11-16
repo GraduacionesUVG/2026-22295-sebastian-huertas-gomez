@@ -1,0 +1,16 @@
+{
+  "status": "REJECTED",
+  "generated_at": "2026-09-12T20:24:26.435716+00:00",
+  "gates": [
+    {
+      "gate": "feature_contract",
+      "passed": false,
+      "details": {
+        "rf_expected": 69,
+        "rf_actual": 70,
+        "if_expected": 63,
+        "if_actual": 64
+      }
+    }
+  ]
+}

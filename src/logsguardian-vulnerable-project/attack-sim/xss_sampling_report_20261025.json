@@ -1,0 +1,112 @@
+{
+  "final_n": 200,
+  "cap_per_value": 60,
+  "by_dimension": {
+    "contexto": {
+      "counts": {
+        "html_comment": 16,
+        "html_body": 47,
+        "attr_unquoted": 23,
+        "attr_double": 41,
+        "attr_single": 44,
+        "svg": 13,
+        "url_href_src": 9,
+        "js_string": 7
+      },
+      "max_value": "html_body",
+      "max_count": 47,
+      "cap_applied": 60,
+      "relaxed_cap": false,
+      "within_cap": true
+    },
+    "vector": {
+      "counts": {
+        "event_onerror": 37,
+        "iframe_srcdoc": 6,
+        "svg_onload": 36,
+        "event_onload_body": 15,
+        "event_onmouseover": 36,
+        "event_ontoggle": 25,
+        "event_onfocus_autofocus": 15,
+        "javascript_uri": 9,
+        "script": 21
+      },
+      "max_value": "event_onerror",
+      "max_count": 37,
+      "cap_applied": 60,
+      "relaxed_cap": false,
+      "within_cap": true
+    },
+    "funcion": {
+      "counts": {
+        "prompt": 22,
+        "fetch_externo": 40,
+        "fromcharcode": 29,
+        "eval_atob": 32,
+        "confirm": 31,
+        "document_cookie": 18,
+        "alert": 28
+      },
+      "max_value": "fetch_externo",
+      "max_count": 40,
+      "cap_applied": 60,
+      "relaxed_cap": false,
+      "within_cap": true
+    },
+    "codificacion": {
+      "counts": {
+        "whitespace_tab_newline": 20,
+        "unicode_escape": 18,
+        "html_entities_hex": 21,
+        "raw": 14,
+        "url_single": 25,
+        "url_double": 25,
+        "inline_comment": 23,
+        "slash_for_space": 16,
+        "mixed_case": 15,
+        "html_entities_dec": 23
+      },
+      "max_value": "url_single",
+      "max_count": 25,
+      "cap_applied": 60,
+      "relaxed_cap": false,
+      "within_cap": true
+    },
+    "transporte": {
+      "counts": {
+        "json": 68,
+        "multipart": 68,
+        "urlencoded": 64
+      },
+      "max_value": "json",
+      "max_count": 68,
+      "cap_applied": 68,
+      "relaxed_cap": true,
+      "within_cap": true
+    },
+    "campo": {
+      "counts": {
+        "title": 68,
+        "bio": 64,
+        "content": 68
+      },
+      "max_value": "title",
+      "max_count": 68,
+      "cap_applied": 68,
+      "relaxed_cap": true,
+      "within_cap": true
+    }
+  },
+  "rule_cap_ok": true,
+  "nota_desviacion": "transporte y campo tienen exactamente 3 valores posibles; el 30% es matematicamente inalcanzable con 200 payloads (minimo posible 33.3%). Se uso un tope relajado de 34% (68/200) solo para estas dos dimensiones, declarado como desviacion del plan. Las otras 4 dimensiones cumplen el 30% estricto.",
+  "transporte_counts": {
+    "json": 68,
+    "multipart": 68,
+    "urlencoded": 64
+  },
+  "rule_min_20_por_transporte_ok": true,
+  "no_alert_count": 183,
+  "no_alert_fraction": 0.915,
+  "rule_min_30pct_sin_alert_ok": true,
+  "all_rules_pass": true
+}

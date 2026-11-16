@@ -1,0 +1,68 @@
+{
+  "timestamp_utc": "2026-10-25T16:17:40Z",
+  "branch_logsguardian_vulnerable_project": "exp/ronda5-20261025",
+  "head_sha_logsguardian_vulnerable_project": "07e80ead6a64db5db086216322624bc5bfa4edb0",
+  "branch_logsguardian": "develop",
+  "head_sha_logsguardian": "64a11aa7a6bdea7b85dd97a0134aa87b8b6c7cd5",
+  "nota_branch": "Ambas ramas sin commits propios de esta tarea (regla 6: todo queda sin confirmar). El SHA de HEAD es el mismo antes y despues de todo el trabajo, en los dos repos.",
+  "nota_congelacion": "Verificacion por manifiesto de hashes, no por historial de git, porque no se hicieron commits (regla 6). Ver seccion 7 del entregable final.",
+  "git_status_porcelain_vulnerable_project": [
+    "?? attack-sim/capture_server.py",
+    "?? attack-sim/capture_server_output.jsonl",
+    "?? attack-sim/exclusion_filter_xss.py",
+    "?? attack-sim/exclusion_report_xss_20261025.json",
+    "?? attack-sim/generate_xss.py",
+    "?? attack-sim/leakage_check_xss.py",
+    "?? attack-sim/leakage_report_xss_20261025.json",
+    "?? attack-sim/run_large_corpus_fixed.py",
+    "?? attack-sim/sample_xss.py",
+    "?? attack-sim/send_xss_corpus.py",
+    "?? attack-sim/test_harness_encoding.py",
+    "?? attack-sim/xss_candidates_20261025.jsonl",
+    "?? attack-sim/xss_corpus_filtered_20261025.jsonl",
+    "?? attack-sim/xss_corpus_sample_20261025.jsonl",
+    "?? attack-sim/xss_sampling_report_20261025.json",
+    "?? docs/evidence/git-state-xss-20261025.txt",
+    "?? docs/evidence/t3-content-type-probe-20261025.txt",
+    "?? docs/protocol-xss.md"
+  ],
+  "git_status_porcelain_logsguardian_readonly": ["?? demo/ (ajeno a esta tarea, no tocado)"],
+  "nota_rama_base": "exp/ronda5-20261025 creada desde main (HEAD 07e80ead...) por decision del usuario: origin/feat/waf-modsecurity-crs, indicada en las instrucciones originales, no contiene docker-compose.direct.yml (Config 1/2); main no contiene la variante de Config 3a (WAF-only). Ninguna rama existente trae las 4 configuraciones completas - reportado antes de crear la rama. Config 3a queda pendiente para quien la necesite (la tarea paralela de 4 configuraciones con 0.1.1), a resolver con un archivo nuevo, no modificando docker-compose.yml.",
+  "archivos_congelados": {
+    "docs/protocol-xss.md": "ae52abc3227feb00650e98e0e1e81185fc76a56d8bd6b93ba1ca5cb3cc53134f",
+    "attack-sim/generate_xss.py": "20119bf29df62b514895e4a6978607eb15d6dbf56415b435a0c3b7bde27e93b2",
+    "attack-sim/sample_xss.py": "c1fedaf67582d93b357142a07537a78b44a0cf56d9a926c3d8287a79e09e102d",
+    "attack-sim/exclusion_filter_xss.py": "da4e7732290e3f1fd28eb5de57932784d9105a8e9bd88bd6ddf88c87d46767cc",
+    "attack-sim/leakage_check_xss.py": "8649e9193b5b6f6718c7d4cfdade05e7214791f467ca136e22767b03ab623a0e",
+    "attack-sim/send_xss_corpus.py": "18c645527d1c6944734edb899ce10279928285abef1a627691c06223dcaa75ee",
+    "attack-sim/xss_candidates_20261025.jsonl": "98d6e846899feedb0e736f3cb842d13c8d506751fb60911318bf840137883614",
+    "attack-sim/xss_sampling_report_20261025.json": "9f99f1cb8f20126375d8c5dee08c64458b32cfb8e8866d066a173155bc88381d",
+    "attack-sim/xss_corpus_filtered_20261025.jsonl": "ef67ffd34d09a59c4cf8212722f78d5a2e8894f8d6a38d6e63a2f4598b6fae0d",
+    "attack-sim/exclusion_report_xss_20261025.json": "4537ea3f6f9598b8b11264ca36880d55c9df5820ebaea85ea950ef84bddb43c3",
+    "attack-sim/leakage_report_xss_20261025.json": "0c7f700961ddfbb9a8f8425d54ecbff0af61e3a372bf15e95b52e3fe96d96fb9",
+    "attack-sim/run_large_corpus_fixed.py": "422393460dfea808efe411d358166d37b662bbcaad77843ede0247c684c61af1"
+  },
+  "dependencia_solo_lectura": {
+    "logsguardian/training/leakage_check.py": "0e52e1ac4d4b94909fd4ad1ac3b30d4012d1235ee9bea37fbc093cd590e8e5a9"
+  },
+  "run_large_corpus_fixed_provenance": {
+    "extraido_de_commit": "00ea3a3",
+    "mensaje_commit": "test: verify logsguardian@0.1.1 closes the path_traversal gap to 100%",
+    "metodo": "git show 00ea3a3:attack-sim/run_large_corpus.py (sin mover HEAD)",
+    "nota": "00ea3a3 ya es ancestro de HEAD en esta rama; el archivo extraido es byte-identico al run_large_corpus.py actualmente trackeado (mismo SHA-256), asi que esta copia no diverge y no necesita re-verificarse contra un commit futuro que lo modifique en esta misma rama."
+  },
+  "corpus_final": {
+    "n": 200,
+    "n_descartados_por_t6": 0,
+    "n_coincidencias_normalizadas_t7_no_resueltas": 3,
+    "ids_coincidencia_t7": ["xss_118", "xss_254", "xss_342"]
+  },
+  "recalculo_pre_medicion": {
+    "timestamp_utc": "2026-10-25T16:18:44Z",
+    "resultado": "identico al manifiesto original, confirmado archivo por archivo antes de la corrida 1"
+  },
+  "recalculo_post_medicion": {
+    "timestamp_utc": "2026-10-25T16:51:00Z",
+    "resultado": "identico al manifiesto original y al recalculo pre-medicion, confirmado archivo por archivo tras la corrida 3 de Configuracion 2 y la medicion del payload ZAP"
+  }
+}

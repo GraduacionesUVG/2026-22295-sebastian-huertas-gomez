@@ -1,0 +1,15 @@
+\ifdefined\modoensamble
+\else
+	\input{0-preambulo_standalone}
+	\chapter*{Abstract}
+\fi
+
+Startups that build services on Node.js rarely have a dedicated security team. This work presents logSguarDian, an npm library that implements a runtime application self-protection (RASP) middleware for Express and detects SQL injection, Cross-Site Scripting, Path Traversal and command injection. The middleware intercepts each request and extracts a 76-feature vector; a Random Forest decides whether to block (threshold 0.35), while an Isolation Forest records anomalies and never blocks. Both models run in ONNX (Open Neural Network Exchange) format inside worker threads. This document covers the cybersecurity component: the selection and mapping of attack vectors to OWASP and MITRE ATT\&CK, a corpus of 383,202 labeled requests, the evaluation environment and the penetration tests. On the held-out test set, the F1 score ranged from 0.9239 to 0.9956 per category. On unseen payloads (excluded from training by exact match, with residual normalized-substring overlaps of 1.0\% to 3.5\% per category and, for cross-site scripting, a corpus built after the Round~5 results were known), version 0.1.1 blocked 99.5\% of SQL injection, 100.0\% of Path Traversal, 92.5\% of command injection and 100.0\% of cross-site scripting (200 of 200 payloads from an own corpus); cross-site scripting exploitability was confirmed in a single case only. The latency overhead was 12.08~ms under normal load and 12.85~ms under attack load, within the 15~ms limit, but memory (+332~MiB) and CPU consumption exceeded the criteria. With legitimate traffic from third-party applications the library produced false blocks, so it is not suitable for blocking mode without prior calibration. The general objective was partially met.
+
+\medskip
+\noindent\textbf{Keywords:} RASP, middleware, Node.js, intrusion detection, Random Forest, Isolation Forest.
+
+\ifdefined\modoensamble
+\else
+	\end{document}
+\fi

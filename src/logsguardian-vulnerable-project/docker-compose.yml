@@ -1,0 +1,85 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: notesdb
+      POSTGRES_USER: notesuser
+      POSTGRES_PASSWORD: notespass
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U notesuser -d notesdb"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build: .
+    # No `ports:` here on purpose (Config 3b). The app must only be reachable
+    # through the `waf` service below - if this were published directly to
+    # the host, Artillery could accidentally bypass ModSecurity entirely and
+    # silently invalidate the "does logSguarDian catch what ModSecurity
+    # misses" comparison. Reachable inside the compose network as `app:3000`.
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: notesdb
+      DB_USER: notesuser
+      DB_PASSWORD: notespass
+      SESSION_SECRET: supersecretkey123
+      PORT: 3000
+      UPLOAD_DIR: /app/uploads
+      LOGSGUARDIAN_DISABLED: "${LOGSGUARDIAN_DISABLED:-false}"
+      LOGSGUARDIAN_DB_PATH: "${LOGSGUARDIAN_DB_PATH:-}"
+      LOGSGUARDIAN_GRACE_DEBUG: "${LOGSGUARDIAN_GRACE_DEBUG:-}"
+    volumes:
+      - uploads_data:/app/uploads
+    depends_on:
+      db:
+        condition: service_healthy
+
+  # Config 3b - WAF layer (ModSecurity v3 + OWASP CRS), reverse-proxying to
+  # `app`. This is the ONLY publicly-published port; the app itself is not
+  # reachable directly (see the `app` service comment above). Unlike Config 3a
+  # (branch feat/waf-modsecurity-crs, WAF-only baseline), `app` here has
+  # logSguarDian wired in - this is the layered stack.
+  waf:
+    image: owasp/modsecurity-crs:nginx-alpine
+    ports:
+      - "3000:8080"
+    environment:
+      # Reverse-proxy mode, pointed at the app service by its compose DNS name.
+      PROXY: "1"
+      BACKEND: "http://app:3000"
+      PORT: "8080"
+      # Paranoia Level 1 (CRS default) for both detection and blocking - the
+      # realistic choice for the target audience of this project (SMEs/startups
+      # with no dedicated security team to hand-tune CRS false positives at
+      # PL2+). See docs/config3-waf-plan.md for the justification.
+      PARANOIA: "1"
+      BLOCKING_PARANOIA: "1"
+      # Blocking mode - the real intended Config 3b deployment. Round 3
+      # temporarily set this to DetectionOnly to measure logSguarDian's
+      # independent detection rate with the WAF's own blocking taken out of
+      # the picture; that was a one-off research probe, not the default.
+      MODSEC_RULE_ENGINE: "On"
+      # JSON audit log, one record per relevant (rule-matching) transaction -
+      # this is the ground truth used later to tell "WAF blocked this request"
+      # apart from "request reached the app", since both layers return 403 and
+      # the HTTP status code alone can't disambiguate which layer acted.
+      MODSEC_AUDIT_ENGINE: "RelevantOnly"
+      MODSEC_AUDIT_LOG_FORMAT: "JSON"
+      MODSEC_AUDIT_LOG_TYPE: "Serial"
+      MODSEC_AUDIT_LOG: "/var/log/modsecurity/audit.log"
+      MODSEC_RESP_BODY_ACCESS: "Off"
+    volumes:
+      - ./waf/audit:/var/log/modsecurity
+    depends_on:
+      - app
+
+volumes:
+  postgres_data:
+  uploads_data:

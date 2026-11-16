@@ -1,0 +1,165 @@
+% ==============================================================================
+% ANEXOS
+% ==============================================================================
+% Datos tomados de los repositorios del proyecto:
+%   - docs/model-provenance.md (logSguarDian): hashes de los pares de modelos.
+%   - SHA-256 de los archivos .tgz de npm: calculados con npm pack y shasum el
+%     2026-10-12.
+%   - docs/cybersecurity-objectives-compliance.md: historial del bloqueo del
+%     conjunto de prueba (git log --all -- training/splits/test.lock.sha256).
+%   - docs/dataset-audit.md: auditoria de fuentes.
+%   - docs/evidence/README.md (logSguarDian-vulnerable-project): corrida de
+%     latencia en Linux.
+\ifdefined\modoensamble
+\else
+	\input{0-preambulo_standalone}
+\fi
+
+\chapter{Anexos}
+\label{cap:anexos}
+
+\section{Procedencia de los modelos y de los paquetes}
+\label{anx:procedencia}
+
+El Cuadro~\ref{tab:anx-hashes} lista los archivos \texttt{rf.onnx} e \texttt{if.onnx} de cada par
+de modelos descrito en el Cuadro~\ref{tab:pares-modelos}, con su suma SHA-256 completa. Las sumas
+se calcularon sobre el contenido del objeto de git de cada archivo y, para los paquetes, sobre el
+contenido extraído del archivo publicado en npm.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|L{3.6cm}|L{9.9cm}|}
+\hline
+\textbf{Archivo} & \textbf{SHA-256} \\ \hline
+Par A, \texttt{rf.onnx} (\texttt{rf\_v10}) & {\scriptsize\texttt{180837255dffd596a38bf7c29032ccc313005cd70eca5c6238e23e35bdc0d4ec}} \\ \hline
+Par A, \texttt{if.onnx} (\texttt{if\_v9}) & {\scriptsize\texttt{5de374a7f1d19176d7c66d3354e972d37b28a7306a87efa0ce8639278f489150}} \\ \hline
+Par B, \texttt{rf.onnx} (\texttt{rf\_v11}, primer build) & {\scriptsize\texttt{a7c015f5a5fa3fabfd91b79ec9338dc7da6a68c392c19ded4b04cc6f0fb903b2}} \\ \hline
+Par B, \texttt{if.onnx} (\texttt{if\_v10}, primer build) & {\scriptsize\texttt{3cf8e45c285de19bc86e6dc284e502cd2c24becb888747b9645bed4cfb224417}} \\ \hline
+Par C, \texttt{rf.onnx} (\texttt{rf\_v11}, reentrenamiento) & {\scriptsize\texttt{25b407e649283606a231665a5a8c8ea1c2c7ad4fd0374a8945b3f119651b0870}} \\ \hline
+Par C, \texttt{if.onnx} (\texttt{if\_v10}, reentrenamiento) & {\scriptsize\texttt{5be28ee8437643b2f13708eee1ac3175348a350ea6fb8f8daeb09bd5717f797e}} \\ \hline
+\end{tabular}
+\caption[Sumas SHA-256 de los pares de modelos]{Sumas SHA-256 de los archivos ONNX de cada par de modelos}
+\label{tab:anx-hashes}
+\end{table}
+{\footnotesize Nota. Elaboración propia con datos de \texttt{docs/model-provenance.md} (repositorio
+\texttt{logSguarDian}). El par~A es el contenido del paquete \texttt{logsguardian@0.1.0}; el par~C,
+el del paquete \texttt{logsguardian@0.1.1}.}
+
+El Cuadro~\ref{tab:anx-paquetes} reúne los dos paquetes publicados en el registro de npm y el umbral
+del Isolation Forest que cada uno aplica.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|L{2.3cm}|L{2.5cm}|L{6.2cm}|L{2.5cm}|}
+\hline
+\textbf{Paquete} & \textbf{Publicación} & \textbf{SHA-256 del archivo \texttt{.tgz}} & \textbf{Umbral del IF} \\ \hline
+\texttt{0.1.0} & 30 de agosto de 2026 & {\scriptsize\texttt{c5c1a1da57cfb873350ac0c8ab3e7bad395e8cbf507b18cc3272df447880dcb0}} & 0.002486 (constante) \\ \hline
+\texttt{0.1.1} & 11 de octubre de 2026 (UTC) & {\scriptsize\texttt{abf8d5c47036d9c3a289bc36158f1caaa91b9504689aa97193e51c6808258d15}} & 0.004206 (leído de \texttt{parity\_report.json}) \\ \hline
+\end{tabular}
+\caption[Paquetes publicados en npm]{Paquetes \texttt{logsguardian} publicados en el registro de npm}
+\label{tab:anx-paquetes}
+\end{table}
+{\footnotesize Nota. Elaboración propia. Las sumas de los archivos se calcularon descargando cada
+versión del registro (\texttt{npm pack}); los umbrales provienen de \texttt{docs/decision-policy.md}
+del repositorio \texttt{logSguarDian}. Los otros dos archivos que se mencionan en el texto, el
+tarball de la Ronda~5 original (\texttt{e09120006dd1...}) y el tarball de validación
+(\texttt{cf1238deb333...}), no se publicaron en el registro.}
+
+\section{Historial del bloqueo del conjunto de prueba}
+\label{anx:lock}
+
+El bloqueo del conjunto de prueba es el SHA-256 de los identificadores por fila del conjunto,
+ordenados y unidos por saltos de línea. El valor cambió nueve veces; el Cuadro~\ref{tab:anx-lock}
+las lista. No hay un único bloqueo por generación de modelo, y el cambio del 23 de septiembre de
+2026 entró en tres commits.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|L{2.2cm}|L{2.4cm}|L{4.8cm}|L{2.2cm}|L{2.2cm}|}
+\hline
+\textbf{Fecha} & \textbf{Commit} & \textbf{Motivo} & \textbf{Antes} & \textbf{Después} \\ \hline
+11 jun 2026 & \texttt{cc00c3c} & Bloqueo inicial & --- & \texttt{3beeaba4} \\ \hline
+23 jul 2026 & \texttt{df62619} & Nuevo conjunto, antes de la generación v3 & \texttt{3beeaba4} & \texttt{d1a2a284} \\ \hline
+24 jul 2026 & \texttt{6867f28} & Antes de la generación v4 & \texttt{d1a2a284} & \texttt{7df5adb8} \\ \hline
+24 jul 2026 & \texttt{59990ca} & Antes de la generación v6 & \texttt{7df5adb8} & \texttt{ee4b85db} \\ \hline
+25 jul 2026 & \texttt{5dc7c06} & Antes de la generación v8 & \texttt{ee4b85db} & \texttt{251716bb} \\ \hline
+26 jul 2026 & \texttt{fa46bdd} & Antes de la generación v9 & \texttt{251716bb} & \texttt{4a5e0b97} \\ \hline
+2 ago 2026 & \texttt{b43de9c} & Antes de la generación v10 & \texttt{4a5e0b97} & \texttt{6c5f253d} \\ \hline
+30 ago 2026 & \texttt{8cbe6c9} & Antes de la generación v11 & \texttt{6c5f253d} & \texttt{a3140ab3} \\ \hline
+23 sep 2026 & \texttt{f15e7cc}, \texttt{72aabd6}, \texttt{6d1fa68} & Rebloqueo para que coincida con la generación v11 restaurada & \texttt{a3140ab3} & \texttt{7486c258} \\ \hline
+\end{tabular}
+\caption[Historial del bloqueo del conjunto de prueba]{Historial de cambios del bloqueo del conjunto de prueba (hashes truncados a 8 caracteres)}
+\label{tab:anx-lock}
+\end{table}
+{\footnotesize Nota. Elaboración propia con datos de \texttt{docs/cybersecurity-objectives-compliance.md}
+(repositorio \texttt{logSguarDian}), generados con \texttt{git log --all -{}- training/splits/test.lock.sha256}.}
+
+\section{Auditoría de las fuentes de datos}
+\label{anx:auditoria}
+
+El Cuadro~\ref{tab:anx-auditoria} resume la auditoría de licencias de las nueve fuentes públicas
+candidatas, verificada contra la API o la página de cada origen.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|L{3.8cm}|L{3.0cm}|L{3.3cm}|L{3.6cm}|}
+\hline
+\textbf{Fuente} & \textbf{Licencia} & \textbf{DOI} & \textbf{Decisión} \\ \hline
+Colección CAPEC (SR-BH 2020) \cite{sureda2022srbh,sureda2022newmultilabel} & CC0-1.0 & 10.7910/DVN/OGOIXX & Incluida \\ \hline
+modsec-learn \cite{pralab2024modseclearn,scano2024modseclearn} & MIT & No verificado & Incluida \\ \hline
+OWASP ModSecurity, registros de un servidor protegido (Zenodo) \cite{lucz2025} & CC BY 4.0 & 10.5281/zenodo.17178461 & Incluida \\ \hline
+Payloads.csv (Kaggle) \cite{shahane2021xss} & CC BY 4.0 & No asignado por Kaggle & Incluida \\ \hline
+payload\_full.csv (Kaggle) \cite{thakur2025payloads} & MIT & No asignado por Kaggle & Incluida \\ \hline
+XSS\_dataset.csv (Kaggle) \cite{shah2020xss} & No especificada por el origen & No asignado por Kaggle & Incluida; no se redistribuye \\ \hline
+command injection.csv (Kaggle) \cite{pawase2024cmdi} & No especificada por el origen & No asignado por Kaggle & Incluida; no se redistribuye \\ \hline
+Lista de payloads de Path Traversal de omurugur \cite{ugur2019traversal} & MIT & No asignado & Aprobada; sin analizador, no aporta filas \\ \hline
+AIT-LDSv2 (russellmitchell) \cite{landauer2022ait,landauer2023maintainable} & CC-BY-NC-SA-4.0 & 10.5281/zenodo.5789064 & Excluida: sus etiquetas describen el rol del atacante, no el tipo de payload \\ \hline
+\end{tabular}
+\caption[Auditoría de las fuentes de datos]{Licencia, DOI y decisión de inclusión de cada fuente auditada}
+\label{tab:anx-auditoria}
+\end{table}
+{\footnotesize Nota. Elaboración propia con datos de \texttt{docs/dataset-audit.md} (repositorio
+\texttt{logSguarDian}). El número de filas que cada fuente aporta al corpus final está en el
+Cuadro~\ref{tab:met-origenes}. Las listas SecLists y PayloadsAllTheThings no constan en esta
+auditoría; su licencia (MIT) se consultó en sus repositorios el 10 de octubre de 2026.}
+
+\section{Evidencia de la corrida de latencia en Linux}
+\label{anx:latencia}
+
+El Cuadro~\ref{tab:anx-latencia} identifica la corrida de integración continua de la que provienen
+las cifras de latencia, memoria y CPU del Capítulo~\ref{cap:resultados}.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|L{4.2cm}|L{9.3cm}|}
+\hline
+\textbf{Campo} & \textbf{Valor} \\ \hline
+Flujo de trabajo & \texttt{.github/workflows/latency-benchmark.yml} \\ \hline
+Identificador de la ejecución & 36276690236 \\ \hline
+Identificador del artefacto & 10917957439 \\ \hline
+Commit & \texttt{f15a9e8} \\ \hline
+Fecha & 26 de septiembre de 2026 \\ \hline
+Ejecutor & Ubuntu (Azure), x86\_64, 2 vCPU, 7.8~GiB de memoria \\ \hline
+Docker Engine / Compose & 28.0.4 / v2.38.2 \\ \hline
+Modelos & Par~B (\texttt{rf.onnx} \texttt{a7c015f5...}, \texttt{if.onnx} \texttt{3cf8e45c...}) \\ \hline
+Contenido del archivo & 30 reportes de Artillery (3 escenarios, 2 condiciones, 5 repeticiones), muestras de \texttt{docker stats} cada $\approx$5~s y análisis de memoria \\ \hline
+Copia en el repositorio & \texttt{docs/evidence/latency-linux-2026-09-26.tgz} (SHA-256 {\scriptsize\texttt{b96d901408547331fb4859a5dac4810abdb1caaeb2f15f3378877c2290187cec}}) \\ \hline
+\end{tabular}
+\caption[Corrida de latencia en Linux]{Identificación de la corrida de latencia, memoria y CPU en Linux nativo}
+\label{tab:anx-latencia}
+\end{table}
+{\footnotesize Nota. Elaboración propia con datos de \texttt{docs/evidence/README.md} (repositorio
+\texttt{logSguarDian-vulnerable-project}). El artefacto original de GitHub Actions expira el 26 de
+octubre de 2026; la copia del repositorio es la que se conserva.}
+
+\ifdefined\modoensamble
+\else
+	\section*{Referencias}
+	\printbibliography[heading=none]
+	\end{document}
+\fi
