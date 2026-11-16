@@ -106,3 +106,4 @@ training/results/gate_report_*.json
 # output, not source. Accidentally committed once (see .claude/decisiones.md).
 *.db
 *.db-journal
+src/logsguardian/training/data_clean/
